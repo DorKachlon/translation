@@ -17,6 +17,7 @@ export default function Records() {
 
   const handleAudioStop = (data) => {
     console.log(data);
+    console.log(data.blob.toString("base64"));
     SetAudioDetails({ audioDetails: data });
   };
   const handleAudioUpload = (file) => {
