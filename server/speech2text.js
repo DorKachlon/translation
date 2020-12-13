@@ -6,8 +6,8 @@ const client2 = new speech.SpeechClient({ projectID, keyFilename });
 
 async function speech2text(base64Audio) {
   //! works with mp3
-  const fileName = "./output.mp3";
-  // const fileName = "./file.mp3";
+  // const fileName = "./output.mp3";
+  const fileName = "./file.mp3";
 
   const file = fs.readFileSync(fileName);
   // console.log(file);
@@ -27,7 +27,7 @@ async function speech2text(base64Audio) {
   const config = {
     enableAutomaticPunctuation: true,
     encoding: "LINEAR16",
-    // sampleRateHertz: 16000,
+    sampleRateHertz: 44100,
     languageCode: "en-US",
     model: "default",
   };

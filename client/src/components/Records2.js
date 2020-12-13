@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { ReactMic } from "react-mic";
 import axios from "axios";
+
 export default function Records2() {
   const [record, setRecord] = useState(false);
   const startRecording = () => {
@@ -55,6 +56,7 @@ export default function Records2() {
         echoCancellation={true}
         autoGainControl={true}
         noiseSuppression={true}
+        sampleRate={44100}
       />
       <button onClick={() => startRecording()} type="button">
         Start
