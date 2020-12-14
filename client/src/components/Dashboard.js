@@ -6,7 +6,7 @@ export default function Dashboard() {
   return (
     <div>
       <Selector label="Choose your native language" languagesArr={languagesArr} />
-      <Selector label="Choose language to learn" languagesArr={languagesArr} beDisabled={} />
+      <Selector label="Choose language to learn" languagesArr={languagesArr} beDisabled={false} />
     </div>
   );
 }

@@ -43,7 +43,7 @@ export default function Selector({ label, languagesArr, beDisabled }) {
       id="native-language"
       onChange={(event, value) => changeNative(value)}
       style={{ width: 300 }}
-      options={sortArray(languagesArr)}
+      options={languagesArr && sortArray(languagesArr)}
       classes={{
         option: classes.option,
       }}

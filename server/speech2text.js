@@ -3,9 +3,9 @@ const projectID = "first";
 const keyFilename = "first-1969e02ab82b.json";
 const client2 = new speech.SpeechClient({ projectID, keyFilename });
 
-async function speech2text(base64Audio) {
+async function speech2text(bufferAudio) {
   const audio = {
-    content: base64Audio.toString("base64"),
+    content: bufferAudio.toString("base64"),
   };
   const config = {
     languageCode: "en-US",
