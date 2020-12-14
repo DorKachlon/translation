@@ -6,10 +6,8 @@ const keyFilename = "first-1969e02ab82b.json";
 const client = new textToSpeech.TextToSpeechClient({ projectID, keyFilename });
 
 async function text2speech(MySettings) {
-  //   const [response] = await client.synthesizeSpeech(JSON.parse(MySettings));
   const [response] = await client.synthesizeSpeech(MySettings);
 
-  // return response;
   return response.audioContent.toString("base64");
   // fs.writeFileSync("bytes.json", JSON.stringify(response.audioContent.toString("base64")));
   // fs.writeFileSync("bytes.json", JSON.stringify({ name: "dor" }));
