@@ -7,29 +7,32 @@ const client2 = new speech.SpeechClient({ projectID, keyFilename });
 async function speech2text(base64Audio) {
   //! works with mp3
   // const fileName = "./output.mp3";
-  const fileName = "./file.mp3";
+  // const fileName = "./file.mp3";
 
-  const file = fs.readFileSync(fileName);
+  // const file = fs.readFileSync(fileName);
   // console.log(file);
-  const audioBytes = file.toString("base64");
+  // const audioBytes = file.toString("base64");
   // console.log(audioBytes);
   //!
   // console.log("here2", base64Audio.toString("base64"));
   // console.log("here2", base64Audio.split("base64,")[1]);
   // const audioBytes = base64Audio;
   // const audioBytes = base64Audio.toString("base64");
-  console.log(audioBytes);
+  // console.log(audioBytes);
+  console.log(base64Audio);
 
   const audio = {
-    content: audioBytes,
+    content: base64Audio.toString("base64"),
+    // content: audioBytes,
+    // content: base64Audio.toString("base64"),
     // uri: base64Audio,
   };
   const config = {
-    enableAutomaticPunctuation: true,
-    encoding: "LINEAR16",
-    sampleRateHertz: 44100,
+    // enableAutomaticPunctuation: true,
+    // encoding: "LINEAR16",
+    // sampleRateHertz: 24000,
     languageCode: "en-US",
-    model: "default",
+    // model: "default",
   };
   const request = {
     audio: audio,
