@@ -1,17 +1,53 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Selector from "./Selector";
-export default function Dashboard() {
-  const [beDisabled, SetBeDisabled] = useState();
 
+const sortArray = (languages) => {
+  languages.sort(function (a, b) {
+    if (a.label < b.label) {
+      return -1;
+    }
+    if (a.label > b.label) {
+      return 1;
+    }
+    return 0;
+  });
+  return languages;
+};
+const filterArray = (languages, obj) => {
+  return languages.filter((item) => item.code !== obj.code);
+};
+export default function Dashboard() {
+  const [beDisabled, SetBeDisabled] = useState(true);
+  const [languagesArr, setLanguagesArr] = useState([]);
+  const [nativeLanguage, setNativeLanguage] = useState();
+  const [learningLanguage, setLearningLanguage] = useState();
+  useEffect(() => {
+    setLanguagesArr(sortArray(languages));
+  }, []);
+
+  useEffect(() => {
+    if (nativeLanguage) {
+      SetBeDisabled(false);
+    }
+  }, [nativeLanguage]);
   return (
     <div>
-      <Selector label="Choose your native language" languagesArr={languagesArr} />
-      <Selector label="Choose language to learn" languagesArr={languagesArr} beDisabled={false} />
+      <Selector
+        label="Choose your native language"
+        languagesArr={languagesArr}
+        setYourChoice={setNativeLanguage}
+      />
+      <Selector
+        label="Choose language to learn"
+        languagesArr={nativeLanguage && filterArray(languagesArr, nativeLanguage)}
+        beDisabled={beDisabled}
+        setYourChoice={setLearningLanguage}
+      />
     </div>
   );
 }
 
-const languagesArr = [
+const languages = [
   { code: "en-US", label: "English" },
   { code: "es-ES", label: "Spanish" },
   { code: "ja-JP", label: "Japanese" },

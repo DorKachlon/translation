@@ -14,36 +14,20 @@ const useStyles = makeStyles({
   },
 });
 
-const sortArray = (languages) => {
-  languages.sort(function (a, b) {
-    if (a.label < b.label) {
-      return -1;
-    }
-    if (a.label > b.label) {
-      return 1;
-    }
-    return 0;
-  });
-  return languages;
-};
-
-export default function Selector({ label, languagesArr, beDisabled }) {
+export default function Selector({ label, languagesArr, beDisabled, setYourChoice }) {
   const classes = useStyles();
-  const [nativeLanguage, setNativeLanguage] = useState();
-  const [learningLanguage, setLearningLanguage] = useState();
 
-  const changeNative = (native) => {
-    setNativeLanguage(native);
+  const changeNative = (language) => {
+    setYourChoice(language);
   };
 
-  console.log(nativeLanguage);
   return (
     <Autocomplete
       disabled={beDisabled}
       id="native-language"
       onChange={(event, value) => changeNative(value)}
       style={{ width: 300 }}
-      options={languagesArr && sortArray(languagesArr)}
+      options={languagesArr}
       classes={{
         option: classes.option,
       }}

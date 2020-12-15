@@ -6,7 +6,7 @@ import Records4 from "./components/Records4";
 import Records5 from "./components/Records5";
 import Records6 from "./components/Records6";
 import Records7 from "./components/Records7";
-import Dashboard from "./components/Selector";
+import Dashboard from "./components/Dashboard";
 
 import Index from "./ts";
 
