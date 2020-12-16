@@ -9,29 +9,13 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER,
       },
-      first_name: {
-        allowNull: false,
-        type: Sequelize.STRING,
-      },
-      last_name: {
-        allowNull: false,
-        type: Sequelize.STRING,
-      },
       email: {
         allowNull: false,
         type: Sequelize.STRING,
       },
-      password: {
+      token: {
         allowNull: false,
         type: Sequelize.STRING,
-      },
-      native_language_id: {
-        allowNull: false,
-        type: Sequelize.INTEGER,
-      },
-      current_language_id: {
-        allowNull: false,
-        type: Sequelize.INTEGER,
       },
       created_at: {
         allowNull: false,
@@ -41,8 +25,13 @@ module.exports = {
         allowNull: false,
         type: Sequelize.DATE,
       },
+      deleted_at: {
+        allowNull: true,
+        type: Sequelize.DATE,
+      },
     });
   },
+
   down: async (queryInterface, Sequelize) => {
     await queryInterface.dropTable("Users");
   },

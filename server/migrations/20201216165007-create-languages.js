@@ -2,36 +2,21 @@
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.createTable("Users", {
+    await queryInterface.createTable("Languages", {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER,
       },
-      first_name: {
+      code: {
         allowNull: false,
+        unique: true,
         type: Sequelize.STRING,
       },
-      last_name: {
+      language: {
         allowNull: false,
         type: Sequelize.STRING,
-      },
-      email: {
-        allowNull: false,
-        type: Sequelize.STRING,
-      },
-      password: {
-        allowNull: false,
-        type: Sequelize.STRING,
-      },
-      native_language_id: {
-        allowNull: false,
-        type: Sequelize.INTEGER,
-      },
-      current_language_id: {
-        allowNull: false,
-        type: Sequelize.INTEGER,
       },
       created_at: {
         allowNull: false,
@@ -43,7 +28,8 @@ module.exports = {
       },
     });
   },
+
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.dropTable("Users");
+    await queryInterface.dropTable("Languages");
   },
 };
