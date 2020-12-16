@@ -1,5 +1,5 @@
 import "./App.css";
-import Records7 from "./components/Records7";
+import Records7 from "./components/recorder/Records7";
 import Dashboard from "./components/dashboard/Dashboard";
 import Text2speech from "./components/textToSpeech/Text2speech";
 

@@ -1,16 +1,18 @@
 const { Router } = require("express");
 const multer = require("multer");
+const { speech2text } = require("../../google-api/speech2text");
 
 const router = Router();
-const { speech2text } = require("../../google-api/speech2text");
-const fs = require("fs");
-const ffmpeg = require("ffmpeg");
 const upload = multer();
 
 router.post("/", upload.any(), async (req, res) => {
-  console.log("here1", req.files);
-  const textFromSpeech = await speech2text(req.files[0].buffer);
-  res.json({ response: textFromSpeech });
+  try {
+    const textFromSpeech = await speech2text(req.files[0].buffer);
+    console.log(textFromSpeech);
+    res.json({ response: textFromSpeech });
+  } catch (e) {
+    console.error(e);
+  }
 });
 
 module.exports = router;

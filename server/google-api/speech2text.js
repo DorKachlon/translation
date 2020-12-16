@@ -1,9 +1,10 @@
 const speech = require("@google-cloud/speech");
 const projectID = "first";
-const keyFilename = "first-1969e02ab82b.json";
+const keyFilename = "./google-api/google-api-keys.json";
 const client2 = new speech.SpeechClient({ projectID, keyFilename });
 
 async function speech2text(bufferAudio) {
+  console.log("bbbb", bufferAudio);
   const audio = {
     content: bufferAudio.toString("base64"),
   };
@@ -21,9 +22,11 @@ async function speech2text(bufferAudio) {
     const transcription = response.results
       .map((result) => result.alternatives[0].transcript)
       .join("\n");
-    // console.log(`Transcription: ${transcription}`);
+    console.log(`Transcription: ${transcription}`);
     return transcription;
-  } catch (e) {}
+  } catch (e) {
+    console.error(e);
+  }
 }
 
 module.exports.speech2text = speech2text;
