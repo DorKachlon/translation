@@ -2,8 +2,8 @@ import React, { useState, useEffect } from "react";
 import Recorder from "./Recorder";
 import axios from "axios";
 import useSound from "use-sound";
-import SoundIn from "../sound-effect/sound-in.mp3";
-import SoundOut from "../sound-effect/sound-out.mp3";
+import SoundIn from "../../sound-effect/sound-in.mp3";
+import SoundOut from "../../sound-effect/sound-out.mp3";
 
 export default function Records7() {
   const [record, setRecord] = useState(null);
