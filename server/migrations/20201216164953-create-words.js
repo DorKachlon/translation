@@ -13,7 +13,7 @@ module.exports = {
         allowNull: false,
         type: Sequelize.STRING,
       },
-      languageId: {
+      language_id: {
         allowNull: false,
         type: Sequelize.INTEGER,
       },
