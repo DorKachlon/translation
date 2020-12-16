@@ -11,7 +11,7 @@ module.exports = (sequelize, DataTypes) => {
   }
   User.init(
     {
-      code: { type: DataTypes.INTEGER, allowNull: false, unique: true },
+      code: { type: DataTypes.STRING, allowNull: false, unique: true },
       language: { type: DataTypes.STRING, allowNull: false },
     },
     {
