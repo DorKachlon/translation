@@ -72,7 +72,7 @@ module.exports = [
   {
     id: 11,
     code: "am-ET",
-    language: "Amharic ",
+    language: "Amharic",
     created_at: "2020-12-16 20:00:00",
     updated_at: "2020-12-16 20:00:00",
   },

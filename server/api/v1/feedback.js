@@ -10,8 +10,9 @@ router.post("/", upload.any(), async (req, res) => {
     const textFromSpeech = await speech2text(req.files[0].buffer);
     console.log(textFromSpeech);
     res.json({ response: textFromSpeech });
-  } catch (e) {
-    console.error(e);
+  } catch (error) {
+    console.error(error);
+    res.status(400).json({ message: "Cannot process request" });
   }
 });
 

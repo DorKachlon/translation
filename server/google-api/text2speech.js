@@ -2,7 +2,7 @@ const textToSpeech = require("@google-cloud/text-to-speech");
 const fs = require("fs");
 const util = require("util");
 const projectID = "first";
-const keyFilename = "first-1969e02ab82b.json";
+const keyFilename = "./google-api/google-api-keys.json";
 const client = new textToSpeech.TextToSpeechClient({ projectID, keyFilename });
 
 async function text2speech(MySettings) {
