@@ -9,7 +9,7 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {}
   }
-  User.init(
+  RefreshToken.init(
     {
       email: { type: DataTypes.STRING, allowNull: false },
       token: { type: DataTypes.STRING, allowNull: false },

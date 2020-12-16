@@ -9,7 +9,7 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {}
   }
-  User.init(
+  Word.init(
     {
       word: { type: DataTypes.STRING, allowNull: false, primaryKey: true },
       languageId: { type: DataTypes.INTEGER, allowNull: false, primaryKey: true },

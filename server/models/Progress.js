@@ -1,7 +1,7 @@
 const { Model } = require("sequelize");
 
 module.exports = (sequelize, DataTypes) => {
-  class User extends Model {
+  class Progress extends Model {
     /**
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.
@@ -9,7 +9,7 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {}
   }
-  User.init(
+  Progress.init(
     {
       userId: { type: DataTypes.STRING, allowNull: false, primaryKey: true },
       languageId: { type: DataTypes.INTEGER, allowNull: false, primaryKey: true },
@@ -22,5 +22,5 @@ module.exports = (sequelize, DataTypes) => {
       tableName: "users",
     }
   );
-  return User;
+  return Progress;
 };

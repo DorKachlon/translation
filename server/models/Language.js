@@ -9,7 +9,7 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {}
   }
-  User.init(
+  Language.init(
     {
       code: { type: DataTypes.STRING, allowNull: false, unique: true },
       language: { type: DataTypes.STRING, allowNull: false },
