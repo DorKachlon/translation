@@ -1,26 +1,13 @@
 import React, { useState, useEffect } from "react";
 import Selector from "./Selector";
+import { sortArray, filterArray } from "./helpersFunctions";
 
-const sortArray = (languages) => {
-  languages.sort(function (a, b) {
-    if (a.label < b.label) {
-      return -1;
-    }
-    if (a.label > b.label) {
-      return 1;
-    }
-    return 0;
-  });
-  return languages;
-};
-const filterArray = (languages, obj) => {
-  return languages.filter((item) => item.code !== obj.code);
-};
 export default function Dashboard() {
   const [beDisabled, SetBeDisabled] = useState(true);
   const [languagesArr, setLanguagesArr] = useState([]);
   const [nativeLanguage, setNativeLanguage] = useState();
   const [learningLanguage, setLearningLanguage] = useState();
+
   useEffect(() => {
     setLanguagesArr(sortArray(languages));
   }, []);
