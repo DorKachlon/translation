@@ -16,42 +16,46 @@ const useStyles = makeStyles({
 
 export default function Selector({ label, languagesArr, beDisabled, setYourChoice }) {
   const classes = useStyles();
-
+  console.log(languagesArr);
   const changeNative = (language) => {
     setYourChoice(language);
   };
 
   return (
-    <Autocomplete
-      disabled={beDisabled}
-      id="native-language"
-      onChange={(event, value) => changeNative(value)}
-      style={{ width: 300 }}
-      options={languagesArr}
-      classes={{
-        option: classes.option,
-      }}
-      autoHighlight
-      getOptionLabel={(option) => option.label}
-      renderOption={(option) => (
-        <React.Fragment>
-          <span>
-            <Flag code={option.code.split("-")[1]} height="16" width="20" />
-          </span>
-          {option.label} ({option.code})
-        </React.Fragment>
-      )}
-      renderInput={(params) => (
-        <TextField
-          {...params}
-          label={label}
-          variant="outlined"
-          inputProps={{
-            ...params.inputProps,
-            autoComplete: "new-password", // disable autocomplete and autofill
+    <>
+      {languagesArr && (
+        <Autocomplete
+          disabled={beDisabled}
+          id="native-language"
+          onChange={(event, value) => changeNative(value)}
+          style={{ width: 300 }}
+          options={languagesArr}
+          classes={{
+            option: classes.option,
           }}
+          autoHighlight
+          getOptionLabel={(option) => option.language}
+          renderOption={(option) => (
+            <React.Fragment>
+              <span>
+                <Flag code={option.code.split("-")[1]} height="16" width="20" />
+              </span>
+              {option.language} ({option.code})
+            </React.Fragment>
+          )}
+          renderInput={(params) => (
+            <TextField
+              {...params}
+              label={label}
+              variant="outlined"
+              inputProps={{
+                ...params.inputProps,
+                autoComplete: "new-password", // disable autocomplete and autofill
+              }}
+            />
+          )}
         />
-      )}
-    />
+      )}{" "}
+    </>
   );
 }

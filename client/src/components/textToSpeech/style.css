@@ -1,0 +1,19 @@
+:root {
+  --long: 150px;
+}
+
+.play-again {
+  height: var(--long);
+  width: var(--long);
+  border-radius: 50%;
+  background-color: rgb(255, 170, 64);
+  background: linear-gradient(-45deg, rgba(0, 0, 0, 0.12), rgba(255, 255, 255, 0.18));
+  box-shadow: 12px 12px 16px 0 rgba(0, 0, 0, 0.25), -8px -8px 12px 0 rgba(255, 255, 255, 0.3);
+  border: none;
+}
+
+.down {
+  transform: scale(1.001);
+  box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.2), -5px -5px 15px rgba(255, 255, 255, 0.05),
+    inset -5px -5px 10px rgba(255, 255, 255, 0.05), inset 5px 5px 10px rgba(0, 0, 0, 0.2);
+}

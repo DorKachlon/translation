@@ -1,16 +1,16 @@
-export const sortArray = (languages) => {
-  languages.sort(function (a, b) {
-    if (a.label < b.label) {
+export const sortArray = (languagesArr) => {
+  languagesArr.sort(function (a, b) {
+    if (a.language < b.language) {
       return -1;
     }
-    if (a.label > b.label) {
+    if (a.language > b.language) {
       return 1;
     }
     return 0;
   });
-  return languages;
+  return languagesArr;
 };
 
-export const filterArray = (languages, obj) => {
-  return languages.filter((item) => item.code !== obj.code);
+export const filterArray = (languagesArr, obj) => {
+  return languagesArr.filter((item) => item.code !== obj.code);
 };
