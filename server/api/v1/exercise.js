@@ -1,6 +1,6 @@
 const { Router } = require("express");
 const router = Router();
-const { text2speech } = require("../../text2speech");
+const { text2speech } = require("../../google-api/text2speech");
 
 let mySetting = {
   audioConfig: {

@@ -2,7 +2,7 @@ const { Router } = require("express");
 const multer = require("multer");
 
 const router = Router();
-const { speech2text } = require("../../speech2text");
+const { speech2text } = require("../../google-api/speech2text");
 const fs = require("fs");
 const ffmpeg = require("ffmpeg");
 const upload = multer();
