@@ -1,3 +1,4 @@
+"use strict";
 const { Model } = require("sequelize");
 
 module.exports = (sequelize, DataTypes) => {
@@ -13,6 +14,12 @@ module.exports = (sequelize, DataTypes) => {
       });
       this.hasMany(models.User, {
         foreignKey: "currentLanguageId",
+      });
+      this.hasMany(models.Word, {
+        foreignKey: "languageId",
+      });
+      this.hasMany(models.Progress, {
+        foreignKey: "languageId",
       });
     }
   }

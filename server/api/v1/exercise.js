@@ -24,15 +24,12 @@ router.post("/", async (req, res) => {
   try {
     const userInfo = await User.findOne({
       where: { id: 1 },
+      include: [
+        { model: Language, attributes: ["code", "language"], as: "nativeLanguage" },
+        { model: Language, attributes: ["code", "language"], as: "currentLanguage" },
+      ],
     });
-    const { code: native } = await Language.findOne({
-      where: { id: userInfo.nativeLanguageId },
-    });
-    const { code: current } = await Language.findOne({
-      where: { id: userInfo.currentLanguageId },
-    });
-    // res.json([userInfo, native, current]);
-
+    // res.json(userInfo);
     obj = await text2speech(mySetting);
     res.json(obj);
   } catch (error) {

@@ -10,9 +10,20 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       this.belongsTo(models.Language, {
         foreignKey: "nativeLanguageId",
+        as: "nativeLanguage",
       });
       this.belongsTo(models.Language, {
         foreignKey: "currentLanguageId",
+        as: "currentLanguage",
+      });
+      this.hasMany(models.RefreshToken, {
+        foreignKey: "email",
+      });
+      this.hasMany(models.Record, {
+        foreignKey: "userId",
+      });
+      this.hasMany(models.Progress, {
+        foreignKey: "userId",
       });
     }
   }
