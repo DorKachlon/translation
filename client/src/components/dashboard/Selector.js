@@ -3,6 +3,7 @@ import TextField from "@material-ui/core/TextField";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import Flag from "react-world-flags";
 import { makeStyles } from "@material-ui/core/styles";
+import axios from "axios";
 
 const useStyles = makeStyles({
   option: {
@@ -14,11 +15,30 @@ const useStyles = makeStyles({
   },
 });
 
-export default function Selector({ label, languagesArr, beDisabled, setYourChoice }) {
+export default function Selector({
+  mode,
+  label,
+  languagesArr,
+  beDisabled,
+  setYourChoice,
+  defaultV,
+  registrestion,
+}) {
   const classes = useStyles();
-  console.log(languagesArr);
-  const changeNative = (language) => {
-    setYourChoice(language);
+  console.log(defaultV);
+
+  const changeNative = async (language) => {
+    if (registrestion) {
+      setYourChoice(language);
+    } else {
+      try {
+        if (mode === "native") {
+          await axios.put("/api/v1/users", { nativeLanguageId: language.id });
+        } else if (mode === "learning") {
+          await axios.put("/api/v1/users", { currentLanguageId: language.id });
+        }
+      } catch (error) {}
+    }
   };
 
   return (
@@ -27,6 +47,7 @@ export default function Selector({ label, languagesArr, beDisabled, setYourChoic
         <Autocomplete
           disabled={beDisabled}
           id="native-language"
+          defaultValue={defaultV}
           onChange={(event, value) => changeNative(value)}
           style={{ width: 300 }}
           options={languagesArr}

@@ -1,10 +1,6 @@
-:root {
-  --long: 100px;
-}
-
-.play-again {
-  height: var(--long);
-  width: var(--long);
+.recording-button {
+  height: calc(var(--long) * 2);
+  width: calc(var(--long) * 2);
   border-radius: 50%;
   background-color: rgb(255, 170, 64);
   background: linear-gradient(-45deg, rgba(0, 0, 0, 0.12), rgba(255, 255, 255, 0.18));

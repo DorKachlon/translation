@@ -8,7 +8,7 @@ export default function Dashboard() {
   const [languagesArr, setLanguagesArr] = useState([]);
   const [nativeLanguage, setNativeLanguage] = useState();
   const [learningLanguage, setLearningLanguage] = useState();
-
+  console.log(nativeLanguage);
   useEffect(() => {
     (async () => {
       try {
@@ -32,12 +32,14 @@ export default function Dashboard() {
         label="Choose your native language"
         languagesArr={languagesArr}
         setYourChoice={setNativeLanguage}
+        registrestion={true}
       />
       <Selector
         label="Choose language to learn"
         languagesArr={nativeLanguage ? filterArray(languagesArr, nativeLanguage) : []}
         beDisabled={beDisabled}
         setYourChoice={setLearningLanguage}
+        registrestion={true}
       />
     </div>
   );

@@ -4,7 +4,8 @@ import axios from "axios";
 import useSound from "use-sound";
 import SoundIn from "../../sound-effect/sound-in.mp3";
 import SoundOut from "../../sound-effect/sound-out.mp3";
-
+import MicIcon from "@material-ui/icons/Mic";
+import "./style.css";
 export default function Records7() {
   const [record, setRecord] = useState(null);
   const [audioStream, setAudioStream] = useState(null);
@@ -49,11 +50,12 @@ export default function Records7() {
 
   return (
     <div>
-      <button onClick={startRecording} disabled={record !== null}>
-        Start Recording
-      </button>
-      <button onClick={STOPRecording} disabled={record === null}>
-        Stop Recording
+      <button
+        className={record ? "recording-button down" : "recording-button"}
+        onMouseDown={startRecording}
+        onMouseUp={STOPRecording}
+      >
+        <MicIcon style={{ fontSize: "40px", color: "white" }} />
       </button>
       <div>{response}</div>
     </div>

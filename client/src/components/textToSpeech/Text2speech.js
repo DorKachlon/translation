@@ -9,7 +9,7 @@ export default function Text2speech() {
 
   console.log(audio);
   useEffect(async () => {
-    const { data } = await axios.post("/api/v1/exercise");
+    const { data } = await axios.post("/api/v1/exercise", { textInput: "hey there" });
     setAudio(data);
   }, []);
 
