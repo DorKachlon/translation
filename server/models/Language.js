@@ -27,6 +27,7 @@ module.exports = (sequelize, DataTypes) => {
     {
       code: { type: DataTypes.STRING, allowNull: false, unique: true },
       language: { type: DataTypes.STRING, allowNull: false },
+      voice: { type: DataTypes.STRING, allowNull: false },
     },
     {
       sequelize,
