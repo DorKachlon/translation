@@ -6,5 +6,6 @@ router.use("/exercise", require("./exercise"));
 router.use("/feedback", require("./feedback"));
 
 router.use("/languages", require("./languages"));
+router.use("/users", require("./users"));
 
 module.exports = router;
