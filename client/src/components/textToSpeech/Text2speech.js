@@ -31,7 +31,6 @@ export default function Text2speech() {
   }, [audio, counter]);
 
   const playAudio = () => {
-    debugger;
     if (counter < audio.length) {
       const audioToPlay = new Audio(`data:audio/ogg;base64, ${audio[counter].base64}`);
       audioToPlay.play();
@@ -53,6 +52,30 @@ export default function Text2speech() {
   const MouseUp = () => {
     setNameOfClass("play-again");
   };
+  const getClassName = (itsWord, index) => {
+    if (itsWord) {
+      if (!stop) {
+        if (index > counter) {
+          return "word-bold hidden";
+        } else {
+          return "word-bold";
+        }
+      } else {
+        return "word-bold";
+      }
+    } else {
+      if (index > counter) {
+        if (!stop) {
+          return "regular hidden";
+        } else {
+          return "regular";
+        }
+      } else {
+        return "regular";
+      }
+    }
+  };
+
   return (
     <>
       <button
@@ -65,8 +88,8 @@ export default function Text2speech() {
       </button>
       {audio && (
         <div>
-          {audio.map((obj) => (
-            <span className={obj.itsWord ? "word-bold" : "regular"}>{obj.text} </span>
+          {audio.map((obj, i) => (
+            <span className={getClassName(obj.itsWord, i)}>{obj.text} </span>
           ))}
         </div>
       )}

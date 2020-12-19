@@ -21,9 +21,15 @@
 
 .regular {
   font-size: 20px;
+  transition: all 0.5s;
 }
 
 .word-bold {
   font-size: 30px;
   font-weight: bold;
+  transition: all 0.5s;
+}
+
+.hidden {
+  opacity: 0;
 }
