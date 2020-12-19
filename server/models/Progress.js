@@ -24,15 +24,15 @@ module.exports = (sequelize, DataTypes) => {
   }
   Progress.init(
     {
-      userId: { type: DataTypes.STRING, allowNull: false },
-      languageId: { type: DataTypes.INTEGER, allowNull: false },
-      wordId: { type: DataTypes.INTEGER, allowNull: false },
-      score: { type: DataTypes.INTEGER, allowNull: false },
+      userId: { type: DataTypes.STRING, allowNull: false, primaryKey: true },
+      languageId: { type: DataTypes.INTEGER, allowNull: false, primaryKey: true },
+      wordId: { type: DataTypes.INTEGER, allowNull: false, primaryKey: true },
+      score: { type: DataTypes.INTEGER, allowNull: false, primaryKey: true },
     },
     {
       sequelize,
       modelName: "Progress",
-      tableName: "progresses",
+      tableName: "progress",
     }
   );
   return Progress;
