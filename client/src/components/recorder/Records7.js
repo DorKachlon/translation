@@ -52,8 +52,9 @@ export default function Records7() {
     <div>
       <button
         className={record ? "recording-button down" : "recording-button"}
-        onMouseDown={startRecording}
-        onMouseUp={STOPRecording}
+        // onMouseDown={startRecording}
+        // onMouseUp={STOPRecording}
+        onClick={record ? STOPRecording : startRecording}
       >
         <MicIcon style={{ fontSize: "40px", color: "white" }} />
       </button>

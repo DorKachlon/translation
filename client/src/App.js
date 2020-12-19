@@ -1,19 +1,20 @@
 import "./App.css";
-import Records7 from "./components/recorder/Records7";
-import Dashboard from "./components/dashboard/Dashboard";
-import Dashboard2 from "./components/dashboard/Dashboard2";
+import Home from "./pages/Home";
+import Setting from "./pages/Setting";
+import NavBar from "./components/navBar";
 
-import Text2speech from "./components/textToSpeech/Text2speech";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 
 function App() {
   return (
     <div className="App">
-      <Dashboard />
-
-      <Records7 />
-
-      <Text2speech />
-      <Dashboard2 />
+      <Router>
+        <NavBar />
+        <Switch>
+          <Route exact path="/" component={Home} />
+          <Route exact path="/setting" component={Setting} />
+        </Switch>
+      </Router>
     </div>
   );
 }
