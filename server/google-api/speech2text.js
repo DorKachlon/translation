@@ -3,13 +3,12 @@ const projectID = "first";
 const keyFilename = "./google-api/google-api-keys.json";
 const client2 = new speech.SpeechClient({ projectID, keyFilename });
 
-async function speech2text(bufferAudio) {
-  console.log("bbbb", bufferAudio);
+async function speech2text(bufferAudio, language) {
   const audio = {
     content: bufferAudio.toString("base64"),
   };
   const config = {
-    languageCode: "en-US",
+    languageCode: language,
   };
   const request = {
     audio: audio,
@@ -18,11 +17,11 @@ async function speech2text(bufferAudio) {
 
   try {
     const [response] = await client2.recognize(request);
-    console.log(response);
+    // console.log(response);
     const transcription = response.results
       .map((result) => result.alternatives[0].transcript)
       .join("\n");
-    console.log(`Transcription: ${transcription}`);
+    // console.log(`Transcription: ${transcription}`);
     return transcription;
   } catch (e) {
     console.error(e);
