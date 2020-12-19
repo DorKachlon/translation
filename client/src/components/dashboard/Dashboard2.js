@@ -4,7 +4,6 @@ import { sortArray, filterArray } from "./helpersFunctions";
 import axios from "axios";
 
 export default function Dashboard2() {
-  const [beDisabled, SetBeDisabled] = useState(true);
   const [languagesArr, setLanguagesArr] = useState([]);
   const [nativeLanguage, setNativeLanguage] = useState();
   const [learningLanguage, setLearningLanguage] = useState();
