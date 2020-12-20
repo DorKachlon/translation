@@ -15,6 +15,10 @@ export default function Records7() {
   const [playSoundIn] = useSound(SoundIn);
   const [playSoundOut] = useSound(SoundOut);
 
+  const [word, setWord] = useState("");
+  const [audio, setAudio] = useState();
+  const [stop, setStop] = useState(false);
+
   const startRecording = () => {
     let rec = null;
     let constraints = { audio: true, video: false };
@@ -49,9 +53,12 @@ export default function Records7() {
     let formData = new FormData();
     formData.append("audio_data", blob, filename);
     //axios request
-    const { data } = await axios.post("/api/v1/answer", formData);
+    const { data } = await axios.post(`/api/v1/answer/${word}`, formData);
+
+    setStop(false);
     setResponse(data.response);
     setRecord(null);
+    setAudio(data.audio);
   }
 
   return (
@@ -65,7 +72,15 @@ export default function Records7() {
         <MicIcon style={{ fontSize: "40px", color: "white" }} />
       </button>
       <div>{response}</div>
-      <Text2speech startRecording={startRecording} STOPRecording={STOPRecording} />
+      <Text2speech
+        startRecording={startRecording}
+        STOPRecording={STOPRecording}
+        setWord={setWord}
+        audio={audio}
+        setAudio={setAudio}
+        stop={stop}
+        setStop={setStop}
+      />
     </div>
   );
 }

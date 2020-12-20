@@ -4,11 +4,17 @@ import axios from "axios";
 import LoopIcon from "@material-ui/icons/Loop";
 import "./style.css";
 
-export default function Text2speech({ startRecording, STOPRecording }) {
-  const [audio, setAudio] = useState();
+export default function Text2speech({
+  startRecording,
+  STOPRecording,
+  setWord,
+  audio,
+  setAudio,
+  stop,
+  setStop,
+}) {
   const [nameOfClass, setNameOfClass] = useState("play-again");
   const [counter, setCounter] = useState(0);
-  const [stop, setStop] = useState(false);
 
   console.log(audio);
   useEffect(() => {
@@ -18,7 +24,8 @@ export default function Text2speech({ startRecording, STOPRecording }) {
       // });
       const { data } = await axios.post("/api/v1/exercise");
       console.log(data);
-      setAudio(data);
+      setWord(data.word);
+      setAudio(data.audio);
     })();
   }, []);
 

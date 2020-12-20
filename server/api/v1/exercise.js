@@ -15,7 +15,6 @@ router.post("/", async (req, res) => {
       ],
     });
     let obj = [];
-
     //build a dialog
     if (req.body.textInput) {
       const textAfterTranslation = await translateText(
@@ -30,6 +29,7 @@ router.post("/", async (req, res) => {
           voiceName: userInfo.nativeLanguage.voice,
         }),
       });
+      res.json({ audio: obj });
 
       //build an exercise
     } else {
@@ -89,11 +89,12 @@ router.post("/", async (req, res) => {
       });
       //6
       obj.push(wordObj);
+      res.json({ word: nextWordTranslator, audio: obj });
     }
-    res.json(obj);
   } catch (error) {
     console.error(error);
-    res.status(400).json({ message: "Cannot process request" });
+    // res.status(400).json({ message: "Cannot process request" });
+    res.status(400).json({ message: error });
   }
 });
 
