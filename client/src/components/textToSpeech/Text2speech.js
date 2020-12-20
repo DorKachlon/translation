@@ -44,6 +44,7 @@ export default function Text2speech() {
   };
 
   const playAgain = () => {
+    setStop(false);
     playAudio();
   };
   const MouseDown = () => {
