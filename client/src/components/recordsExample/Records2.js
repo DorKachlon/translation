@@ -27,7 +27,7 @@ export default function Records2() {
     reader.onloadend = async () => {
       //   var base64data = reader.result;
       var base64data = reader.result.replace(/^data:.+;base64,/, "");
-      const { data: text } = await axios.post("/api/v1/feedback", { base64data: base64data });
+      const { data: text } = await axios.post("/api/v1/answer", { base64data: base64data });
 
       console.log(text);
     };

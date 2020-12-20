@@ -30,7 +30,7 @@ export default function Records4() {
       //     //   var base64data = reader.result;
       //     var base64data = reader.result.replace(/^data:.+;base64,/, "");
       //     console.log(base64data);
-      const { data: text } = await axios.post("/api/v1/feedback", { blob });
+      const { data: text } = await axios.post("/api/v1/answer", { blob });
       //   };
     };
     mediaRecorder.start(3000);

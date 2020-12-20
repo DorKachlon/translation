@@ -29,7 +29,7 @@ export default function Records5() {
         const audioUrl = URL.createObjectURL(audioBlob);
         const audioFile = new Audio(audioUrl);
         audioFile.play();
-        const { data: text } = await axios.post("/api/v1/feedback", { base64data: audioBlob });
+        const { data: text } = await axios.post("/api/v1/answer", { base64data: audioBlob });
       });
     });
   };

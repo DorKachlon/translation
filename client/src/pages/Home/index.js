@@ -6,7 +6,7 @@ export default function Home() {
   return (
     <div>
       <Records7 />
-      <Text2speech />
+      {/* <Text2speech /> */}
     </div>
   );
 }

@@ -6,6 +6,8 @@ import SoundIn from "../../sound-effect/sound-in.mp3";
 import SoundOut from "../../sound-effect/sound-out.mp3";
 import MicIcon from "@material-ui/icons/Mic";
 import "./style.css";
+import Text2speech from "../textToSpeech/Text2speech";
+
 export default function Records7() {
   const [record, setRecord] = useState(null);
   const [audioStream, setAudioStream] = useState(null);
@@ -27,14 +29,18 @@ export default function Records7() {
         rec.record();
         setRecord(rec);
       })
-      .catch(function (err) {});
+      .catch(function (err) {
+        console.log(err);
+      });
   };
 
   const STOPRecording = async () => {
-    record.stop();
-    playSoundOut();
-    audioStream.getAudioTracks()[0].stop();
-    record.exportWAV(uploadSoundData);
+    if (record) {
+      record.stop();
+      playSoundOut();
+      audioStream.getAudioTracks()[0].stop();
+      record.exportWAV(uploadSoundData);
+    }
   };
 
   async function uploadSoundData(blob) {
@@ -43,7 +49,7 @@ export default function Records7() {
     let formData = new FormData();
     formData.append("audio_data", blob, filename);
     //axios request
-    const { data } = await axios.post("/api/v1/feedback", formData);
+    const { data } = await axios.post("/api/v1/answer", formData);
     setResponse(data.response);
     setRecord(null);
   }
@@ -59,6 +65,7 @@ export default function Records7() {
         <MicIcon style={{ fontSize: "40px", color: "white" }} />
       </button>
       <div>{response}</div>
+      <Text2speech startRecording={startRecording} STOPRecording={STOPRecording} />
     </div>
   );
 }

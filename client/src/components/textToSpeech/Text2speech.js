@@ -4,7 +4,7 @@ import axios from "axios";
 import LoopIcon from "@material-ui/icons/Loop";
 import "./style.css";
 
-export default function Text2speech() {
+export default function Text2speech({ startRecording, STOPRecording }) {
   const [audio, setAudio] = useState();
   const [nameOfClass, setNameOfClass] = useState("play-again");
   const [counter, setCounter] = useState(0);
@@ -38,6 +38,7 @@ export default function Text2speech() {
         setCounter((prev) => prev + 1);
       };
     } else {
+      startRecording();
       setStop(true);
       setCounter(0);
     }

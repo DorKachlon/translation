@@ -68,7 +68,7 @@ export default function Records6() {
         };
         // submit the audio file to the server
         console.log(files);
-        await axios.post("/api/v1/feedback", { base64data: files });
+        await axios.post("/api/v1/answer", { base64data: files });
         // socketio.emit("message", files);
       });
     });
