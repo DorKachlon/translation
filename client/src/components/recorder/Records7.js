@@ -62,7 +62,7 @@ export default function Records7() {
     const { data } = await axios.post(`/api/v1/answer/${word.text}/${word.id}`, formData);
     console.log(data);
     setAnswerStatus(data.status);
-    if (data.status === "fail") {
+    if (data.status === "fail" || data.status === "tryAgain") {
       await playSoundFailFunction();
     } else if (data.status === "success") {
       await playSoundSuccessFunction();

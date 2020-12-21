@@ -49,7 +49,7 @@ async function craeteFeedback(Accepted, target, nativeLanguage, currentLanguage,
           voiceName: nativeLanguage.voice,
         }),
       });
-      await crateNewProgress(uid, currentLanguage.id, wordId, 10);
+      await crateNewProgress(uid, currentLanguage.id, wordId, 0);
       return { audio: obj, status: "tryAgain" };
     }
 

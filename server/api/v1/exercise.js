@@ -33,7 +33,7 @@ router.post("/", async (req, res) => {
 
       //build an exercise
     } else {
-      const nextWord = await nextWordToLearn(1);
+      const nextWord = await nextWordToLearn(userInfo.id, userInfo.currentLanguage.id);
       console.log("nextWord", nextWord);
       //1
       const theWord = await translateText("the word:", userInfo.nativeLanguage.code);
