@@ -34,6 +34,7 @@ router.post("/", async (req, res) => {
       //build an exercise
     } else {
       const nextWord = await nextWordToLearn(1);
+      console.log("nextWord", nextWord);
       //1
       const theWord = await translateText("the word:", userInfo.nativeLanguage.code);
       obj.push({
@@ -89,7 +90,9 @@ router.post("/", async (req, res) => {
       });
       //6
       obj.push(wordObj);
-      res.json({ word: nextWordTranslator, audio: obj });
+      console.log(nextWord);
+      console.log({ text: nextWordTranslator, id: nextWord.wordId });
+      res.json({ word: { text: nextWordTranslator, id: nextWord.wordId }, audio: obj });
     }
   } catch (error) {
     console.error(error);
