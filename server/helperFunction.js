@@ -13,7 +13,7 @@ async function nextWordToLearn(userId) {
       where: { id: nextWordId },
       attributes: ["id", "word", "languageId", "createdAt", "updatedAt"],
     });
-    return nextWordById;
+    return { word: nextWordById.word, wordId: nextWordById.id };
   }
 }
 
