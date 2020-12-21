@@ -38,6 +38,21 @@ router.post("/:word/:id", upload.any(), async (req, res) => {
 async function craeteFeedback(Accepted, target, nativeLanguage, currentLanguage, uid, wordId) {
   try {
     let obj = [];
+    //! EMPETY
+    if (Accepted === "") {
+      const part = await translateText("I don't understand, try again", nativeLanguage.code);
+      obj.push({
+        text: part,
+        base64: await text2speech({
+          inputText: part,
+          languageCode: nativeLanguage.code,
+          voiceName: nativeLanguage.voice,
+        }),
+      });
+      await crateNewProgress(uid, currentLanguage.id, wordId, 10);
+      return { audio: obj, status: "tryAgain" };
+    }
+
     //! FAIL
     if (Accepted.toUpperCase() !== target.toUpperCase()) {
       //1
@@ -96,7 +111,7 @@ async function craeteFeedback(Accepted, target, nativeLanguage, currentLanguage,
         }),
       });
       await crateNewProgress(uid, currentLanguage.id, wordId, 0);
-      return { audio: obj, status: "success" };
+      return { audio: obj, status: "fail" };
       //! SUCCESS
     } else {
       const part = await translateText("good job! let's learn another word!", nativeLanguage.code);
@@ -109,7 +124,7 @@ async function craeteFeedback(Accepted, target, nativeLanguage, currentLanguage,
         }),
       });
       await crateNewProgress(uid, currentLanguage.id, wordId, 10);
-      return { audio: obj, status: "fail" };
+      return { audio: obj, status: "success" };
     }
   } catch (error) {
     console.error(error);
