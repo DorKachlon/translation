@@ -4,6 +4,8 @@ import axios from "axios";
 import useSound from "use-sound";
 import SoundIn from "../../sound-effect/sound-in.mp3";
 import SoundOut from "../../sound-effect/sound-out.mp3";
+import SoundFail from "../../sound-effect/fail.mp3";
+import SoundSuccess from "../../sound-effect/success.mp3";
 import MicIcon from "@material-ui/icons/Mic";
 import "./style.css";
 import Text2speech from "../textToSpeech/Text2speech";
@@ -14,10 +16,14 @@ export default function Records7() {
   const [response, setResponse] = useState("");
   const [playSoundIn] = useSound(SoundIn);
   const [playSoundOut] = useSound(SoundOut);
+  const [playSoundFail] = useSound(SoundFail);
+  const [playSoundSuccess] = useSound(SoundSuccess);
 
   const [word, setWord] = useState("");
   const [audio, setAudio] = useState();
   const [stop, setStop] = useState(false);
+
+  const [answerStatus, setAnswerStatus] = useState(""); // success / fail /waitToAnswer
 
   const startRecording = () => {
     let rec = null;
@@ -53,14 +59,30 @@ export default function Records7() {
     let formData = new FormData();
     formData.append("audio_data", blob, filename);
     //axios request
-    const { data } = await axios.post(`/api/v1/answer/${word}`, formData);
-
+    const { data } = await axios.post(`/api/v1/answer/${word.text}/${word.id}`, formData);
+    console.log(data);
+    setAnswerStatus(data.status);
+    if (data.status === "fail") {
+      await playSoundFailFunction();
+    } else if (data.status === "success") {
+      await playSoundSuccessFunction();
+    }
     setStop(false);
     setResponse(data.response);
     setRecord(null);
     setAudio(data.audio);
   }
-
+  function timeout(ms) {
+    return new Promise((resolve) => setTimeout(resolve, ms));
+  }
+  const playSoundFailFunction = async () => {
+    await playSoundFail();
+    await timeout(2000);
+  };
+  const playSoundSuccessFunction = async () => {
+    playSoundSuccess();
+    await timeout(2000);
+  };
   return (
     <div>
       <button
@@ -80,6 +102,8 @@ export default function Records7() {
         setAudio={setAudio}
         stop={stop}
         setStop={setStop}
+        answerStatus={answerStatus}
+        setAnswerStatus={setAnswerStatus}
       />
     </div>
   );

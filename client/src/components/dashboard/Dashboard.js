@@ -8,7 +8,7 @@ export default function Dashboard() {
   const [languagesArr, setLanguagesArr] = useState([]);
   const [nativeLanguage, setNativeLanguage] = useState();
   const [learningLanguage, setLearningLanguage] = useState();
-  console.log(nativeLanguage);
+
   useEffect(() => {
     (async () => {
       try {

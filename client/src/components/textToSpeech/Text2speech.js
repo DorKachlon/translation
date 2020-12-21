@@ -12,11 +12,12 @@ export default function Text2speech({
   setAudio,
   stop,
   setStop,
+  answerStatus,
+  setAnswerStatus,
 }) {
   const [nameOfClass, setNameOfClass] = useState("play-again");
   const [counter, setCounter] = useState(0);
 
-  console.log(audio);
   useEffect(() => {
     (async () => {
       // const { data } = await axios.post("/api/v1/exercise", {
@@ -37,6 +38,14 @@ export default function Text2speech({
     })();
   }, [audio, counter]);
 
+  const getAnExercise = async () => {
+    const { data } = await axios.post("/api/v1/exercise");
+    setWord(data.word);
+    setAudio(data.audio);
+    setStop(false);
+    setCounter(0);
+  };
+
   const playAudio = () => {
     if (counter < audio.length) {
       const audioToPlay = new Audio(`data:audio/ogg;base64, ${audio[counter].base64}`);
@@ -45,9 +54,20 @@ export default function Text2speech({
         setCounter((prev) => prev + 1);
       };
     } else {
-      startRecording();
-      setStop(true);
-      setCounter(0);
+      console.log(answerStatus);
+      if (answerStatus === "success") {
+        setAnswerStatus("waitToAnswer");
+        setStop(true);
+        getAnExercise();
+      } else if (answerStatus === "tryAgain") {
+        setAnswerStatus("waitToAnswer");
+        setStop(true);
+        getAnExercise();
+      } else {
+        startRecording();
+        setStop(true);
+        setCounter(0);
+      }
     }
   };
 

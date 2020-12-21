@@ -25,7 +25,6 @@ export default function Selector({
   registrestion,
 }) {
   const classes = useStyles();
-  console.log(defaultV);
 
   const changeNative = async (language) => {
     if (registrestion) {
