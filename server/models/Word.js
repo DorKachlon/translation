@@ -20,8 +20,9 @@ module.exports = (sequelize, DataTypes) => {
   }
   Word.init(
     {
-      word: { type: DataTypes.STRING, allowNull: false, primaryKey: true },
-      languageId: { type: DataTypes.INTEGER, allowNull: false, primaryKey: true },
+      // id: { type: DataTypes.INTEGER, allowNull: false, primaryKey: true },
+      word: { type: DataTypes.STRING, allowNull: false },
+      languageId: { type: DataTypes.INTEGER, allowNull: false },
     },
     {
       sequelize,

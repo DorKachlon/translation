@@ -3,19 +3,22 @@
 module.exports = {
   up: async (queryInterface, Sequelize) => {
     await queryInterface.createTable("Progress", {
+      id: {
+        allowNull: false,
+        autoIncrement: true,
+        primaryKey: true,
+        type: Sequelize.INTEGER,
+      },
       user_id: {
         allowNull: false,
-        primaryKey: true,
-        type: Sequelize.STRING,
+        type: Sequelize.INTEGER,
       },
       language_id: {
         allowNull: false,
-        primaryKey: true,
         type: Sequelize.INTEGER,
       },
       word_id: {
         allowNull: false,
-        primaryKey: true,
         type: Sequelize.INTEGER,
       },
       score: {
