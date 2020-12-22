@@ -86,7 +86,6 @@ function findNextWordId(progressByUser, wordId, allWordsLanguage) {
       for (let obj of filterArr) {
         counter += obj.score;
       }
-      console.log(counter);
       if (counter !== 20) {
         return wordId - i;
       }

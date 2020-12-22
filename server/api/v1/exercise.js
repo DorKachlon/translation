@@ -3,7 +3,7 @@ const { User, Language } = require("../../models");
 const router = Router();
 const { text2speech } = require("../../google-api/text2speech");
 const { translateText } = require("../../google-api/translate");
-const { nextWordToLearn } = require("../../helperFunction");
+const { nextWordToLearn } = require("../../helperFunctions/nextWord");
 
 router.post("/", async (req, res) => {
   try {
@@ -34,7 +34,6 @@ router.post("/", async (req, res) => {
       //build an exercise
     } else {
       const nextWord = await nextWordToLearn(userInfo.id, userInfo.currentLanguage.id);
-      console.log("nextWord", nextWord);
       //1
       const theWord = await translateText("the word:", userInfo.nativeLanguage.code);
       obj.push({
@@ -90,8 +89,6 @@ router.post("/", async (req, res) => {
       });
       //6
       obj.push(wordObj);
-      console.log(nextWord);
-      console.log({ text: nextWordTranslator, id: nextWord.wordId });
       res.json({ word: { text: nextWordTranslator, id: nextWord.wordId }, audio: obj });
     }
   } catch (error) {

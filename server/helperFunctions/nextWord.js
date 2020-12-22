@@ -1,4 +1,4 @@
-const { Word, Progress } = require("./models");
+const { Word, Progress } = require("../models");
 
 async function nextWordToLearn(userId, languageId) {
   progressByUser = await Progress.findAll({
