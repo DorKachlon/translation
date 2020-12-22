@@ -101,7 +101,6 @@ async function craeteFeedback(Accepted, target, nativeLanguage, currentLanguage,
 }
 
 async function crateNewProgress(userId, languageId, wordId, score) {
-  console.log({ userId, languageId, wordId, score });
   try {
     const obj = {
       userId,
