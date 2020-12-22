@@ -14,88 +14,60 @@ router.post("/", async (req, res) => {
         { model: Language, as: "currentLanguage" },
       ],
     });
-    let obj = [];
-    //build a dialog
-    if (req.body.textInput) {
-      const textAfterTranslation = await translateText(
-        req.body.textInput,
-        userInfo.nativeLanguage.code
-      );
-      obj.push({
-        text: textAfterTranslation,
-        base64: await text2speech({
-          inputText: textAfterTranslation,
-          languageCode: userInfo.nativeLanguage.code,
-          voiceName: userInfo.nativeLanguage.voice,
-        }),
-      });
-      res.json({ audio: obj });
+    const l1 = userInfo.nativeLanguage;
+    const l2 = userInfo.currentLanguage;
+    let arrOfAudio = [];
 
-      //build an exercise
+    if (req.body.textInput) {
+      //! build a dialogs
+      arrOfAudio = await createtSpeech(arrOfAudio, req.body.textInput, userInfo.nativeLanguage);
+      res.json({ audio: arrOfAudio });
     } else {
+      //! build an exercise
       const nextWord = await nextWordToLearn(userInfo.id, userInfo.currentLanguage.id);
-      //1
-      const theWord = await translateText("the word:", userInfo.nativeLanguage.code);
-      obj.push({
-        text: theWord,
-        base64: await text2speech({
-          inputText: theWord,
-          languageCode: userInfo.nativeLanguage.code,
-          voiceName: userInfo.nativeLanguage.voice,
-        }),
-      });
-      //2
-      const wordNative = await translateText(nextWord.word, userInfo.nativeLanguage.code);
-      obj.push({
-        text: wordNative,
-        base64: await text2speech({
-          inputText: wordNative,
-          languageCode: userInfo.nativeLanguage.code,
-          voiceName: userInfo.nativeLanguage.voice,
-        }),
-        itsWord: true,
-      });
-      //3
-      const its = await translateText("it is:", userInfo.nativeLanguage.code);
-      obj.push({
-        text: its,
-        base64: await text2speech({
-          inputText: its,
-          languageCode: userInfo.nativeLanguage.code,
-          voiceName: userInfo.nativeLanguage.voice,
-        }),
-      });
-      //4
+
+      const feedback = `you said : <apple> and you need to said <water>, try again`;
+      const feedback2 = feedback
+        .split(/[<>]/g)
+        .map((text, i) =>
+          text[0] === "!" ? { text: text.slice(1), language: l2 } : { text: text, language: l1 }
+        );
+
+        
+      // textToSpeak = [{ text: "the word:", language: userInfo.nativeLanguage }, {text:}];
+      arrOfAudio = await createtSpeech(arrOfAudio, "the word:", userInfo.nativeLanguage);
+      arrOfAudio = await createtSpeech(arrOfAudio, nextWord.word, userInfo.nativeLanguage, true);
+      arrOfAudio = await createtSpeech(arrOfAudio, "it is:", userInfo.nativeLanguage);
+      arrOfAudio = await createtSpeech(arrOfAudio, nextWord.word, userInfo.currentLanguage, true);
+      arrOfAudio = await createtSpeech(arrOfAudio, `try to say:`, userInfo.nativeLanguage);
+      arrOfAudio = await createtSpeech(arrOfAudio, nextWord.word, userInfo.currentLanguage, true);
       const nextWordTranslator = await translateText(nextWord.word, userInfo.currentLanguage.code);
-      const wordObj = {
-        text: nextWordTranslator,
-        base64: await text2speech({
-          inputText: nextWordTranslator,
-          languageCode: userInfo.currentLanguage.code,
-          voiceName: userInfo.currentLanguage.voice,
-        }),
-        itsWord: true,
-      };
-      obj.push(wordObj);
-      //5
-      const tryToSay = await translateText(`try to say:`, userInfo.nativeLanguage.code);
-      obj.push({
-        text: tryToSay,
-        base64: await text2speech({
-          inputText: tryToSay,
-          languageCode: userInfo.nativeLanguage.code,
-          voiceName: userInfo.nativeLanguage.voice,
-        }),
-      });
-      //6
-      obj.push(wordObj);
-      res.json({ word: { text: nextWordTranslator, id: nextWord.wordId }, audio: obj });
+
+      res.json({ word: { text: nextWordTranslator, id: nextWord.wordId }, audio: arrOfAudio });
     }
   } catch (error) {
     console.error(error);
-    // res.status(400).json({ message: "Cannot process request" });
-    res.status(400).json({ message: error });
+    res.status(400).json({ message: "Cannot process request" });
   }
 });
 
+async function createtSpeech(arr, text, language, itsWord) {
+  try {
+    //TODO - to create word cache and check before translation
+    const textafterTransition = await translateText(text, language.code);
+    arr.push({
+      text: textafterTransition,
+      base64: await text2speech({
+        inputText: textafterTransition,
+        languageCode: language.code,
+        voiceName: language.voice,
+      }),
+      itsWord,
+    });
+    return arr;
+  } catch (error) {
+    console.error(error);
+    res.status(400).json({ message: "Cannot process request" });
+  }
+}
 module.exports = router;

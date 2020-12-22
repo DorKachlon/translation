@@ -2,7 +2,31 @@ const { Progress } = require("../models");
 const { translateText } = require("../google-api/translate");
 const { text2speech } = require("../google-api/text2speech");
 
-//! craeteFeedback FUNCTION
+function checkAnswer(saidWord, expectedWord) {
+  if (saidWord.text === "") {
+    // return { success: false, feedback: "I don't understand, try again" };
+    return { success: false, retry: true };
+  }
+  if (saidWord.text.toUpperCase() === expectedWord.text.toUpperCase()) {
+    // return { success: true, feedback: "good job! let's learn another word!" };
+    return { success: true, retry: false };
+  } else {
+    return {
+      success: false,
+      // feedback: `you said : <${saidWord.text}> and you need to said <${expectedWord.text}>, try again`,
+      retry: false,
+    };
+  }
+}
+
+function feedbackCreator(saidWord, expectedWord) {
+  const status = checkAnswer(saidWord, expectedWord);
+  if (status.retry) {
+    //post on database to Progress
+  }
+}
+
+//! createFeedback FUNCTION
 async function craeteFeedback(Accepted, target, nativeLanguage, currentLanguage, uid, wordId) {
   try {
     let obj = [];

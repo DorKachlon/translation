@@ -24,7 +24,6 @@ export default function Text2speech({
       //   textInput: `hey ${"dor"}, how are you?`,
       // });
       const { data } = await axios.post("/api/v1/exercise");
-      console.log(data);
       setWord(data.word);
       setAudio(data.audio);
     })();
@@ -49,6 +48,7 @@ export default function Text2speech({
   const playAudio = () => {
     if (counter < audio.length) {
       const audioToPlay = new Audio(`data:audio/ogg;base64, ${audio[counter].base64}`);
+      console.log(audioToPlay);
       audioToPlay.play();
       audioToPlay.onended = () => {
         setCounter((prev) => prev + 1);

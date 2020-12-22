@@ -16,6 +16,7 @@ router.post("/:word/:id", upload.any(), async (req, res) => {
         { model: Language, as: "currentLanguage" },
       ],
     });
+    const userProgress = { userInfo };
     const textFromSpeech = await speech2text(req.files[0].buffer, userInfo.currentLanguage.code);
     const feedback = await craeteFeedback(
       textFromSpeech,
