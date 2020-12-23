@@ -1,4 +1,4 @@
-const { Progress } = require("../helperFunctions/userProgress");
+const { userProgress } = require("../helperFunctions/userProgress");
 
 let progressContainer = {};
 module.exports = function (req, res, next) {
@@ -11,7 +11,7 @@ module.exports = function (req, res, next) {
 };
 
 function createNewProgress(userInfo) {
-  let newProgress = new Progress(userInfo);
+  let newProgress = new userProgress(userInfo);
   progressContainer[userInfo.id] = newProgress;
 }
 

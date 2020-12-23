@@ -12,6 +12,7 @@ const verifyToken = require("../../middleware/verifyToken");
 // const { sendMail } = require("../sendMail");
 require("dotenv").config();
 const { createNewProgress, removeProgress } = require("../../middleware/progress");
+
 // ! REGISTER
 router.post("/register", async (req, res) => {
   try {

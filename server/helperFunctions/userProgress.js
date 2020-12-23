@@ -1,6 +1,10 @@
-class Progress {
+const { Progress } = require("../models/Progress");
+
+class userProgress {
   constructor(userInfo) {
     this.userInfo = userInfo;
+    this.currentWord = "";
+    this.currentWordId = 0;
     this.currentWordFails = 0;
   }
 
@@ -21,4 +25,16 @@ class Progress {
     }
   }
 }
-module.exports.Progress = Progress;
+module.exports.userProgress = userProgress;
+
+// this.FiveWord = [];
+// const allProgressByUser = await Progress.findAll({
+//   where: { userId: userInfo },
+//   order: [["wordId", "ASC"]],
+// });
+// allProgressByUser.forEach((oneProgress) => {
+//   if (oneProgress.score < 20) FiveWord.push(oneProgress.wordId);
+// });
+// while (FiveWord.length < 5) {
+
+// }

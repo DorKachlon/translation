@@ -28,8 +28,15 @@ router.post("/", async (req, res) => {
       const feedback = `the word: <${nextWord.word}> it is: <!${nextWord.word}>, try to say: <!${nextWord.word}>`;
       arrOfAudio = await createSpeech(feedback, l1, l2);
       const nextWordTranslator = await translateText(nextWord.word, userInfo.currentLanguage.code);
+      console.log("userProgress", req.userProgress);
+      console.log("user", req.user);
 
-      res.json({ word: { text: nextWordTranslator, id: nextWord.wordId }, audio: arrOfAudio });
+      //userProgress
+      req.userProgress.currentWord = nextWordTranslator;
+      req.userProgress.currentWordId = nextWord.wordId;
+      //userProgress
+
+      res.json({ audio: arrOfAudio });
     }
   } catch (error) {
     console.error(error);

@@ -5,8 +5,8 @@ const progress = require("../../middleware/progress");
 
 // router.use("/translation", require("./translation"));
 
-router.use("/exercise", verifyToken, require("./exercise"));
-router.use("/answer", verifyToken, require("./answer"));
+router.use("/exercise", verifyToken, progress, require("./exercise"));
+router.use("/answer", verifyToken, progress, require("./answer"));
 // router.use("/feedback", require("./feedback"));
 
 // router.use("/dialog", require("./dialog"));

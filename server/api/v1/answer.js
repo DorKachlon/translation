@@ -7,7 +7,7 @@ const router = Router();
 const upload = multer();
 
 //! ROUTER
-router.post("/:word/:id", upload.any(), async (req, res) => {
+router.post("/", upload.any(), async (req, res) => {
   try {
     const userInfo = await User.findOne({
       where: { id: req.user.id },
@@ -20,11 +20,11 @@ router.post("/:word/:id", upload.any(), async (req, res) => {
     const textFromSpeech = await speech2text(req.files[0].buffer, userInfo.currentLanguage.code);
     const feedback = await craeteFeedback(
       textFromSpeech,
-      req.params.word,
+      req.userProgress.currentWord,
       userInfo.nativeLanguage,
       userInfo.currentLanguage,
       req.user.id,
-      req.params.id
+      req.userProgress.currentWordId
     );
     res.json({ response: textFromSpeech, audio: feedback.audio, status: feedback.status });
   } catch (error) {
