@@ -119,7 +119,7 @@ export default function Text2speech({
     <>
       <PlayAgainButton playAudio={playAudio} />
       {serverAudio && (
-        <div>
+        <div className="server-text">
           {serverAudio.map((obj, i) => (
             <span className={getClassName(obj.itsWord, i)}>{obj.text} </span>
           ))}
