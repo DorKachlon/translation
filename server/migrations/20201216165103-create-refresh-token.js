@@ -15,7 +15,7 @@ module.exports = {
       },
       token: {
         allowNull: false,
-        type: Sequelize.STRING,
+        type: Sequelize.STRING(2048),
       },
       created_at: {
         allowNull: false,
