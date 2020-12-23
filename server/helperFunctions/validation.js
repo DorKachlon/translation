@@ -3,9 +3,12 @@ const Joi = require("joi");
 //Register validation
 const registerValidation = (data) => {
   const schema = Joi.object({
-    name: Joi.string().required(),
+    firstName: Joi.string().required(),
+    lastName: Joi.string().required(),
     email: Joi.string().min(6).required().email(),
     password: Joi.string().min(6).required(),
+    nativeLanguageId: Joi.number().required(),
+    currentLanguageId: Joi.number().required(),
   });
   return schema.validate(data);
 };
