@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Selector from "./Selector";
 import { sortArray, filterArray } from "./helpersFunctions";
-import axios from "axios";
+import network from "../../services/network";
 
 export default function Dashboard({ nativeLanguage, setNativeLanguage, setLearningLanguage }) {
   const [beDisabled, SetBeDisabled] = useState(true);
@@ -10,7 +10,7 @@ export default function Dashboard({ nativeLanguage, setNativeLanguage, setLearni
   useEffect(() => {
     (async () => {
       try {
-        const { data: languages } = await axios.get("/api/v1/languages");
+        const { data: languages } = await network.get("/api/v1/languages");
         setLanguagesArr(sortArray(languages));
       } catch (e) {
         console.error(e);

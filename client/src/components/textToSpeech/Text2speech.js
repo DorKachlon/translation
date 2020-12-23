@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
 // import ReactAudioPlayer from "react-audio-player";
 import LoopIcon from "@material-ui/icons/Loop";
 import "./style.css";
@@ -8,7 +7,6 @@ import network from "../../services/network";
 export default function Text2speech({
   startRecording,
   STOPRecording,
-  setWord,
   audio,
   setAudio,
   stop,
@@ -21,11 +19,10 @@ export default function Text2speech({
 
   useEffect(() => {
     (async () => {
-      // const { data } = await axios.post("/api/v1/exercise", {
+      // const { data } = await network.post("/api/v1/exercise", {
       //   textInput: `hey ${"dor"}, how are you?`,
       // });
       const { data } = await network.post("/api/v1/exercise");
-      setWord(data.word);
       setAudio(data.audio);
     })();
   }, []);
@@ -40,7 +37,6 @@ export default function Text2speech({
 
   const getAnExercise = async () => {
     const { data } = await network.post("/api/v1/exercise");
-    setWord(data.word);
     setAudio(data.audio);
     setStop(false);
     setCounter(0);

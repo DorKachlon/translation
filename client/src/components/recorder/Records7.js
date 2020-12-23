@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import Recorder from "./Recorder";
-import axios from "axios";
 import useSound from "use-sound";
 import SoundIn from "../../sound-effect/sound-in.mp3";
 import SoundOut from "../../sound-effect/sound-out.mp3";
@@ -9,6 +8,7 @@ import SoundSuccess from "../../sound-effect/success.mp3";
 import MicIcon from "@material-ui/icons/Mic";
 import "./style.css";
 import Text2speech from "../textToSpeech/Text2speech";
+import network from "../../services/network";
 
 export default function Records7() {
   const [record, setRecord] = useState(null);
@@ -19,7 +19,6 @@ export default function Records7() {
   const [playSoundFail] = useSound(SoundFail);
   const [playSoundSuccess] = useSound(SoundSuccess);
 
-  const [word, setWord] = useState("");
   const [audio, setAudio] = useState();
   const [stop, setStop] = useState(false);
 
@@ -59,7 +58,7 @@ export default function Records7() {
     let formData = new FormData();
     formData.append("audio_data", blob, filename);
     //axios request
-    const { data } = await axios.post(`/api/v1/answer/${word.text}/${word.id}`, formData);
+    const { data } = await network.post(`/api/v1/answer`, formData);
     console.log(data);
     setAnswerStatus(data.status);
     if (data.status === "fail" || data.status === "tryAgain") {
@@ -97,7 +96,6 @@ export default function Records7() {
       <Text2speech
         startRecording={startRecording}
         STOPRecording={STOPRecording}
-        setWord={setWord}
         audio={audio}
         setAudio={setAudio}
         stop={stop}
