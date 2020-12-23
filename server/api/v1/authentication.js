@@ -11,7 +11,7 @@ const {
 const verifyToken = require("../../middleware/verifyToken");
 // const { sendMail } = require("../sendMail");
 require("dotenv").config();
-
+const { createNewProgress, removeProgress } = require("../../middleware/progress");
 // ! REGISTER
 router.post("/register", async (req, res) => {
   try {
@@ -101,6 +101,7 @@ router.post("/login", async (req, res) => {
         }
       );
     }
+    createNewProgress(infoForCookie);
     res.cookie("fname", user.firstName);
     res.cookie("lname", user.lastName);
     res.cookie("email", user.email);
@@ -121,6 +122,20 @@ router.post("/logout", async (req, res) => {
     if (error) {
       return res.status(400).send(error.details[0].message);
     }
+
+    //for remove Progress I need to know the id user
+    const refreshTokenInfo = await RefreshToken.findOne({
+      where: {
+        token: req.body.token,
+      },
+    });
+    //for remove Progress I need to know the id user
+    const userInfo = await User.findOne({
+      where: {
+        email: refreshTokenInfo.email,
+      },
+    });
+    removeProgress(userInfo);
 
     const result = await RefreshToken.destroy({
       where: {

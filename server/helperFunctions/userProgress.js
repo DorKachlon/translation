@@ -1,5 +1,3 @@
-const db = require("./models");
-
 class Progress {
   constructor(userInfo) {
     this.userInfo = userInfo;
@@ -23,3 +21,4 @@ class Progress {
     }
   }
 }
+module.exports.Progress = Progress;
