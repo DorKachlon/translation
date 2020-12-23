@@ -14,20 +14,22 @@ async function createSpeech(text, l1, l2) {
   try {
     let arrOfAudio = [];
     for (const textAndLanguage of arrTextsAndLanguage) {
-      //TODO - to create word cache and check before translation
-      const textAfterTransition = await translateText(
-        textAndLanguage.text,
-        textAndLanguage.language.code
-      );
-      arrOfAudio.push({
-        text: textAfterTransition,
-        base64: await text2speech({
-          inputText: textAfterTransition,
-          languageCode: textAndLanguage.language.code,
-          voiceName: textAndLanguage.language.voice,
-        }),
-        itsWord: textAndLanguage.itsWord,
-      });
+      if (textAndLanguage.text !== "") {
+        //TODO - to create word cache and check before translation
+        const textAfterTransition = await translateText(
+          textAndLanguage.text,
+          textAndLanguage.language.code
+        );
+        arrOfAudio.push({
+          text: textAfterTransition,
+          base64: await text2speech({
+            inputText: textAfterTransition,
+            languageCode: textAndLanguage.language.code,
+            voiceName: textAndLanguage.language.voice,
+          }),
+          itsWord: textAndLanguage.itsWord,
+        });
+      }
     }
     return arrOfAudio;
   } catch (error) {

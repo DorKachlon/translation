@@ -78,7 +78,6 @@ router.post("/login", async (req, res) => {
     const refreshToken = jwt.sign(infoForCookie, process.env.REFRESH_TOKEN_SECRET, {
       expiresIn: expired,
     });
-    console.log(refreshToken);
     const accessToken = jwt.sign(infoForCookie, process.env.ACCESS_TOKEN_SECRET, {
       expiresIn: "900s",
     });

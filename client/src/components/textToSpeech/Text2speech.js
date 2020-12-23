@@ -1,86 +1,99 @@
 import React, { useEffect, useState } from "react";
 // import ReactAudioPlayer from "react-audio-player";
-import LoopIcon from "@material-ui/icons/Loop";
 import "./style.css";
 import network from "../../services/network";
-
+import PlayAgainButton from "./PlayAgainButton";
 export default function Text2speech({
   startRecording,
-  STOPRecording,
-  audio,
-  setAudio,
-  stop,
-  setStop,
+  clientAudio,
+  // setAudio,
+  // stop,
+  // setStop,
   answerStatus,
   setAnswerStatus,
+  setSaidWord,
 }) {
-  const [nameOfClass, setNameOfClass] = useState("play-again");
   const [counter, setCounter] = useState(0);
+  const [serverAudio, setServerAudio] = useState();
+  const [stopPlay, setStopPlay] = useState(false);
 
   useEffect(() => {
     (async () => {
-      // const { data } = await network.post("/api/v1/exercise", {
-      //   textInput: `hey ${"dor"}, how are you?`,
-      // });
       const { data } = await network.post("/api/v1/exercise");
-      setAudio(data.audio);
+      setServerAudio(data.audio);
     })();
   }, []);
 
+  //when we have clientAudio its means that custom recorded his answer
+  //and we need to send req to /answer and get feedback
   useEffect(() => {
     (async () => {
-      if (audio && !stop) {
-        playAudio();
+      if (clientAudio) {
+        const { data } = await network.post("/api/v1/answer", clientAudio);
+        setSaidWord(data.response);
+        setServerAudio(data.audio);
       }
     })();
-  }, [audio, counter]);
+  }, [clientAudio]);
 
   const getAnExercise = async () => {
     const { data } = await network.post("/api/v1/exercise");
-    setAudio(data.audio);
-    setStop(false);
+    setServerAudio(data.audio);
+    setStopPlay(false);
     setCounter(0);
   };
 
+  useEffect(() => {
+    (async () => {
+      if (serverAudio && !stopPlay) {
+        if (counter <= serverAudio.length) {
+          playAudio();
+        }
+      }
+    })();
+  }, [counter]);
+
+  useEffect(() => {
+    (async () => {
+      if (serverAudio) {
+        setStopPlay(false);
+        playAudio();
+      }
+    })();
+  }, [serverAudio]);
+
   const playAudio = () => {
-    if (counter < audio.length) {
-      const audioToPlay = new Audio(`data:audio/ogg;base64, ${audio[counter].base64}`);
-      console.log(audioToPlay);
+    if (counter < serverAudio.length) {
+      debugger;
+      const audioToPlay = new Audio(`data:audio/ogg;base64, ${serverAudio[counter].base64}`);
       audioToPlay.play();
       audioToPlay.onended = () => {
         setCounter((prev) => prev + 1);
       };
     } else {
-      console.log(answerStatus);
-      if (answerStatus === "success") {
-        setAnswerStatus("waitToAnswer");
-        setStop(true);
-        getAnExercise();
-      } else if (answerStatus === "tryAgain") {
-        setAnswerStatus("waitToAnswer");
-        setStop(true);
-        getAnExercise();
-      } else {
-        startRecording();
-        setStop(true);
-        setCounter(0);
-      }
+      startRecording();
+      setStopPlay(true);
+      setCounter(0);
+      // console.log(answerStatus);
+      // if (answerStatus === "success") {
+      //   setAnswerStatus("waitToAnswer");
+      //   setStopPlay(true);
+      //   getAnExercise();
+      // } else if (answerStatus === "tryAgain") {
+      //   setAnswerStatus("waitToAnswer");
+      //   setStopPlay(true);
+      //   getAnExercise();
+      // } else {
+      //   startRecording();
+      //   setStopPlay(true);
+      //   setCounter(0);
+      // }
     }
   };
 
-  const playAgain = () => {
-    setStop(false);
-    playAudio();
-  };
-  const MouseDown = () => {
-    setNameOfClass("play-again down");
-  };
-  const MouseUp = () => {
-    setNameOfClass("play-again");
-  };
   const getClassName = (itsWord, index) => {
     if (itsWord) {
-      if (!stop) {
+      if (!stopPlay) {
         if (index > counter) {
           return "word-bold hidden";
         } else {
@@ -91,7 +104,7 @@ export default function Text2speech({
       }
     } else {
       if (index > counter) {
-        if (!stop) {
+        if (!stopPlay) {
           return "regular hidden";
         } else {
           return "regular";
@@ -104,17 +117,10 @@ export default function Text2speech({
 
   return (
     <>
-      <button
-        className={nameOfClass}
-        onClick={() => playAgain()}
-        onMouseDown={() => MouseDown()}
-        onMouseUp={() => MouseUp()}
-      >
-        <LoopIcon style={{ fontSize: "40px", color: "white" }} />
-      </button>
-      {audio && (
+      <PlayAgainButton playAudio={playAudio} />
+      {serverAudio && (
         <div>
-          {audio.map((obj, i) => (
+          {serverAudio.map((obj, i) => (
             <span className={getClassName(obj.itsWord, i)}>{obj.text} </span>
           ))}
         </div>

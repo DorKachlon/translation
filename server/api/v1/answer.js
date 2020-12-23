@@ -2,7 +2,7 @@ const { Router } = require("express");
 const multer = require("multer");
 const { speech2text } = require("../../google-api/speech2text");
 const { User, Language } = require("../../models");
-const { craeteFeedback } = require("../../helperFunctions/createFeedback");
+const { createFeedback } = require("../../helperFunctions/createFeedback");
 const router = Router();
 const upload = multer();
 
@@ -16,9 +16,8 @@ router.post("/", upload.any(), async (req, res) => {
         { model: Language, as: "currentLanguage" },
       ],
     });
-    // const userProgress = { userInfo };
     const textFromSpeech = await speech2text(req.files[0].buffer, userInfo.currentLanguage.code);
-    const feedback = await craeteFeedback(
+    const feedback = await createFeedback(
       textFromSpeech,
       req.userProgress.currentWord,
       userInfo.nativeLanguage,

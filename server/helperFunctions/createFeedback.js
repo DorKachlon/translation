@@ -1,7 +1,5 @@
-const { Progress } = require("../models");
-const { translateText } = require("../google-api/translate");
-const { text2speech } = require("../google-api/text2speech");
-
+const { Progress, Word } = require("../models");
+const { createSpeech } = require("./createSpeech");
 
 function feedbackCreator(saidWord, expectedWord) {
   const status = checkAnswer(saidWord, expectedWord);
@@ -11,97 +9,50 @@ function feedbackCreator(saidWord, expectedWord) {
 }
 
 //! createFeedback FUNCTION
-async function craeteFeedback(Accepted, target, nativeLanguage, currentLanguage, uid, wordId) {
+async function createFeedback(
+  saidWord,
+  expectedWord,
+  nativeLanguage,
+  currentLanguage,
+  uid,
+  wordId
+) {
   try {
     let obj = [];
-    //! EMPETY
-    if (Accepted === "") {
-      const part = await translateText("I don't understand, try again", nativeLanguage.code);
-      obj.push({
-        text: part,
-        base64: await text2speech({
-          inputText: part,
-          languageCode: nativeLanguage.code,
-          voiceName: nativeLanguage.voice,
-        }),
-      });
+    // ! EMPTY === FAIL
+    if (saidWord === "") {
+      const nativeWord = await getWordById(wordId);
+      const feedback = `I don't understand, try again \n<> the word: <${nativeWord.word}> it is: <!${expectedWord}>, try to say: <!${expectedWord}>`;
+      obj = await createSpeech(feedback, nativeLanguage, currentLanguage);
+      //TODO we want to delete the new progress here
       await crateNewProgress(uid, currentLanguage.id, wordId, 0);
       return { audio: obj, status: "tryAgain" };
     }
 
     //! FAIL
-    if (Accepted.toUpperCase() !== target.toUpperCase()) {
-      //1
-      const part1 = await translateText("you said: ", nativeLanguage.code);
-      obj.push({
-        text: part1,
-        base64: await text2speech({
-          inputText: part1,
-          languageCode: nativeLanguage.code,
-          voiceName: nativeLanguage.voice,
-        }),
-      });
-      //2
-      // const part2 = await translateText(Accepted, currentLanguage.code);
-      const part2 = Accepted;
-
-      obj.push({
-        text: part2,
-        base64: await text2speech({
-          inputText: part2,
-          languageCode: currentLanguage.code,
-          voiceName: currentLanguage.voice,
-        }),
-        itsWord: true,
-      });
-      //3
-      const part3 = await translateText(",and you need to say :", nativeLanguage.code);
-      obj.push({
-        text: part3,
-        base64: await text2speech({
-          inputText: part3,
-          languageCode: nativeLanguage.code,
-          voiceName: nativeLanguage.voice,
-        }),
-      });
-      //4
-      // const part4 = await translateText(target, currentLanguage.code);
-      const part4 = target;
-      obj.push({
-        text: part4,
-        base64: await text2speech({
-          inputText: part4,
-          languageCode: currentLanguage.code,
-          voiceName: currentLanguage.voice,
-        }),
-        itsWord: true,
-      });
-      //5
-      const part5 = await translateText("try again", nativeLanguage.code);
-      obj.push({
-        text: part5,
-        base64: await text2speech({
-          inputText: part5,
-          languageCode: nativeLanguage.code,
-          voiceName: nativeLanguage.voice,
-        }),
-      });
+    if (saidWord.toUpperCase() !== expectedWord.toUpperCase()) {
+      const feedback = `you said: <!${saidWord}>, and you need to say: <!${expectedWord}>, try again>`;
+      obj = await createSpeech(feedback, nativeLanguage, currentLanguage);
       await crateNewProgress(uid, currentLanguage.id, wordId, 0);
       return { audio: obj, status: "fail" };
+
       //! SUCCESS
     } else {
-      const part = await translateText("good job! let's learn another word!", nativeLanguage.code);
-      obj.push({
-        text: part,
-        base64: await text2speech({
-          inputText: part,
-          languageCode: nativeLanguage.code,
-          voiceName: nativeLanguage.voice,
-        }),
-      });
+      const feedback = "good job! let's learn another word!";
+      obj = await createSpeech(feedback, nativeLanguage, currentLanguage);
       await crateNewProgress(uid, currentLanguage.id, wordId, 10);
       return { audio: obj, status: "success" };
     }
+  } catch (error) {
+    console.error(error);
+    // res.status(400).json({ message: "Cannot process request" });
+  }
+}
+
+async function getWordById(id) {
+  try {
+    const word = await Word.findOne({ where: { id } });
+    return word;
   } catch (error) {
     console.error(error);
     // res.status(400).json({ message: "Cannot process request" });
@@ -123,4 +74,4 @@ async function crateNewProgress(userId, languageId, wordId, score) {
   }
 }
 
-module.exports.craeteFeedback = craeteFeedback;
+module.exports.createFeedback = createFeedback;
