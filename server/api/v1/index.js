@@ -11,5 +11,6 @@ router.use("/dialog", require("./dialog"));
 
 router.use("/languages", require("./languages"));
 router.use("/users", require("./users"));
+router.use("/auth", require("./authentication"));
 
 module.exports = router;
