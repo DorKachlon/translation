@@ -10,20 +10,20 @@ const upload = multer();
 router.post("/:word/:id", upload.any(), async (req, res) => {
   try {
     const userInfo = await User.findOne({
-      where: { id: 1 }, //TODO change to uid
+      where: { id: req.user.id },
       include: [
         { model: Language, as: "nativeLanguage" },
         { model: Language, as: "currentLanguage" },
       ],
     });
-    const userProgress = { userInfo };
+    // const userProgress = { userInfo };
     const textFromSpeech = await speech2text(req.files[0].buffer, userInfo.currentLanguage.code);
     const feedback = await craeteFeedback(
       textFromSpeech,
       req.params.word,
       userInfo.nativeLanguage,
       userInfo.currentLanguage,
-      1, //TODO change to uid
+      req.user.id,
       req.params.id
     );
     res.json({ response: textFromSpeech, audio: feedback.audio, status: feedback.status });

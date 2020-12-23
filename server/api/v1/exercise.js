@@ -8,7 +8,7 @@ const { createSpeech } = require("../../helperFunctions/createSpeech");
 router.post("/", async (req, res) => {
   try {
     const userInfo = await User.findOne({
-      where: { id: 1 },
+      where: { id: req.user.id },
       include: [
         { model: Language, as: "nativeLanguage" },
         { model: Language, as: "currentLanguage" },

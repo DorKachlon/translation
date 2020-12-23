@@ -8,7 +8,7 @@ router.get("/", async (req, res) => {});
 router.get("/languages", async (req, res) => {
   try {
     const userInfo = await User.findOne({
-      where: { id: 1 },
+      where: { id: req.user.id },
       include: [
         { model: Language, as: "nativeLanguage" },
         { model: Language, as: "currentLanguage" },
@@ -26,9 +26,9 @@ router.post("/", async (req, res) => {});
 //PUT REQUEST
 router.put("/", async (req, res) => {
   try {
-    const user = await User.update(req.body, {
+    await User.update(req.body, {
       where: {
-        id: 1,
+        id: req.user.id,
       },
     });
     res.json({ message: "User Info Updated" });
