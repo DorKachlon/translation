@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Selector from "./Selector";
 import { sortArray, filterArray } from "./helpersFunctions";
-import axios from "axios";
+import network from "../../services/network";
 
 export default function Dashboard2() {
   const [languagesArr, setLanguagesArr] = useState([]);
@@ -11,9 +11,9 @@ export default function Dashboard2() {
   useEffect(() => {
     (async () => {
       try {
-        const { data: languages } = await axios.get("/api/v1/languages");
+        const { data: languages } = await network.get("/api/v1/languages");
         setLanguagesArr(sortArray(languages));
-        const { data: userInfo } = await axios.get("/api/v1/users/languages");
+        const { data: userInfo } = await network.get("/api/v1/users/languages");
         setNativeLanguage(userInfo.nativeLanguage);
         setLearningLanguage(userInfo.currentLanguage);
       } catch (e) {

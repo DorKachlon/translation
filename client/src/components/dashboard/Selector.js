@@ -3,7 +3,7 @@ import TextField from "@material-ui/core/TextField";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import Flag from "react-world-flags";
 import { makeStyles } from "@material-ui/core/styles";
-import axios from "axios";
+import network from "../../services/network";
 
 const useStyles = makeStyles({
   option: {
@@ -32,9 +32,9 @@ export default function Selector({
     } else {
       try {
         if (mode === "native") {
-          await axios.put("/api/v1/users", { nativeLanguageId: language.id });
+          await network.put("/api/v1/users", { nativeLanguageId: language.id });
         } else if (mode === "learning") {
-          await axios.put("/api/v1/users", { currentLanguageId: language.id });
+          await network.put("/api/v1/users", { currentLanguageId: language.id });
         }
       } catch (error) {}
     }

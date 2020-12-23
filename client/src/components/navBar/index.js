@@ -1,5 +1,5 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import Logout from "../Logout";
 
 export default function NavBar() {
   return (
@@ -10,6 +10,13 @@ export default function NavBar() {
       <button>
         <a href="/setting">setting</a>
       </button>
+      <button>
+        <a href="/login">login</a>
+      </button>
+      <button>
+        <a href="/sign-up">sign up</a>
+      </button>
+      <Logout />
     </div>
   );
 }
