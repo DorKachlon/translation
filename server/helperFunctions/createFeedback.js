@@ -19,6 +19,7 @@ async function createFeedback(
 ) {
   try {
     let obj = [];
+    let status;
     // ! EMPTY === FAIL
     if (saidWord === "") {
       const nativeWord = await getWordById(wordId);
@@ -26,7 +27,8 @@ async function createFeedback(
       obj = await createSpeech(feedback, nativeLanguage, currentLanguage);
       //TODO we want to delete the new progress here
       await crateNewProgress(uid, currentLanguage.id, wordId, 0);
-      return { audio: obj, status: "tryAgain" };
+      status;
+      return { audio: obj, success: false };
     }
 
     //! FAIL
@@ -34,14 +36,14 @@ async function createFeedback(
       const feedback = `you said: <!${saidWord}>, and you need to say: <!${expectedWord}>, try again>`;
       obj = await createSpeech(feedback, nativeLanguage, currentLanguage);
       await crateNewProgress(uid, currentLanguage.id, wordId, 0);
-      return { audio: obj, status: "fail" };
+      return { audio: obj, success: false };
 
       //! SUCCESS
     } else {
       const feedback = "good job! let's learn another word!";
       obj = await createSpeech(feedback, nativeLanguage, currentLanguage);
       await crateNewProgress(uid, currentLanguage.id, wordId, 10);
-      return { audio: obj, status: "success" };
+      return { audio: obj, success: true };
     }
   } catch (error) {
     console.error(error);

@@ -1,7 +1,8 @@
+/* eslint-disable consistent-return */
 import React, { useEffect, useRef, useState } from "react";
 import AudioVisualizer from "./AudioVisualizer";
 
-const AudioAnalyser = ({ mediaStream }) => {
+const AudioAnalyser = ({ mediaStream, height, width }) => {
   const [audioData, setAudioData] = useState(new Uint8Array(0));
 
   let analyser = null;
@@ -12,10 +13,10 @@ const AudioAnalyser = ({ mediaStream }) => {
     analyser.getByteTimeDomainData(temp);
     setAudioData(temp);
     rafId.current = requestAnimationFrame(tick);
-    console.log(temp);
   };
 
   useEffect(() => {
+    if (!mediaStream) return;
     const audioContext = new window.AudioContext();
     analyser = audioContext.createAnalyser();
     const source = audioContext.createMediaStreamSource(mediaStream);
@@ -26,9 +27,9 @@ const AudioAnalyser = ({ mediaStream }) => {
       analyser.disconnect();
       source.disconnect();
     };
-  }, []);
+  }, [mediaStream]);
 
-  return <AudioVisualizer audioData={audioData} />;
+  return <AudioVisualizer audioData={audioData} height={height} width={width} />;
 };
 
 export default AudioAnalyser;

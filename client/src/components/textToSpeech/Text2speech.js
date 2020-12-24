@@ -1,21 +1,18 @@
 import React, { useEffect, useState } from "react";
-// import ReactAudioPlayer from "react-audio-player";
 import "./style.css";
 import network from "../../services/network";
 import PlayAgainButton from "./PlayAgainButton";
-export default function Text2speech({
-  startRecording,
-  clientAudio,
-  // setAudio,
-  // stop,
-  // setStop,
-  answerStatus,
-  setAnswerStatus,
-  setSaidWord,
-}) {
-  const [counter, setCounter] = useState(0);
+import useSound from "use-sound";
+import SoundFail from "../../sound-effect/fail.mp3";
+import SoundSuccess from "../../sound-effect/success.mp3";
+
+export default function Text2speech({ startRecording, clientAudio, setSaidWord }) {
+  const [counter, setCounter] = useState(null);
   const [serverAudio, setServerAudio] = useState();
-  const [stopPlay, setStopPlay] = useState(false);
+  const [success, setSuccess] = useState(false);
+
+  const [playSoundFail] = useSound(SoundFail);
+  const [playSoundSuccess] = useSound(SoundSuccess);
 
   useEffect(() => {
     (async () => {
@@ -31,7 +28,15 @@ export default function Text2speech({
       if (clientAudio) {
         const { data } = await network.post("/api/v1/answer", clientAudio);
         setSaidWord(data.response);
-        setServerAudio(data.audio);
+        setSuccess(data.success);
+        if (data.success) {
+          playSoundSuccess();
+        } else {
+          playSoundFail();
+        }
+        setTimeout(() => {
+          setServerAudio(data.audio);
+        }, 2000);
       }
     })();
   }, [clientAudio]);
@@ -39,13 +44,13 @@ export default function Text2speech({
   const getAnExercise = async () => {
     const { data } = await network.post("/api/v1/exercise");
     setServerAudio(data.audio);
-    setStopPlay(false);
-    setCounter(0);
+    setSuccess(false);
+    setSaidWord("");
   };
 
   useEffect(() => {
     (async () => {
-      if (serverAudio && !stopPlay) {
+      if (serverAudio) {
         if (counter <= serverAudio.length) {
           playAudio();
         }
@@ -56,59 +61,38 @@ export default function Text2speech({
   useEffect(() => {
     (async () => {
       if (serverAudio) {
-        setStopPlay(false);
-        playAudio();
+        setCounter(0);
       }
     })();
   }, [serverAudio]);
 
   const playAudio = () => {
     if (counter < serverAudio.length) {
-      debugger;
       const audioToPlay = new Audio(`data:audio/ogg;base64, ${serverAudio[counter].base64}`);
       audioToPlay.play();
       audioToPlay.onended = () => {
         setCounter((prev) => prev + 1);
       };
     } else {
-      startRecording();
-      setStopPlay(true);
-      setCounter(0);
-      // console.log(answerStatus);
-      // if (answerStatus === "success") {
-      //   setAnswerStatus("waitToAnswer");
-      //   setStopPlay(true);
-      //   getAnExercise();
-      // } else if (answerStatus === "tryAgain") {
-      //   setAnswerStatus("waitToAnswer");
-      //   setStopPlay(true);
-      //   getAnExercise();
-      // } else {
-      //   startRecording();
-      //   setStopPlay(true);
-      //   setCounter(0);
-      // }
+      debugger;
+      if (success) {
+        getAnExercise();
+      } else {
+        startRecording();
+      }
     }
   };
 
   const getClassName = (itsWord, index) => {
     if (itsWord) {
-      if (!stopPlay) {
-        if (index > counter) {
-          return "word-bold hidden";
-        } else {
-          return "word-bold";
-        }
+      if (index > counter) {
+        return "word-bold hidden";
       } else {
         return "word-bold";
       }
     } else {
       if (index > counter) {
-        if (!stopPlay) {
-          return "regular hidden";
-        } else {
-          return "regular";
-        }
+        return "regular hidden";
       } else {
         return "regular";
       }

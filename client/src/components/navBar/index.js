@@ -3,7 +3,7 @@ import Logout from "../Logout";
 
 export default function NavBar() {
   return (
-    <div>
+    <div style={{ position: "absolute" }}>
       <button>
         <a href="/">home</a>
       </button>

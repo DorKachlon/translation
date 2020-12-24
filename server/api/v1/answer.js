@@ -25,7 +25,7 @@ router.post("/", upload.any(), async (req, res) => {
       req.user.id,
       req.userProgress.currentWordId
     );
-    res.json({ response: textFromSpeech, audio: feedback.audio, status: feedback.status });
+    res.json({ response: textFromSpeech, audio: feedback.audio, success: feedback.success });
   } catch (error) {
     console.error(error);
     res.status(400).json({ message: "Cannot process request" });
