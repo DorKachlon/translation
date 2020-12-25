@@ -1,7 +1,7 @@
 import React, { useState, useRef } from "react";
 import { useHistory } from "react-router-dom";
 import network from "../../services/network";
-import Dashboard from "../../components/dashboard/Dashboard";
+import SignUpSelectors from "../../components/selectors/SignUpSelectors";
 import InputBase from "@material-ui/core/InputBase";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import PeopleIcon from "@material-ui/icons/People";
@@ -145,7 +145,7 @@ export default function SignUp() {
               }
             />
           </MyFormControl>
-          <Dashboard
+          <SignUpSelectors
             nativeLanguage={nativeLanguage}
             setNativeLanguage={setNativeLanguage}
             setLearningLanguage={setLearningLanguage}
