@@ -1,9 +1,12 @@
-import React from "react";
+import React, { useContext } from "react";
 import Cookies from "js-cookie";
 import { useHistory } from "react-router-dom";
 import network from "../services/network";
+import { Logged } from "../context/LoggedIn";
+
 export default function Logout() {
   let history = useHistory();
+  const LoggedContext = useContext(Logged);
 
   const logoutClickHandler = async () => {
     try {
@@ -15,8 +18,8 @@ export default function Logout() {
       Cookies.remove("fname");
       Cookies.remove("lname");
       Cookies.remove("email");
-      //   setLogin(false);
-      history.push("/login");
+      LoggedContext.setLogged(false);
+      history.push("/");
     } catch (error) {
       console.error(error);
     }
