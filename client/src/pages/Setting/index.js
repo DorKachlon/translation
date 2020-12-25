@@ -1,10 +1,12 @@
 import React from "react";
-import Dashboard2 from "../../components/dashboard/Dashboard2";
-
+import SettingSelectors from "../../components/selectors/SettingSelectors";
+import "./style.css";
 export default function Setting() {
   return (
-    <div>
-      <Dashboard2 />
+    <div className="setting-page">
+      <div className="setting-selectors">
+        <SettingSelectors />
+      </div>
     </div>
   );
 }

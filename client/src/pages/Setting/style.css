@@ -1,0 +1,14 @@
+.setting-page {
+  height: 400px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.setting-selectors {
+  width: 500px;
+  height: 200px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+}
