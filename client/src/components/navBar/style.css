@@ -1,0 +1,7 @@
+.navbar-logo {
+  position: absolute;
+  width: 130px;
+  margin: 20px 0px 0px 50px;
+  z-index: 999;
+  left: 0;
+}
