@@ -44,7 +44,7 @@ export default function Recorder() {
   };
 
   return (
-    <div>
+    <div className="recorder-container">
       <button
         className={isRecording ? "recording-button down" : "recording-button"}
         // onMouseDown={startRecording}

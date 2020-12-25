@@ -9,6 +9,11 @@ async function speech2text(bufferAudio, language) {
   };
   const config = {
     languageCode: language,
+    // speechContexts: [
+    //   {
+    //     phrases: ["Anna", "play", "again"],
+    //   },
+    // ],
   };
   const request = {
     audio: audio,

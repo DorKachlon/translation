@@ -19,7 +19,7 @@ async function createFeedback(
 ) {
   try {
     let obj = [];
-    let status;
+    const playAgain = "ANNA PLAY AGAIN";
     // ! EMPTY === FAIL
     if (saidWord === "") {
       const nativeWord = await getWordById(wordId);
@@ -27,7 +27,11 @@ async function createFeedback(
       obj = await createSpeech(feedback, nativeLanguage, currentLanguage);
       //TODO we want to delete the new progress here
       await crateNewProgress(uid, currentLanguage.id, wordId, 0);
-      status;
+      return { audio: obj, success: false };
+    } else if (playAgain.includes(saidWord.toUpperCase)) {
+      //TODO אנחנו רוצים לשמור כל פעם את ההקלטה האחרונה ואם נכנסים לכאן לשלוח אותה שוב.
+      const feedback = `i am repeat`;
+      obj = await createSpeech(feedback, nativeLanguage, currentLanguage);
       return { audio: obj, success: false };
     }
 

@@ -101,7 +101,7 @@ export default function Text2speech({ startRecording, clientAudio, setSaidWord }
 
   return (
     <>
-      <PlayAgainButton playAudio={playAudio} />
+      {/* <PlayAgainButton playAudio={playAudio} /> */}
       {serverAudio && (
         <div className="server-text">
           {serverAudio.map((obj, i) => (
