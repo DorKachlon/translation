@@ -183,8 +183,8 @@ router.post("/token", async (req, res) => {
   }
 });
 
-// ! validateToken
-router.get("/validateToken", verifyToken, (req, res) => {
+// ! validate-token
+router.get("/validate-token", verifyToken, (req, res) => {
   res.json({ valid: true });
 });
 
