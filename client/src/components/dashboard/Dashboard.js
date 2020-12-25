@@ -25,20 +25,20 @@ export default function Dashboard({ nativeLanguage, setNativeLanguage, setLearni
   }, [nativeLanguage]);
 
   return (
-    <div>
+    <>
       <Selector
         label="Choose your native language"
         languagesArr={languagesArr}
         setYourChoice={setNativeLanguage}
-        registrestion={true}
+        registration={true}
       />
       <Selector
         label="Choose language to learn"
         languagesArr={nativeLanguage ? filterArray(languagesArr, nativeLanguage) : []}
         beDisabled={beDisabled}
         setYourChoice={setLearningLanguage}
-        registrestion={true}
+        registration={true}
       />
-    </div>
+    </>
   );
 }

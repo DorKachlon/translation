@@ -2,10 +2,10 @@ import React from "react";
 import TextField from "@material-ui/core/TextField";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import Flag from "react-world-flags";
-import { makeStyles } from "@material-ui/core/styles";
+import { fade, makeStyles } from "@material-ui/core/styles";
 import network from "../../services/network";
 
-const useStyles = makeStyles({
+const useStyles = makeStyles((theme) => ({
   option: {
     fontSize: 15,
     "& > span": {
@@ -13,7 +13,34 @@ const useStyles = makeStyles({
       fontSize: 18,
     },
   },
-});
+  autoComplete: {
+    position: "relative",
+    borderRadius: "30px",
+    backgroundColor: "rgba(255,255,255,0.3)",
+    transition: theme.transitions.create("width"),
+    "& div": {
+      padding: "1px 3px 1px 15px !important",
+    },
+    width: "auto",
+    "&:hover": {
+      backgroundColor: fade(theme.palette.common.white, 0.25),
+    },
+    "& .MuiOutlinedInput-root": {
+      "& fieldset": {
+        //regular border
+        border: "none",
+      },
+      "&.Mui-focused fieldset": {
+        //focused border
+        border: "none",
+      },
+      "&:hover fieldset": {
+        //hover border
+        border: "none",
+      },
+    },
+  },
+}));
 
 export default function Selector({
   mode,
@@ -22,12 +49,12 @@ export default function Selector({
   beDisabled,
   setYourChoice,
   defaultV,
-  registrestion,
+  registration,
 }) {
   const classes = useStyles();
 
   const changeNative = async (language) => {
-    if (registrestion) {
+    if (registration) {
       setYourChoice(language);
     } else {
       try {
@@ -44,11 +71,11 @@ export default function Selector({
     <>
       {languagesArr && (
         <Autocomplete
+          className={classes.autoComplete}
           disabled={beDisabled}
-          id="native-language"
           defaultValue={defaultV}
           onChange={(event, value) => changeNative(value)}
-          style={{ width: 300 }}
+          style={{ width: "100%" }}
           options={languagesArr}
           classes={{
             option: classes.option,
@@ -65,8 +92,9 @@ export default function Selector({
           )}
           renderInput={(params) => (
             <TextField
+              className={classes.textField}
               {...params}
-              label={label}
+              placeholder={label}
               variant="outlined"
               inputProps={{
                 ...params.inputProps,
@@ -75,7 +103,7 @@ export default function Selector({
             />
           )}
         />
-      )}{" "}
+      )}
     </>
   );
 }
