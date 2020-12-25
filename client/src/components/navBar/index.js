@@ -2,7 +2,7 @@ import React, { useState, useContext } from "react";
 import Logout from "../Logout";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
-import { MyTab } from "./styled";
+import { MyTab } from "../../styledComponent";
 import { NavLink, Link } from "react-router-dom";
 import logo from "./logo.png";
 import "./style.css";
