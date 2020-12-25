@@ -3,7 +3,11 @@ import Selector from "./Selector";
 import { sortArray, filterArray } from "./helpersFunctions";
 import network from "../../services/network";
 
-export default function Dashboard({ nativeLanguage, setNativeLanguage, setLearningLanguage }) {
+export default function SignUpSelectors({
+  nativeLanguage,
+  setNativeLanguage,
+  setLearningLanguage,
+}) {
   const [beDisabled, SetBeDisabled] = useState(true);
   const [languagesArr, setLanguagesArr] = useState([]);
 
