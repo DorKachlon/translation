@@ -1,19 +1,16 @@
 import React, { useState, useRef, useContext } from "react";
-import network from "../../services/network";
 import { useHistory } from "react-router-dom";
-import FormControl from "@material-ui/core/FormControl";
-import InputLabel from "@material-ui/core/InputLabel";
-import Input from "@material-ui/core/Input";
+import network from "../../services/network";
+
 import InputAdornment from "@material-ui/core/InputAdornment";
-import PeopleIcon from "@material-ui/icons/People";
 import Visibility from "@material-ui/icons/Visibility";
 import VisibilityOff from "@material-ui/icons/VisibilityOff";
 import LockIcon from "@material-ui/icons/Lock";
 import IconButton from "@material-ui/core/IconButton";
 import InputBase from "@material-ui/core/InputBase";
-import { MyFormControl } from "./styled";
+import EmailIcon from "@material-ui/icons/Email";
 import { Logged } from "../../context/LoggedIn";
-
+import { MyFormControl, MyButton } from "../../styledComponent";
 import "./style.css";
 
 export default function Login() {
@@ -35,7 +32,7 @@ export default function Login() {
     try {
       await network.post(`/api/v1/auth/login`, obj);
       LoggedContext.setLogged(true);
-      history.push("/home");
+      history.push("/");
     } catch (error) {
       setError(error.response.data);
     }
@@ -45,18 +42,18 @@ export default function Login() {
     <div className="login-page">
       <div className="login-background">
         <div>Log In</div>
-        <form className="form-flex-column" onSubmit={(e) => clickHandler(e)}>
+        <form className="login-form" onSubmit={(e) => clickHandler(e)}>
           <MyFormControl>
             <InputBase
               type="email"
               name="email"
               placeholder="Email"
-              // value={userName}
+              value={email}
               required
               onChange={(e) => setEmail(e.currentTarget.value)}
               endAdornment={
                 <InputAdornment style={{ opacity: "0.7" }} position="end">
-                  <PeopleIcon />
+                  <EmailIcon />
                 </InputAdornment>
               }
             />
@@ -84,7 +81,9 @@ export default function Login() {
               }
             />
           </MyFormControl>
-          <button type="submit">Submit</button>
+          <MyButton variant="contained" type="submit">
+            Log in
+          </MyButton>
         </form>
         {error && <div>{error}</div>}
       </div>

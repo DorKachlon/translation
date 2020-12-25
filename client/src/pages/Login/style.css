@@ -4,12 +4,13 @@
   background-color: white;
 }
 
-.form-flex-column {
-  width: 100%;
+.login-form {
+  width: 70%;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: space-around;
+  height: 200px;
 }
 
 .login-background {
