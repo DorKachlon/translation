@@ -51,23 +51,25 @@ function App() {
       <ThemeProvider theme={myTheme}>
         <Logged.Provider value={{ logged, setLogged }}>
           <Router>
-            <NavBar />
             {!loading ? (
-              logged ? (
-                <Switch>
-                  <Route exact path="/" component={Home} />
-                  <Route exact path="/setting" component={Setting} />
-                  {/* <Route exact path="/login" component={Login} /> */}
-                  {/* <Route exact path="/sign-up" component={SignUp} /> */}
-                </Switch>
-              ) : (
-                <Switch>
-                  <Route exact path="/" component={Landing} />
-                  {/* <Route exact path="/setting" component={Setting} /> */}
-                  <Route exact path="/login" component={Login} />
-                  <Route exact path="/sign-up" component={SignUp} />
-                </Switch>
-              )
+              <>
+                <NavBar />
+                {logged ? (
+                  <Switch>
+                    <Route exact path="/" component={Home} />
+                    <Route exact path="/setting" component={Setting} />
+                    {/* <Route exact path="/login" component={Login} /> */}
+                    {/* <Route exact path="/sign-up" component={SignUp} /> */}
+                  </Switch>
+                ) : (
+                  <Switch>
+                    <Route exact path="/" component={Landing} />
+                    {/* <Route exact path="/setting" component={Setting} /> */}
+                    <Route exact path="/login" component={Login} />
+                    <Route exact path="/sign-up" component={SignUp} />
+                  </Switch>
+                )}
+              </>
             ) : (
               <Loading />
             )}
