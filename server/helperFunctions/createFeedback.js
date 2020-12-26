@@ -23,7 +23,7 @@ async function createFeedback(
     // ! EMPTY === FAIL
     if (saidWord === "") {
       const nativeWord = await getWordById(wordId);
-      const feedback = `I don't understand, try again \n<> the word: <${nativeWord.word}> it is: <!${expectedWord}>, try to say: <!${expectedWord}>`;
+      const feedback = `I don't understand, try again \n<> the word: <${nativeWord.word}> it is: <#${expectedWord}>, try to say: <#${expectedWord}>`;
       obj = await createSpeech(feedback, nativeLanguage, currentLanguage);
       //TODO we want to delete the new progress here
       await crateNewProgress(uid, currentLanguage.id, wordId, 0);
@@ -37,7 +37,7 @@ async function createFeedback(
 
     //! FAIL
     if (saidWord.toUpperCase() !== expectedWord.toUpperCase()) {
-      const feedback = `you said: <!${saidWord}>, and you need to say: <!${expectedWord}>, try again>`;
+      const feedback = `you said: <#${saidWord}>, and you need to say: <#${expectedWord}>, try again>`;
       obj = await createSpeech(feedback, nativeLanguage, currentLanguage);
       await crateNewProgress(uid, currentLanguage.id, wordId, 0);
       return { audio: obj, success: false };
@@ -51,7 +51,6 @@ async function createFeedback(
     }
   } catch (error) {
     console.error(error);
-    // res.status(400).json({ message: "Cannot process request" });
   }
 }
 
@@ -61,7 +60,6 @@ async function getWordById(id) {
     return word;
   } catch (error) {
     console.error(error);
-    // res.status(400).json({ message: "Cannot process request" });
   }
 }
 
@@ -76,7 +74,6 @@ async function crateNewProgress(userId, languageId, wordId, score) {
     await Progress.create(obj);
   } catch (error) {
     console.error(error);
-    // res.status(400).json({ message: "Cannot process request" });
   }
 }
 

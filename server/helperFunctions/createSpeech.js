@@ -1,29 +1,32 @@
-const { translateText } = require("../google-api/translate");
 const { text2speech } = require("../google-api/text2speech");
+const { translate } = require("./translation");
 
 //text=`you said : <apple> and you need to said <water>, try again`
-
 async function createSpeech(text, l1, l2) {
-  const arrTextsAndLanguage = text
-    .split(/[<>]/g)
-    .map((partText, i) =>
-      partText[0] === "!"
-        ? { text: partText.slice(1), language: l2 }
-        : { text: partText, language: l1 }
-    );
+  const arrTextsAndLanguage = text.split(/[<>]/g).map((partText, i) => {
+    if (partText[0] === "!") {
+      return { text: partText.slice(1), language: l2 };
+    } else if (partText[0] === "#") {
+      return { text: partText.slice(1), language: l2, noTranslate: true };
+    } else {
+      return { text: partText, language: l1 };
+    }
+  });
   try {
     let arrOfAudio = [];
     for (const textAndLanguage of arrTextsAndLanguage) {
       if (textAndLanguage.text !== "") {
-        //TODO - to create word cache and check before translation
-        const textAfterTransition = await translateText(
-          textAndLanguage.text,
-          textAndLanguage.language.code
-        );
+        let textAfterTranslation;
+        if (textAndLanguage.noTranslate) {
+          textAfterTranslation = textAndLanguage.text;
+        } else {
+          textAfterTranslation = await translate(textAndLanguage.text, textAndLanguage.language);
+        }
+
         arrOfAudio.push({
-          text: textAfterTransition,
+          text: textAfterTranslation,
           base64: await text2speech({
-            inputText: textAfterTransition,
+            inputText: textAfterTranslation,
             languageCode: textAndLanguage.language.code,
             voiceName: textAndLanguage.language.voice,
           }),
@@ -34,7 +37,6 @@ async function createSpeech(text, l1, l2) {
     return arrOfAudio;
   } catch (error) {
     console.error(error);
-    res.status(400).json({ message: "Cannot process request" });
   }
 }
 module.exports.createSpeech = createSpeech;
