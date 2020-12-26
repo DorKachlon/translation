@@ -16,7 +16,11 @@ router.post("/", upload.any(), async (req, res) => {
         { model: Language, as: "currentLanguage" },
       ],
     });
-    const textFromSpeech = await speech2text(req.files[0].buffer, userInfo.currentLanguage.code);
+    const textFromSpeech = await speech2text(
+      req.files[0].buffer,
+      userInfo.currentLanguage.code,
+      req.userProgress.currentWord
+    );
     const feedback = await createFeedback(
       textFromSpeech,
       req.userProgress.currentWord,
