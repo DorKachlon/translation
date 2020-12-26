@@ -1,0 +1,35 @@
+.not-found-page {
+  height: 100vh;
+  min-height: 400px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.not-found-svg {
+  width: 50vw;
+  min-width: 800px;
+  animation: move 2s ease-in-out 2s infinite alternate;
+  position: relative;
+}
+.not-found-oops {
+  font-size: 40px;
+  font-weight: 500;
+}
+.not-found-not-found {
+}
+@keyframes move {
+  0% {
+    padding-top: 0px;
+    padding-bottom: 20px;
+  }
+  50% {
+    padding-top: 20px;
+    padding-bottom: 0px;
+  }
+
+  100% {
+    padding-top: 0px;
+    padding-bottom: 20px;
+  }
+}

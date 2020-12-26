@@ -4,6 +4,7 @@ import Setting from "./pages/Setting";
 import Login from "./pages/Login";
 import SignUp from "./pages/SignUp";
 import Landing from "./pages/Landing";
+import NotFound from "./pages/404";
 import { Logged } from "./context/LoggedIn";
 import Cookies from "js-cookie";
 import network from "./services/network";
@@ -58,15 +59,14 @@ function App() {
                   <Switch>
                     <Route exact path="/" component={Home} />
                     <Route exact path="/setting" component={Setting} />
-                    {/* <Route exact path="/login" component={Login} /> */}
-                    {/* <Route exact path="/sign-up" component={SignUp} /> */}
+                    <Route component={NotFound} />
                   </Switch>
                 ) : (
                   <Switch>
                     <Route exact path="/" component={Landing} />
-                    {/* <Route exact path="/setting" component={Setting} /> */}
                     <Route exact path="/login" component={Login} />
                     <Route exact path="/sign-up" component={SignUp} />
+                    <Route component={NotFound} />
                   </Switch>
                 )}
               </>
