@@ -7,6 +7,7 @@ import InputAdornment from "@material-ui/core/InputAdornment";
 import PeopleIcon from "@material-ui/icons/People";
 import Visibility from "@material-ui/icons/Visibility";
 import VisibilityOff from "@material-ui/icons/VisibilityOff";
+import ErrorOutlineOutlinedIcon from "@material-ui/icons/ErrorOutlineOutlined";
 import LockIcon from "@material-ui/icons/Lock";
 import IconButton from "@material-ui/core/IconButton";
 import EmailIcon from "@material-ui/icons/Email";
@@ -28,12 +29,12 @@ export default function SignUp() {
 
   async function clickHandler(event) {
     event.preventDefault();
-    if (password.current.value !== confirmPassword.current.value) {
-      setError("Your password not the same");
-      return;
-    }
     if (!nativeLanguage || !learningLanguage) {
       setError("Must to choose languages");
+      return;
+    }
+    if (password !== confirmPassword) {
+      setError("Your password not the same");
       return;
     }
     const obj = {
@@ -126,10 +127,10 @@ export default function SignUp() {
             <InputBase
               name="password"
               placeholder="Confirm Password"
-              value={password}
+              value={confirmPassword}
               required
               type={showPassword ? "text" : "password"}
-              onChange={(e) => setPassword(e.currentTarget.value)}
+              onChange={(e) => setConfirmPassword(e.currentTarget.value)}
               endAdornment={
                 <InputAdornment position="end">
                   <IconButton
@@ -153,9 +154,13 @@ export default function SignUp() {
           <MyButton variant="contained" type="submit">
             Sign Up
           </MyButton>
-
-          {error && <div>{error}</div>}
         </form>
+        {error && (
+          <div className="signup-error">
+            <ErrorOutlineOutlinedIcon style={{ color: "white" }} />
+            <span>{error}</span>
+          </div>
+        )}
       </div>
     </div>
   );

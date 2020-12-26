@@ -8,6 +8,7 @@ import VisibilityOff from "@material-ui/icons/VisibilityOff";
 import LockIcon from "@material-ui/icons/Lock";
 import IconButton from "@material-ui/core/IconButton";
 import InputBase from "@material-ui/core/InputBase";
+import ErrorOutlineOutlinedIcon from "@material-ui/icons/ErrorOutlineOutlined";
 import EmailIcon from "@material-ui/icons/Email";
 import { Logged } from "../../context/LoggedIn";
 import { MyFormControl, MyButton } from "../../styledComponent";
@@ -85,7 +86,12 @@ export default function Login() {
             Log in
           </MyButton>
         </form>
-        {error && <div>{error}</div>}
+        {error && (
+          <div className="login-error">
+            <ErrorOutlineOutlinedIcon style={{ color: "white" }} />
+            <span>{error}</span>
+          </div>
+        )}
       </div>
     </div>
   );
