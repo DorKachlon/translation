@@ -3,17 +3,17 @@ const projectID = "first";
 const keyFilename = "./google-api/google-api-keys.json";
 const client2 = new speech.SpeechClient({ projectID, keyFilename });
 
-async function speech2text(bufferAudio, language) {
+async function speech2text(bufferAudio, language, word) {
   const audio = {
     content: bufferAudio.toString("base64"),
   };
   const config = {
     languageCode: language,
-    // speechContexts: [
-    //   {
-    //     phrases: ["Anna", "play", "again"],
-    //   },
-    // ],
+    speechContexts: [
+      {
+        phrases: [word],
+      },
+    ],
   };
   const request = {
     audio: audio,
