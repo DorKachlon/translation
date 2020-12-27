@@ -13,6 +13,7 @@ import EmailIcon from "@material-ui/icons/Email";
 import { Logged } from "../../context/LoggedIn";
 import { MyFormControl, MyButton } from "../../styledComponent";
 import "./style.css";
+import loginValidation from "./schemaValidation";
 
 export default function Login() {
   const [showPassword, setShowPassword] = useState(false);
@@ -31,14 +32,26 @@ export default function Login() {
       rememberMe,
     };
     try {
+      await loginValidation(obj);
       await network.post(`/api/v1/auth/login`, obj);
       LoggedContext.setLogged(true);
       history.push("/");
     } catch (error) {
-      setError(error.response.data);
+      if (error.errors) {
+        setError(error.errors);
+        resetAll();
+      } else {
+        setError(error.response.data);
+        resetAll();
+      }
     }
   }
-
+  const resetAll = () => {
+    setShowPassword(false);
+    setRememberMe(false);
+    setPassword("");
+    setEmail("");
+  };
   return (
     <div className="login-page">
       <div className="login-background">

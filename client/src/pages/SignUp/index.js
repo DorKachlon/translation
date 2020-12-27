@@ -14,6 +14,7 @@ import EmailIcon from "@material-ui/icons/Email";
 import PersonIcon from "@material-ui/icons/Person";
 import { MyFormControl, MyButton } from "../../styledComponent";
 import "./style.css";
+import registerValidation from "./schemaValidation";
 
 export default function SignUp() {
   const [showPassword, setShowPassword] = useState(false);
@@ -29,6 +30,7 @@ export default function SignUp() {
 
   async function clickHandler(event) {
     event.preventDefault();
+    setError("");
     if (!nativeLanguage || !learningLanguage) {
       setError("Must to choose languages");
       return;
@@ -46,12 +48,17 @@ export default function SignUp() {
       currentLanguageId: learningLanguage.id,
     };
     try {
+      await registerValidation(obj);
       const { data } = await network.post(`/api/v1/auth/register`, obj);
       if (data.success) {
         history.push("/login");
       }
     } catch (error) {
-      setError(error.response.data);
+      if (error.errors) {
+        setError(error.errors);
+      } else {
+        setError(error.response.data);
+      }
     }
   }
   return (
