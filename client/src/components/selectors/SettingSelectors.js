@@ -3,7 +3,7 @@ import Selector from "./Selector";
 import { sortArray, filterArray } from "./helpersFunctions";
 import network from "../../services/network";
 import "./style.css";
-export default function SettingSelectors() {
+export default function SettingSelectors({ setLoading }) {
   const [languagesArr, setLanguagesArr] = useState([]);
   const [nativeLanguage, setNativeLanguage] = useState();
   const [learningLanguage, setLearningLanguage] = useState();
@@ -16,6 +16,7 @@ export default function SettingSelectors() {
         const { data: userInfo } = await network.get("/api/v1/users/languages");
         setNativeLanguage(userInfo.nativeLanguage);
         setLearningLanguage(userInfo.currentLanguage);
+        setLoading(false);
       } catch (e) {
         console.error(e);
       }
