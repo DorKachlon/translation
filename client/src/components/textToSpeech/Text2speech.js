@@ -74,7 +74,6 @@ export default function Text2speech({ startRecording, clientAudio, setSaidWord }
         setCounter((prev) => prev + 1);
       };
     } else {
-      debugger;
       if (success) {
         getAnExercise();
       } else {

@@ -1,19 +1,33 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import Logout from "../Logout";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
 import { MyTab } from "../../styledComponent";
-import { NavLink, Link } from "react-router-dom";
+import { NavLink, Link, useLocation } from "react-router-dom";
 import logo from "./logo.png";
 import "./style.css";
 import { Logged } from "../../context/LoggedIn";
 export default function NavBar() {
-  const [value, setValue] = useState(0);
+  const [value, setValue] = useState(null);
   const LoggedContext = useContext(Logged);
-  console.log(LoggedContext.logged);
+  const location = useLocation();
+  useEffect(() => {
+    switch (location.pathname) {
+      case "/setting":
+        setValue(1);
+        break;
+      case "/":
+        setValue(0);
+        break;
+      default:
+        break;
+    }
+  }, [location]);
+
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
+  console.log(value);
   return (
     <>
       {LoggedContext.logged ? (

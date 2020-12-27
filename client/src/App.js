@@ -33,7 +33,6 @@ function App() {
       try {
         if (Cookies.get("accessToken")) {
           const { data } = await network.get("/api/v1/auth/validate-token");
-          console.log(data);
           setLogged(data.valid);
           setLoading(false);
         } else if (Cookies.get("refreshToken")) {
