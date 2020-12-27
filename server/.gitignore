@@ -1,3 +1,4 @@
 node_modules
 .env
 google-api-keys.json
+speechCache
