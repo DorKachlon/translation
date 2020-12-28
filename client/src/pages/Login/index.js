@@ -108,7 +108,9 @@ export default function Login() {
           </div>
         )}
       </div>
-      <ParticlesLiveBackground />
+      <div className="login-particles">
+        <ParticlesLiveBackground />
+      </div>
     </div>
   );
 }

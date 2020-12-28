@@ -43,3 +43,6 @@
 .login-error > span {
   padding-left: 10px;
 }
+.login-particles {
+  width: 60vw;
+}
