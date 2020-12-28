@@ -26,6 +26,7 @@ export default function Text2speech({
       const { data } = await network.post("/api/v1/exercise");
       UpdateHistoryConversation(data.audio);
       setServerAudio(data.audio);
+      console.log(data.audio);
     })();
   }, []);
 
@@ -36,7 +37,9 @@ export default function Text2speech({
       if (clientAudio) {
         const { data } = await network.post("/api/v1/answer", clientAudio);
         setSaidWord(data.response);
-        setHistoryConversation((prev) => [...prev, { status: "answer", text: data.response }]);
+        if (data.response !== "") {
+          setHistoryConversation((prev) => [...prev, { status: "answer", text: data.response }]);
+        }
         setSuccess(data.success);
         if (data.success) {
           playSoundSuccess();
