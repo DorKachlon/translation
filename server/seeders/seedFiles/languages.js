@@ -87,4 +87,12 @@ module.exports = [
     created_at: "2020-12-16 20:00:00",
     updated_at: "2020-12-16 20:00:00",
   },
+  {
+    id: 12,
+    code: "he-IL",
+    language: "Hebrew",
+    voice: "he-IL-Asaf",
+    created_at: "2020-12-16 20:00:00",
+    updated_at: "2020-12-16 20:00:00",
+  },
 ];
