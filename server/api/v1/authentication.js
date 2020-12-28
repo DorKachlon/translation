@@ -33,8 +33,8 @@ router.post("/register", async (req, res) => {
 
     //Create a new user
     const newUser = {
-      firstName: req.body.firstName,
-      lastName: req.body.lastName,
+      firstName: req.body.firstName[0].toUpperCase() + req.body.firstName.slice(1),
+      lastName: req.body.lastName[0].toUpperCase() + req.body.lastName.slice(1),
       email: req.body.email,
       password: hashPassword,
       nativeLanguageId: req.body.nativeLanguageId,

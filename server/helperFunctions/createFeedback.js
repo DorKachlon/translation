@@ -15,15 +15,30 @@ async function createFeedback(
   nativeLanguage,
   currentLanguage,
   uid,
-  wordId
+  wordId,
+  userFirstName
 ) {
+  const doNotUnderstand = [
+    "I don't understand, try again",
+    "Oops, I didn't hear you",
+    "what did you said? I didn't get it",
+  ];
+  const successFeedback = [
+    "good job! let's learn another word!",
+    `${userFirstName} you are amazing! let go`,
+    `Wow ${userFirstName} you so good!`,
+  ];
+  const playAgain = "ANNA PLAY AGAIN";
   try {
     let obj = [];
-    const playAgain = "ANNA PLAY AGAIN";
     // ! EMPTY === FAIL
     if (saidWord === "") {
       const nativeWord = await getWordById(wordId);
-      const feedback = `I don't understand, try again \n<> the word: <${nativeWord.word}> it is: <#${expectedWord}>, try to say: <#${expectedWord}>`;
+      const feedback = `${
+        doNotUnderstand[Math.floor(Math.random() * doNotUnderstand.length)]
+      } \n<> the word: <${
+        nativeWord.word
+      }> it is: <#${expectedWord}>, try to say: <#${expectedWord}>`;
       obj = await createSpeech(feedback, nativeLanguage, currentLanguage);
       //TODO we want to delete the new progress here
       await crateNewProgress(uid, currentLanguage.id, wordId, 0);
@@ -44,7 +59,7 @@ async function createFeedback(
 
       //! SUCCESS
     } else {
-      const feedback = "good job! let's learn another word!";
+      const feedback = successFeedback[Math.floor(Math.random() * successFeedback.length)];
       obj = await createSpeech(feedback, nativeLanguage, currentLanguage);
       await crateNewProgress(uid, currentLanguage.id, wordId, 10);
       return { audio: obj, success: true };
