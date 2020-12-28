@@ -14,7 +14,7 @@ import { Logged } from "../../context/LoggedIn";
 import { MyFormControl, MyButton } from "../../styledComponent";
 import "./style.css";
 import loginValidation from "./schemaValidation";
-
+import ParticlesLiveBackground from "../../components/particles";
 export default function Login() {
   const [showPassword, setShowPassword] = useState(false);
   const [rememberMe, setRememberMe] = useState(false);
@@ -108,6 +108,7 @@ export default function Login() {
           </div>
         )}
       </div>
+      <ParticlesLiveBackground />
     </div>
   );
 }

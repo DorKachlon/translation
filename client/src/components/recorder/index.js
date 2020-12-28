@@ -34,6 +34,7 @@ export default function Recorder() {
     if (isRecording) {
       stopRecording();
       recorderButtonRef.current.style.width = `200px`;
+      recorderButtonRef.current.style.height = `200px`;
       recorderButtonRef.current.style.margin = `150px`;
     }
   };
