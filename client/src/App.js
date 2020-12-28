@@ -6,6 +6,8 @@ import SignUp from "./pages/SignUp";
 import Landing from "./pages/Landing";
 import NotFound from "./pages/404";
 import { Logged } from "./context/LoggedIn";
+import { ManualMode } from "./context/ManualMode";
+
 import Cookies from "js-cookie";
 import network from "./services/network";
 import "./App.css";
@@ -26,6 +28,7 @@ const myTheme = createMuiTheme({
 
 function App() {
   const [logged, setLogged] = useState(false);
+  const [manualMode, setManualMode] = useState(false);
   const [loading, setLoading] = useState(true);
   useEffect(() => {
     // auth
@@ -50,29 +53,31 @@ function App() {
     <div className="App">
       <ThemeProvider theme={myTheme}>
         <Logged.Provider value={{ logged, setLogged }}>
-          <Router>
-            {!loading ? (
-              <>
-                <NavBar />
-                {logged ? (
-                  <Switch>
-                    <Route exact path="/" component={Home} />
-                    <Route exact path="/setting" component={Setting} />
-                    <Route component={NotFound} />
-                  </Switch>
-                ) : (
-                  <Switch>
-                    <Route exact path="/" component={Landing} />
-                    <Route exact path="/login" component={Login} />
-                    <Route exact path="/sign-up" component={SignUp} />
-                    <Route component={NotFound} />
-                  </Switch>
-                )}
-              </>
-            ) : (
-              <Loading />
-            )}
-          </Router>
+          <ManualMode.Provider value={{ manualMode, setManualMode }}>
+            <Router>
+              {!loading ? (
+                <>
+                  <NavBar />
+                  {logged ? (
+                    <Switch>
+                      <Route exact path="/" component={Home} />
+                      <Route exact path="/setting" component={Setting} />
+                      <Route component={NotFound} />
+                    </Switch>
+                  ) : (
+                    <Switch>
+                      <Route exact path="/" component={Landing} />
+                      <Route exact path="/login" component={Login} />
+                      <Route exact path="/sign-up" component={SignUp} />
+                      <Route component={NotFound} />
+                    </Switch>
+                  )}
+                </>
+              ) : (
+                <Loading />
+              )}
+            </Router>
+          </ManualMode.Provider>
         </Logged.Provider>
       </ThemeProvider>
     </div>

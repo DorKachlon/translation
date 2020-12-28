@@ -7,10 +7,16 @@ import { NavLink, Link, useLocation } from "react-router-dom";
 import logo from "./logo.png";
 import "./style.css";
 import { Logged } from "../../context/LoggedIn";
+import { ManualMode } from "../../context/ManualMode";
+import PanToolIcon from "@material-ui/icons/PanTool";
+import BrightnessAutoIcon from "@material-ui/icons/BrightnessAuto";
+import IconButton from "@material-ui/core/IconButton";
 
 export default function NavBar() {
   const [value, setValue] = useState(null);
   const LoggedContext = useContext(Logged);
+  const ManualModeContext = useContext(ManualMode);
+
   const location = useLocation();
   useEffect(() => {
     switch (location.pathname) {
@@ -28,7 +34,9 @@ export default function NavBar() {
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
-  console.log(value);
+  const handleClickMode = () => {
+    ManualModeContext.setManualMode((prev) => !prev);
+  };
   return (
     <>
       {LoggedContext.logged ? (
@@ -37,6 +45,9 @@ export default function NavBar() {
             <img className="navbar-logo" src={logo} alt="logo" border="0" />
           </NavLink>
           <div className="navbar-controller">
+            <IconButton onClick={handleClickMode}>
+              {ManualModeContext.manualMode ? <PanToolIcon /> : <BrightnessAutoIcon />}
+            </IconButton>
             <Tabs
               value={value}
               onChange={handleChange}

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef, useContext } from "react";
 import useSound from "use-sound";
 import SoundIn from "../../sound-effect/sound-in.mp3";
 import SoundOut from "../../sound-effect/sound-out.mp3";
@@ -6,24 +6,17 @@ import Analyzer from "../../ts/AudioAnalyzer";
 import MicIcon from "@material-ui/icons/Mic";
 import Text2speech from "../textToSpeech/Text2speech";
 import useRecorder from "../../hook/useRecorder";
+import Chat from "../chat";
 import "./style.css";
-
+import { ManualMode } from "../../context/ManualMode";
 export default function Recorder() {
   const [saidWord, setSaidWord] = useState("");
-
+  const recorderButtonRef = useRef(null);
   const [playSoundIn] = useSound(SoundIn);
   const [playSoundOut] = useSound(SoundOut);
-
-  const {
-    clientAudio,
-    isRecording,
-    startRecording,
-    stopRecording,
-    audioFile,
-    audioStream,
-    audioBlob,
-    getAudioFromBuffer,
-  } = useRecorder();
+  const [historyConversation, setHistoryConversation] = useState([]);
+  const ManualModeContext = useContext(ManualMode);
+  const { clientAudio, isRecording, startRecording, stopRecording, audioStream } = useRecorder();
 
   const startHandler = () => {
     startRecording();
@@ -40,12 +33,15 @@ export default function Recorder() {
   const stopHandler = () => {
     if (isRecording) {
       stopRecording();
+      recorderButtonRef.current.style.width = `200px`;
+      recorderButtonRef.current.style.margin = `150px`;
     }
   };
 
   return (
-    <div className="recorder-container">
+    <div className={ManualModeContext.manualMode ? "recorder-container row" : "recorder-container"}>
       <button
+        ref={recorderButtonRef}
         className={isRecording ? "recording-button down" : "recording-button"}
         // onMouseDown={startRecording}
         // onMouseUp={StopRecording}
@@ -53,17 +49,24 @@ export default function Recorder() {
       >
         <MicIcon style={{ fontSize: "40px", color: "white" }} />
       </button>
-      <div>{saidWord}</div>
+      {saidWord && !ManualModeContext.manualMode && <div>{saidWord}</div>}
       <Text2speech
         startRecording={startHandler}
         clientAudio={clientAudio}
         setSaidWord={setSaidWord}
+        setHistoryConversation={setHistoryConversation}
       />
       {isRecording && (
         <>
-          <Analyzer mediaStream={audioStream} height={150} width={300} />
+          <Analyzer
+            mediaStream={audioStream}
+            height={150}
+            width={300}
+            recorderButtonRef={recorderButtonRef}
+          />
         </>
       )}
+      {ManualModeContext.manualMode && <Chat historyConversation={historyConversation} />}
     </div>
   );
 }

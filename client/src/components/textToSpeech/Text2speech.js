@@ -1,15 +1,22 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import "./style.css";
 import network from "../../services/network";
 import PlayAgainButton from "./PlayAgainButton";
 import useSound from "use-sound";
 import SoundFail from "../../sound-effect/fail.mp3";
 import SoundSuccess from "../../sound-effect/success.mp3";
+import { ManualMode } from "../../context/ManualMode";
 
-export default function Text2speech({ startRecording, clientAudio, setSaidWord }) {
+export default function Text2speech({
+  startRecording,
+  clientAudio,
+  setSaidWord,
+  setHistoryConversation,
+}) {
   const [counter, setCounter] = useState(null);
   const [serverAudio, setServerAudio] = useState();
   const [success, setSuccess] = useState(false);
+  const ManualModeContext = useContext(ManualMode);
 
   const [playSoundFail] = useSound(SoundFail);
   const [playSoundSuccess] = useSound(SoundSuccess);
@@ -17,8 +24,8 @@ export default function Text2speech({ startRecording, clientAudio, setSaidWord }
   useEffect(() => {
     (async () => {
       const { data } = await network.post("/api/v1/exercise");
+      UpdateHistoryConversation(data.audio);
       setServerAudio(data.audio);
-      console.log(data.audio);
     })();
   }, []);
 
@@ -29,6 +36,7 @@ export default function Text2speech({ startRecording, clientAudio, setSaidWord }
       if (clientAudio) {
         const { data } = await network.post("/api/v1/answer", clientAudio);
         setSaidWord(data.response);
+        setHistoryConversation((prev) => [...prev, { status: "answer", text: data.response }]);
         setSuccess(data.success);
         if (data.success) {
           playSoundSuccess();
@@ -36,6 +44,7 @@ export default function Text2speech({ startRecording, clientAudio, setSaidWord }
           playSoundFail();
         }
         setTimeout(() => {
+          UpdateHistoryConversation(data.audio);
           setServerAudio(data.audio);
         }, 2000);
       }
@@ -45,8 +54,14 @@ export default function Text2speech({ startRecording, clientAudio, setSaidWord }
   const getAnExercise = async () => {
     const { data } = await network.post("/api/v1/exercise");
     setServerAudio(data.audio);
+    UpdateHistoryConversation(data.audio);
     setSuccess(false);
     setSaidWord("");
+  };
+
+  const UpdateHistoryConversation = (array) => {
+    const texts = array.map((obj) => obj.text);
+    setHistoryConversation((prev) => [...prev, { status: "exercise", text: texts.join("") }]);
   };
 
   useEffect(() => {
@@ -102,7 +117,7 @@ export default function Text2speech({ startRecording, clientAudio, setSaidWord }
   return (
     <>
       {/* <PlayAgainButton playAudio={playAudio} /> */}
-      {serverAudio && (
+      {serverAudio && !ManualModeContext.manualMode && (
         <div className="server-text">
           {serverAudio.map((obj, i) => (
             <span className={getClassName(obj.itsWord, i)}>{obj.text} </span>
