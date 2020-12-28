@@ -13,6 +13,11 @@ export default function Landing() {
       <img className="girl" src={Girl} />
       <img className="right-top" src={RightTop} />
       <img className="right-bottom" src={rightBottom} />
+      <div className="landing-paragraph">
+        <div className="landing-title-1">Better then ever</div>
+        <div className="landing-title-2">Anna lets you learn</div>
+        <div className="landing-title-3">without lifting a finger.</div>
+      </div>
     </div>
   );
 }

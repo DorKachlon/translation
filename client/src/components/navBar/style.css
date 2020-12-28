@@ -5,3 +5,9 @@
   z-index: 999;
   left: 0;
 }
+.navbar-controller {
+  position: absolute;
+  right: 0;
+  z-index: 999;
+  display: flex;
+}

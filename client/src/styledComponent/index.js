@@ -19,7 +19,14 @@ export const MyButton = styled(Button)`
   width: 100%;
 `;
 
-export const MyTab = styled(Tab)`
+export const MyTab1 = styled(Tab)`
+  background-color: transparent !important;
+  border: 2px solid var(--orange-color) !important;
+  opacity: 1 !important;
+  border-radius: 50px !important;
+  margin: 15px !important;
+`;
+export const MyTab2 = styled(Tab)`
   background-color: var(--orange-color) !important;
   opacity: 1 !important;
   border-radius: 50px !important;

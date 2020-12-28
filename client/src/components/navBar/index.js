@@ -2,11 +2,12 @@ import React, { useState, useContext, useEffect } from "react";
 import Logout from "../Logout";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
-import { MyTab } from "../../styledComponent";
+import { MyTab1, MyTab2 } from "../../styledComponent";
 import { NavLink, Link, useLocation } from "react-router-dom";
 import logo from "./logo.png";
 import "./style.css";
 import { Logged } from "../../context/LoggedIn";
+
 export default function NavBar() {
   const [value, setValue] = useState(null);
   const LoggedContext = useContext(Logged);
@@ -35,7 +36,7 @@ export default function NavBar() {
           <NavLink to="/" exact>
             <img className="navbar-logo" src={logo} alt="logo" border="0" />
           </NavLink>
-          <div style={{ position: "absolute", right: "0", zIndex: "999" }}>
+          <div className="navbar-controller">
             <Tabs
               value={value}
               onChange={handleChange}
@@ -55,8 +56,8 @@ export default function NavBar() {
             <img className="navbar-logo" src={logo} alt="logo" border="0" />
           </NavLink>
           <div style={{ position: "absolute", right: "0", zIndex: "999" }}>
-            <MyTab label="Login" component={Link} to="/login" />
-            <MyTab label="Sign Up" component={Link} to="/sign-up" />
+            <MyTab2 label="Login" component={Link} to="/login" />
+            <MyTab1 label="Sign Up" component={Link} to="/sign-up" />
           </div>
         </>
       )}

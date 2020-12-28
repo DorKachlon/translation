@@ -2,6 +2,8 @@
   background-color: white;
   height: 100vh;
   width: 100vw;
+  min-width: 300px;
+  min-height: 500px;
 }
 .left-bottom {
   position: absolute;
@@ -31,4 +33,15 @@
   right: 0;
   height: 30vh;
   min-height: 170px;
+}
+.landing-paragraph {
+  position: absolute;
+  top: clamp(130px, 10vh, 250px);
+  left: 140px;
+  font-size: clamp(30px, 3vw, 50px);
+  font-weight: 500;
+}
+.landing-title-1 {
+  font-weight: 900;
+  font-size: clamp(30px, 4vw, 50px);
 }

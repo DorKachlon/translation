@@ -18,6 +18,7 @@ export default function Text2speech({ startRecording, clientAudio, setSaidWord }
     (async () => {
       const { data } = await network.post("/api/v1/exercise");
       setServerAudio(data.audio);
+      console.log(data.audio);
     })();
   }, []);
 
