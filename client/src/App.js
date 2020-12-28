@@ -5,6 +5,7 @@ import Login from "./pages/Login";
 import SignUp from "./pages/SignUp";
 import Landing from "./pages/Landing";
 import NotFound from "./pages/404";
+import Dashboard from "./pages/Dashboard";
 import { Logged } from "./context/LoggedIn";
 import { ManualMode } from "./context/ManualMode";
 
@@ -50,7 +51,7 @@ function App() {
     })();
   }, []);
   return (
-    <div className="App">
+    <>
       <ThemeProvider theme={myTheme}>
         <Logged.Provider value={{ logged, setLogged }}>
           <ManualMode.Provider value={{ manualMode, setManualMode }}>
@@ -62,6 +63,7 @@ function App() {
                     <Switch>
                       <Route exact path="/" component={Home} />
                       <Route exact path="/setting" component={Setting} />
+                      <Route exact path="/dashboard" component={Dashboard} />
                       <Route component={NotFound} />
                     </Switch>
                   ) : (
@@ -80,7 +82,7 @@ function App() {
           </ManualMode.Provider>
         </Logged.Provider>
       </ThemeProvider>
-    </div>
+    </>
   );
 }
 
