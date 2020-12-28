@@ -1,9 +1,13 @@
 const { text2speech } = require("../google-api/text2speech");
+const { text2speechAzure } = require("../azure-api/text2speechAzure");
 const { translate } = require("./translation");
 const { SpeechCache } = require("../models");
 const { cleanText } = require("./cleanText");
 const fs = require("fs");
 const hash = require("object-hash");
+
+const languageForAzure = ["he-IL"];
+
 //text=`you said : <apple> and you need to said <water>, try again`
 async function createSpeech(text, l1, l2) {
   const arrTextsAndLanguage = text.split(/[<>]/g).map((partText, i) => {
@@ -55,13 +59,17 @@ async function speechHelper(text, language) {
       speech = fs.readFileSync(`${__dirname}/../speechCache/${fileName}.txt`, "utf8");
       return speech;
     }
-
-    console.log(`request speech from google api for: ${text}`);
-    speech = await text2speech({
-      inputText: text,
-      languageCode: language.code,
-      voiceName: language.voice,
-    });
+    if (languageForAzure.includes(language.code)) {
+      console.log(`request speech from AZURE api for: ${text}`);
+      speech = await text2speechAzure(text, language.code, language.voice);
+    } else {
+      console.log(`request speech from google api for: ${text}`);
+      speech = await text2speech({
+        inputText: text,
+        languageCode: language.code,
+        voiceName: language.voice,
+      });
+    }
     const speechCache = {
       text,
       languageId: language.id,
