@@ -26,6 +26,8 @@ async function speech2text(bufferAudio, language, word) {
       .map((result) => result.alternatives[0].transcript)
       .join("\n");
     // console.log(`Transcription: ${transcription}`);
+    // console.log(response.results[0].alternatives);
+
     return transcription;
   } catch (e) {
     console.error(e);
