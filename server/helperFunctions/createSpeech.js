@@ -1,6 +1,7 @@
 const { text2speech } = require("../google-api/text2speech");
 const { translate } = require("./translation");
 const { SpeechCache } = require("../models");
+const { cleanText } = require("./cleanText");
 const fs = require("fs");
 const hash = require("object-hash");
 //text=`you said : <apple> and you need to said <water>, try again`
@@ -41,7 +42,7 @@ async function createSpeech(text, l1, l2) {
 async function speechHelper(text, language) {
   try {
     let speech;
-
+    // const text = cleanText(dirtyText);
     //!first way used DB
     // const speechDb = await SpeechCache.findOne({ where: { text, languageId: language.id } });
     // if (speechDb) {
