@@ -1,8 +1,8 @@
 const { text2speech } = require("../google-api/text2speech");
 const { translate } = require("./translation");
 const { SpeechCache } = require("../models");
-const fs = require("fs").promises;
-
+const fs = require("fs");
+const hash = require("object-hash");
 //text=`you said : <apple> and you need to said <water>, try again`
 async function createSpeech(text, l1, l2) {
   const arrTextsAndLanguage = text.split(/[<>]/g).map((partText, i) => {
@@ -41,27 +41,35 @@ async function createSpeech(text, l1, l2) {
 async function speechHelper(text, language) {
   try {
     let speech;
-    const speechDb = await SpeechCache.findOne({ where: { text, languageId: language.id } });
-    if (speechDb) {
-      speech = await fs.readFile(`${__dirname}/../speechCache/${speechDb.fileName}.json`);
-      return JSON.parse(speech).base64;
+
+    //!first way used DB
+    // const speechDb = await SpeechCache.findOne({ where: { text, languageId: language.id } });
+    // if (speechDb) {
+    //   speech = fs.readFileSync(`${__dirname}/../speechCache/${speechDb.fileName}.txt`, "utf8");
+    //   return speech;
+    // }
+    //!second way used fs
+    const fileName = hash({ text, languageId: language.id, languageVoice: language.voice });
+    if (fs.existsSync(`${__dirname}/../speechCache/${fileName}.txt`)) {
+      speech = fs.readFileSync(`${__dirname}/../speechCache/${fileName}.txt`, "utf8");
+      return speech;
     }
+
     console.log(`request speech from google api for: ${text}`);
     speech = await text2speech({
       inputText: text,
       languageCode: language.code,
       voiceName: language.voice,
     });
-    const obj = {
+    const speechCache = {
       text,
       languageId: language.id,
-      fileName: new Date().getTime().toString(),
+      fileName: hash({ text, languageId: language.id, languageVoice: language.voice }),
     };
-    await fs.writeFile(
-      `${__dirname}/../speechCache/${obj.fileName}.json`,
-      JSON.stringify({ base64: speech })
+    fs.writeFile(`${__dirname}/../speechCache/${speechCache.fileName}.txt`, speech, () =>
+      SpeechCache.create(speechCache)
     );
-    await SpeechCache.create(obj);
+
     return speech;
   } catch (error) {
     console.error(error);
