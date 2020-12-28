@@ -1,6 +1,8 @@
 :root {
   --orange-color: #ff9424;
   --orange-color-lite: #ffa230;
+  --orange-bg: rgb(255, 170, 64);
+  --long: 100px;
 }
 
 body {
@@ -9,7 +11,7 @@ body {
     "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-color: rgb(255, 170, 64);
+  background-color: var(--orange-bg);
 }
 
 code {
@@ -24,4 +26,15 @@ input:-webkit-autofill:hover,
 input:-webkit-autofill:focus,
 input:-webkit-autofill:active {
   transition: background-color 5000s;
+}
+
+::-webkit-scrollbar {
+  width: 12px; /* width of the entire scrollbar */
+}
+::-webkit-scrollbar-track {
+  background: transparent; /* color of the tracking area */
+}
+::-webkit-scrollbar-thumb {
+  background-color: white; /* color of the scroll thumb */
+  border-radius: 20px; /* roundness of the scroll thumb */
 }
