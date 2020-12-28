@@ -20,6 +20,9 @@ export default function NavBar() {
   const location = useLocation();
   useEffect(() => {
     switch (location.pathname) {
+      case "/dashboard":
+        setValue(2);
+        break;
       case "/setting":
         setValue(1);
         break;
@@ -38,7 +41,7 @@ export default function NavBar() {
     ManualModeContext.setManualMode((prev) => !prev);
   };
   return (
-    <>
+    <nav>
       {LoggedContext.logged ? (
         <>
           <NavLink to="/" exact>
@@ -57,6 +60,7 @@ export default function NavBar() {
             >
               <Tab label="Home" component={Link} to="/" />
               <Tab label="Setting" component={Link} to="/setting" />
+              <Tab label="Dashboard" component={Link} to="/dashboard" />
             </Tabs>
             <Logout />
           </div>
@@ -72,6 +76,6 @@ export default function NavBar() {
           </div>
         </>
       )}
-    </>
+    </nav>
   );
 }
