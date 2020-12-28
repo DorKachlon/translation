@@ -10,6 +10,7 @@ nav {
 
 .navbar-logo {
   width: 130px;
+  margin: 8% 15%;
 }
 .navbar-controller {
   display: flex;
