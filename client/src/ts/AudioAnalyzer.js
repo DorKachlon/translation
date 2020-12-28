@@ -1,8 +1,9 @@
 /* eslint-disable consistent-return */
 import React, { useEffect, useRef, useState } from "react";
 import AudioVisualizer from "./AudioVisualizer";
+import ResizeButton from "./ResizeButton";
 
-const AudioAnalyser = ({ mediaStream, height, width }) => {
+const AudioAnalyser = ({ mediaStream, height, width, recorderButtonRef }) => {
   const [audioData, setAudioData] = useState(new Uint8Array(0));
 
   let analyser = null;
@@ -29,7 +30,17 @@ const AudioAnalyser = ({ mediaStream, height, width }) => {
     };
   }, [mediaStream]);
 
-  return <AudioVisualizer audioData={audioData} height={height} width={width} />;
+  return (
+    <>
+      {/* <AudioVisualizer
+        audioData={audioData}
+        height={height}
+        width={width}
+        recorderButtonRef={recorderButtonRef}
+      /> */}
+      <ResizeButton audioData={audioData} recorderButtonRef={recorderButtonRef} />
+    </>
+  );
 };
 
 export default AudioAnalyser;
