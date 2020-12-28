@@ -16,12 +16,9 @@
 }
 
 .recorder-container {
+  margin-top: 50px;
   width: 100vw;
-  height: 100vh;
-  /* position: absolute; */
-  /* left: 50%;
-  top: 40%;
-  transform: translate(-50%, -50%); */
+  height: calc(100vh - 50px);
   display: flex;
   flex-direction: column;
   align-items: center;
