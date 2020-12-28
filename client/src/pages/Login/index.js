@@ -40,6 +40,8 @@ export default function Login() {
       if (error.errors) {
         setError(error.errors);
         resetAll();
+      } else if (error.response.status === 500) {
+        setError(error.response.statusText);
       } else {
         setError(error.response.data);
         resetAll();
