@@ -20,6 +20,8 @@ function text2speechAzure(text, languageCode, languageVoice) {
           const base64String = buffer.toString("base64");
           synthesizer.close();
           res(base64String);
+        } else {
+          rej("no result");
         }
       },
       (error) => {

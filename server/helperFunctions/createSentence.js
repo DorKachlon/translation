@@ -1,7 +1,7 @@
 //! Exercise
 function createSentenceExercise(word, language) {
   const sentences = [
-    `the word: <${word}> it is: <!${word}>, try to say: <!${word}>`,
+    `the word "<${word}>" is "<!${word}>", repeat "<!${word}>"`,
     `<${word}> in ${language}, is it: <!${word}> can you say: <!${word}?>`,
   ];
   return sentences[Math.floor(Math.random() * sentences.length)];
@@ -26,14 +26,14 @@ function createSentenceDoNotAndNext(word, language) {
   );
 }
 //! Fail
-function createSentenceFail(saidWord, expectedWord) {
+function createSentenceFailAndRetry(saidWord, expectedWord) {
   const sentences = [
     `you said: <#${saidWord}>, and you need to say: <#${expectedWord}>, try again>`,
   ];
   return sentences[Math.floor(Math.random() * sentences.length)];
 }
 
-function createSentenceFailAndNext(saidWord, expectedWord, word, language) {
+function createSentenceFailAndSkip(saidWord, expectedWord, word, language) {
   const sentences = [
     `you said: <#${saidWord}>, and you need to say: <#${expectedWord}>, We will return to this word later \n<> `,
   ];
@@ -44,9 +44,9 @@ function createSentenceFailAndNext(saidWord, expectedWord, word, language) {
 //! Success
 function createSentenceSuccess(userFirstName) {
   const sentences = [
-    "good job! let's move on!",
-    `${userFirstName} you are amazing! let's go`,
-    `Wow ${userFirstName} you so good!`,
+    " good job! let's move on!",
+    ` ${userFirstName} you are amazing! let's go`,
+    ` Wow ${userFirstName} you so good!`,
   ];
   return sentences[Math.floor(Math.random() * sentences.length)];
 }
@@ -54,6 +54,6 @@ function createSentenceSuccess(userFirstName) {
 module.exports.createSentenceExercise = createSentenceExercise;
 module.exports.createSentenceDoNot = createSentenceDoNot;
 module.exports.createSentenceDoNotAndNext = createSentenceDoNotAndNext;
-module.exports.createSentenceFail = createSentenceFail;
-module.exports.createSentenceFailAndNext = createSentenceFailAndNext;
+module.exports.createSentenceFailAndRetry = createSentenceFailAndRetry;
+module.exports.createSentenceFailAndSkip = createSentenceFailAndSkip;
 module.exports.createSentenceSuccess = createSentenceSuccess;

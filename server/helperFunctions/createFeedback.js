@@ -3,8 +3,8 @@ const { createSpeech } = require("./createSpeech");
 const {
   createSentenceDoNot,
   createSentenceDoNotAndNext,
-  createSentenceFail,
-  createSentenceFailAndNext,
+  createSentenceFailAndRetry,
+  createSentenceFailAndSkip,
   createSentenceSuccess,
 } = require("./createSentence");
 
@@ -50,14 +50,14 @@ async function createFeedback(
       const { moveToNextWord } = await userProgress.failed();
       let feedback;
       if (moveToNextWord) {
-        feedback = createSentenceFailAndNext(
+        feedback = createSentenceFailAndSkip(
           saidWord,
           expectedWord,
           userProgress.getCurrentWord(),
           currentLanguage.language
         );
       } else {
-        feedback = createSentenceFail(saidWord, expectedWord);
+        feedback = createSentenceFailAndRetry(saidWord, expectedWord);
       }
       audioArray = await createSpeech(feedback, nativeLanguage, currentLanguage);
       await crateNewProgress(uid, currentLanguage.id, wordId, 0);
