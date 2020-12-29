@@ -6,18 +6,20 @@ const { cleanText } = require("./cleanText");
 const fs = require("fs");
 const hash = require("object-hash");
 
+const createHash = s => s.split('').reduce((a,b)=>{a=((a<<5)-a)+b.charCodeAt(0);return a&a},0);
+
 const languageForAzure = ["he-IL"];
 
 //text=`you said : <apple> and you need to said <water>, try again`
 async function createSpeech(text, l1, l2) {
-  const arrTextsAndLanguage = text.split(/[<>]/g).map((partText, i) => {
+  const arrTextsAndLanguage = text.split(/[<>]/g).map(partText => {
     if (partText[0] === "!") {
-      return { text: partText.slice(1), language: l2 };
-    } else if (partText[0] === "#") {
-      return { text: partText.slice(1), language: l2, noTranslate: true };
-    } else {
-      return { text: partText, language: l1 };
+      return {text: partText.slice(1), language: l2};
     }
+    if (partText[0] === "#") {
+      return {text: partText.slice(1), language: l2, noTranslate: true};
+    }
+    return {text: partText, language: l1};
   });
   try {
     let arrOfAudio = [];
@@ -54,9 +56,10 @@ async function speechHelper(text, language) {
     //   return speech;
     // }
     //!second way used fs
-    const fileName = hash({ text, languageId: language.id, languageVoice: language.voice });
-    if (fs.existsSync(`${__dirname}/../speechCache/${fileName}.txt`)) {
-      speech = fs.readFileSync(`${__dirname}/../speechCache/${fileName}.txt`, "utf8");
+    let hash = createHash(text + "|" + language.id + "|" + language.voice);
+    let filename = `${__dirname}/../speechCache/${hash}.cache`;
+    if (fs.existsSync(filename)) {
+      speech = fs.readFileSync(filename, "utf8");
       return speech;
     }
     if (languageForAzure.includes(language.code)) {
@@ -73,9 +76,9 @@ async function speechHelper(text, language) {
     const speechCache = {
       text,
       languageId: language.id,
-      fileName: hash({ text, languageId: language.id, languageVoice: language.voice }),
+      fileName: hash, // todo: change property to hash
     };
-    fs.writeFile(`${__dirname}/../speechCache/${speechCache.fileName}.txt`, speech, () =>
+    fs.writeFile(filename, speech, () =>
       SpeechCache.create(speechCache)
     );
 
