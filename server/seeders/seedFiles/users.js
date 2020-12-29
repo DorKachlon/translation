@@ -1,8 +1,8 @@
 module.exports = [
   {
     id: 1,
-    first_name: "dor",
-    last_name: "kachlon",
+    first_name: "Dor",
+    last_name: "Kachlon",
     email: "dor1kachlon@gmail.com",
     password: "123456789",
     native_language_id: 1,
