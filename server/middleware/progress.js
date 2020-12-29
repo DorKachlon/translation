@@ -1,4 +1,6 @@
 const { UserProgress } = require("../helperFunctions/userProgress");
+const { findWordsToLearn } = require("../helperFunctions/findWordsToLearn");
+const { translateWordByLanguageId } = require("../helperFunctions/translation");
 
 let progressContainer = {};
 module.exports = function (req, res, next) {
@@ -6,17 +8,26 @@ module.exports = function (req, res, next) {
   if (progressContainer[userInfo.id]) {
     req.userProgress = progressContainer[userInfo.id];
   }
-  console.log("progressContainer", progressContainer);
   next();
 };
 
-function createNewProgress(userInfo) {
-  let newProgress = new UserProgress(userInfo);
-  progressContainer[userInfo.id] = newProgress;
+async function createNewProgress(userInfo) {
+  try {
+    const arrayOfWords = await findWordsToLearn(userInfo.id, userInfo.currentLanguageId);
+    // const currentWordAfterTranslation = await translateWordByLanguageId(
+    //   arrayOfWords[0].word,
+    //   userInfo.currentLanguageId
+    // );
+    let newProgress = new UserProgress(userInfo, arrayOfWords);
+    progressContainer[userInfo.id] = newProgress;
+  } catch (e) {
+    console.error(e);
+  }
 }
 
 function removeProgress(userInfo) {
   delete progressContainer[userInfo.id];
 }
+
 module.exports.createNewProgress = createNewProgress;
 module.exports.removeProgress = removeProgress;
