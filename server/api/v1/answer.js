@@ -3,6 +3,8 @@ const multer = require("multer");
 const { speech2text } = require("../../google-api/speech2text");
 const { User, Language } = require("../../models");
 const { createFeedback } = require("../../helperFunctions/createFeedback");
+const { translateWordByLanguageId } = require("../../helperFunctions/translation");
+
 const router = Router();
 const upload = multer();
 
@@ -16,20 +18,28 @@ router.post("/", upload.any(), async (req, res) => {
         { model: Language, as: "currentLanguage" },
       ],
     });
-    console.log(req.user);
+
+    const currentWordAfterTranslation = await translateWordByLanguageId(
+      req.userProgress.getCurrentWord(),
+      userInfo.currentLanguage.id
+    );
     const textFromSpeech = await speech2text(
       req.files[0].buffer,
       userInfo.currentLanguage.code,
-      req.userProgress.currentWord
+      // req.userProgress.currentWordAfterTranslation
+      currentWordAfterTranslation
     );
     const feedback = await createFeedback(
       textFromSpeech,
-      req.userProgress.currentWord,
+      // req.userProgress.currentWordAfterTranslation,
+      currentWordAfterTranslation,
       userInfo.nativeLanguage,
       userInfo.currentLanguage,
       req.user.id,
-      req.userProgress.currentWordId,
-      req.user.firstName
+      req.userProgress.getCurrentWordId(),
+      req.user.firstName,
+      req.userProgress.getCurrentWord(),
+      req.userProgress
     );
     res.json({ response: textFromSpeech, audio: feedback.audio, success: feedback.success });
   } catch (error) {

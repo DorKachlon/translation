@@ -18,7 +18,6 @@ router.get("/", async (req, res) => {
         group: "word_id",
         include: [{ model: Word }],
       });
-      console.log(progressByUser);
       return { language: language.language, words: progressByUser };
     })
   );

@@ -101,6 +101,7 @@ router.post("/login", async (req, res) => {
         }
       );
     }
+    //TODO - await ?
     createNewProgress(infoForCookie);
     res.cookie("fname", user.firstName);
     res.cookie("lname", user.lastName);
