@@ -1,9 +1,11 @@
 const { Router } = require("express");
 const { User, Language } = require("../../models");
 const router = Router();
-const { translateText } = require("../../google-api/translate");
-const { nextWordToLearn } = require("../../helperFunctions/nextWord");
+const { createSentenceExercise } = require("../../helperFunctions/createSentence");
 const { createSpeech } = require("../../helperFunctions/createSpeech");
+
+//<!> translate the word and make audio from l2
+//<#> do not translate the word and make audio from l2
 
 router.post("/", async (req, res) => {
   try {
@@ -24,17 +26,12 @@ router.post("/", async (req, res) => {
       res.json({ audio: arrOfAudio });
     } else {
       //! build an exercise
-      const nextWord = await nextWordToLearn(userInfo.id, userInfo.currentLanguage.id);
-      const feedback = `the word: <${nextWord.word}> it is: <!${nextWord.word}>, try to say: <!${nextWord.word}>`;
+      // const nextWord = await nextWordToLearn(userInfo.id, userInfo.currentLanguage.id);
+      const nextWord = req.userProgress.getCurrentWord();
+      const feedback = createSentenceExercise(nextWord, l2.language);
       arrOfAudio = await createSpeech(feedback, l1, l2);
-      const nextWordTranslator = await translateText(nextWord.word, userInfo.currentLanguage.code);
       console.log("userProgress", req.userProgress);
       console.log("user", req.user);
-
-      //userProgress
-      req.userProgress.currentWord = nextWordTranslator;
-      req.userProgress.currentWordId = nextWord.wordId;
-      //userProgress
 
       res.json({ audio: arrOfAudio });
     }

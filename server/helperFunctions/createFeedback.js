@@ -1,5 +1,12 @@
 const { Progress, Word } = require("../models");
 const { createSpeech } = require("./createSpeech");
+const {
+  createSentenceDoNot,
+  createSentenceDoNotAndNext,
+  createSentenceFail,
+  createSentenceFailAndNext,
+  createSentenceSuccess,
+} = require("./createSentence");
 
 function feedbackCreator(saidWord, expectedWord) {
   const status = checkAnswer(saidWord, expectedWord);
@@ -16,63 +23,54 @@ async function createFeedback(
   currentLanguage,
   uid,
   wordId,
-  userFirstName
+  userFirstName,
+  nativeWord,
+  userProgress
 ) {
-  const doNotUnderstand = [
-    "I don't understand, try again",
-    "Oops, I didn't hear you",
-    "what did you said? I didn't get it",
-  ];
-  const successFeedback = [
-    "good job! let's learn another word!",
-    `${userFirstName} you are amazing! let go`,
-    `Wow ${userFirstName} you so good!`,
-  ];
-  const playAgain = "ANNA PLAY AGAIN";
   try {
-    let obj = [];
+    let audioArray = [];
     // ! EMPTY === FAIL
     if (saidWord === "") {
-      const nativeWord = await getWordById(wordId);
-      const feedback = `${
-        doNotUnderstand[Math.floor(Math.random() * doNotUnderstand.length)]
-      } \n<> the word: <${
-        nativeWord.word
-      }> it is: <#${expectedWord}>, try to say: <#${expectedWord}>`;
-      obj = await createSpeech(feedback, nativeLanguage, currentLanguage);
-      //TODO we want to delete the new progress here
-      await crateNewProgress(uid, currentLanguage.id, wordId, 0);
-      return { audio: obj, success: false };
-    } else if (playAgain.includes(saidWord.toUpperCase)) {
-      //TODO אנחנו רוצים לשמור כל פעם את ההקלטה האחרונה ואם נכנסים לכאן לשלוח אותה שוב.
-      const feedback = `i am repeat`;
-      obj = await createSpeech(feedback, nativeLanguage, currentLanguage);
-      return { audio: obj, success: false };
+      const { moveToNextWord } = await userProgress.failed();
+      let feedback;
+      if (moveToNextWord) {
+        feedback = createSentenceDoNotAndNext(
+          userProgress.getCurrentWord(),
+          currentLanguage.language
+        );
+      } else {
+        feedback = createSentenceDoNot(nativeWord, expectedWord);
+      }
+      audioArray = await createSpeech(feedback, nativeLanguage, currentLanguage);
+      return { audio: audioArray, success: false };
     }
 
     //! FAIL
     if (saidWord.toUpperCase() !== expectedWord.toUpperCase()) {
-      const feedback = `you said: <#${saidWord}>, and you need to say: <#${expectedWord}>, try again>`;
-      obj = await createSpeech(feedback, nativeLanguage, currentLanguage);
+      const { moveToNextWord } = await userProgress.failed();
+      let feedback;
+      if (moveToNextWord) {
+        feedback = createSentenceFailAndNext(
+          saidWord,
+          expectedWord,
+          userProgress.getCurrentWord(),
+          currentLanguage.language
+        );
+      } else {
+        feedback = createSentenceFail(saidWord, expectedWord);
+      }
+      audioArray = await createSpeech(feedback, nativeLanguage, currentLanguage);
       await crateNewProgress(uid, currentLanguage.id, wordId, 0);
-      return { audio: obj, success: false };
+      return { audio: audioArray, success: false };
 
       //! SUCCESS
     } else {
-      const feedback = successFeedback[Math.floor(Math.random() * successFeedback.length)];
-      obj = await createSpeech(feedback, nativeLanguage, currentLanguage);
       await crateNewProgress(uid, currentLanguage.id, wordId, 10);
-      return { audio: obj, success: true };
+      await userProgress.succeeded();
+      const feedback = createSentenceSuccess(userFirstName);
+      audioArray = await createSpeech(feedback, nativeLanguage, currentLanguage);
+      return { audio: audioArray, success: true };
     }
-  } catch (error) {
-    console.error(error);
-  }
-}
-
-async function getWordById(id) {
-  try {
-    const word = await Word.findOne({ where: { id } });
-    return word;
   } catch (error) {
     console.error(error);
   }
