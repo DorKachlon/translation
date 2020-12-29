@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
 import network from "../../services/network";
 import SignUpSelectors from "../../components/selectors/SignUpSelectors";

@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect } from "react";
 
 const ResizeButton = ({ audioData, recorderButtonRef }) => {
   useEffect(() => {

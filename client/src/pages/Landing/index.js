@@ -9,10 +9,10 @@ import "./style.css";
 export default function Landing() {
   return (
     <div className="landing-background">
-      <img className="left-bottom" src={LeftBottom} />
-      <img className="girl" src={Girl} />
-      <img className="right-top" src={RightTop} />
-      <img className="right-bottom" src={rightBottom} />
+      <img className="left-bottom" src={LeftBottom} alt="" />
+      <img className="girl" src={Girl} alt="" />
+      <img className="right-top" src={RightTop} alt="" />
+      <img className="right-bottom" src={rightBottom} alt="" />
       <div className="landing-paragraph">
         <div className="landing-title-1">Better then ever</div>
         <div className="landing-title-2">Anna lets you learn</div>

@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef } from "react";
 
 const AudioVisualizer = ({ audioData, height, width }) => {
   const canvas = useRef(null);
