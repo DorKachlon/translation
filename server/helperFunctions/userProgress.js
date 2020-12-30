@@ -26,7 +26,10 @@ class UserProgress {
       console.error(e);
     }
   }
-
+  setCurrentLearnWords(newCurrentLearnWords) {
+    this.currentWordFails = 0;
+    this.currentLearnWords = newCurrentLearnWords;
+  }
   async succeeded(currentLanguageId) {
     this.currentWordFails = 0;
     this.currentLearnWords.shift();

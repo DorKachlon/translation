@@ -1,7 +1,7 @@
 const { User, Language } = require("../../models");
 const { Router } = require("express");
 const router = Router();
-
+const { findWordsToLearn } = require("../../helperFunctions/findWordsToLearn");
 //GET REQUEST
 router.get("/", async (req, res) => {});
 
@@ -43,6 +43,13 @@ router.put("/", async (req, res) => {
         id: req.user.id,
       },
     });
+    console.log(req.body);
+    const { currentLanguageId } = req.body;
+    if (currentLanguageId) {
+      console.log("currentLanguageId", currentLanguageId);
+      const currentLearnWords = await findWordsToLearn(req.user.id, currentLanguageId);
+      req.userProgress.setCurrentLearnWords(currentLearnWords);
+    }
     res.json({ message: "User Info Updated" });
   } catch (error) {
     console.error(error);
