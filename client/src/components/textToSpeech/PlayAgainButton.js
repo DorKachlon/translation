@@ -2,12 +2,12 @@ import React, { useState } from "react";
 import LoopIcon from "@material-ui/icons/Loop";
 import "./style.css";
 
-export default function PlayAgainButton({ playAudio }) {
+export default function PlayAgainButton({ setCounter }) {
   const [nameOfClass, setNameOfClass] = useState("play-again");
 
   const playAgain = () => {
     // setStop(false);
-    playAudio();
+    setCounter(0);
   };
   const MouseDown = () => {
     setNameOfClass("play-again down");

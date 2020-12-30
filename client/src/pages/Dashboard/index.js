@@ -6,7 +6,6 @@ import Gauge from "../../components/gauge";
 export default function Dashboard() {
   const [loading, setLoading] = useState(true);
   const [wordsByLanguages, setWordsByLanguages] = useState();
-  console.log(wordsByLanguages);
 
   useEffect(() => {
     (async () => {

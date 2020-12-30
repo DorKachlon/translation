@@ -26,12 +26,10 @@ router.post("/", upload.any(), async (req, res) => {
     const textFromSpeech = await speech2text(
       req.files[0].buffer,
       userInfo.currentLanguage.code,
-      // req.userProgress.currentWordAfterTranslation
       currentWordAfterTranslation
     );
     const feedback = await createFeedback(
       textFromSpeech,
-      // req.userProgress.currentWordAfterTranslation,
       currentWordAfterTranslation,
       userInfo.nativeLanguage,
       userInfo.currentLanguage,
@@ -39,7 +37,8 @@ router.post("/", upload.any(), async (req, res) => {
       req.userProgress.getCurrentWordId(),
       req.user.firstName,
       req.userProgress.getCurrentWord(),
-      req.userProgress
+      req.userProgress,
+      userInfo.lazyMode
     );
     res.json({ response: textFromSpeech, audio: feedback.audio, success: feedback.success });
   } catch (error) {

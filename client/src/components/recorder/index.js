@@ -17,8 +17,7 @@ export default function Recorder() {
   const [historyConversation, setHistoryConversation] = useState([]);
   const ModeContext = useContext(Mode);
   const { clientAudio, isRecording, startRecording, stopRecording, audioStream } = useRecorder();
-  console.log(historyConversation);
-
+  const [disabledButton, setDisabledButton] = useState(true);
   const startHandler = () => {
     startRecording();
   };
@@ -43,11 +42,13 @@ export default function Recorder() {
   return (
     <div className={ModeContext.chatMode ? "recorder-container row" : "recorder-container"}>
       <button
+        disabled={disabledButton}
         ref={recorderButtonRef}
         className={isRecording ? "recording-button down" : "recording-button"}
         // onMouseDown={startRecording}
         // onMouseUp={StopRecording}
         onClick={isRecording ? stopHandler : startHandler}
+        style={disabledButton ? { backgroundColor: "rgba(144,101,46,0.4)" } : {}}
       >
         <MicIcon style={{ fontSize: "40px", color: "white" }} />
       </button>
@@ -57,6 +58,7 @@ export default function Recorder() {
         clientAudio={clientAudio}
         setSaidWord={setSaidWord}
         setHistoryConversation={setHistoryConversation}
+        setDisabledButton={setDisabledButton}
       />
       {isRecording && (
         <>

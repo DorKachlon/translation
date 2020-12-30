@@ -1,10 +1,9 @@
 const { Progress } = require("../models/Progress");
-const { translateWordByLanguageId } = require("./translation");
 const { findWordsToLearn } = require("./findWordsToLearn");
+
 class UserProgress {
-  constructor(userInfo, currentLearnWords, currentWordAfterTranslation) {
+  constructor(userInfo, currentLearnWords) {
     this.userInfo = userInfo;
-    // this.currentWordAfterTranslation = currentWordAfterTranslation;
     this.currentWordFails = 0;
     this.currentLearnWords = currentLearnWords;
   }
@@ -20,10 +19,6 @@ class UserProgress {
       if (this.currentWordFails === 3) {
         this.currentWordFails = 0;
         this.currentLearnWords.push(this.currentLearnWords.shift());
-        // this.currentWordAfterTranslation = await translateWordByLanguageId(
-        //   this.getCurrentWord(),
-        //   this.userInfo.currentLanguageId
-        // );
         return { moveToNextWord: true };
       }
       return { moveToNextWord: false };
@@ -32,10 +27,10 @@ class UserProgress {
     }
   }
 
-  async succeeded() {
+  async succeeded(currentLanguageId) {
     this.currentWordFails = 0;
     this.currentLearnWords.shift();
-    const arr = await findWordsToLearn(this.userInfo.id, this.userInfo.currentLanguageId);
+    const arr = await findWordsToLearn(this.userInfo.id, currentLanguageId);
     let index = 0;
     let done = false;
     while (index < arr.length && !done) {

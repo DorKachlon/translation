@@ -25,7 +25,8 @@ async function createFeedback(
   wordId,
   userFirstName,
   nativeWord,
-  userProgress
+  userProgress,
+  lazyMode
 ) {
   try {
     let audioArray = [];
@@ -36,10 +37,11 @@ async function createFeedback(
       if (moveToNextWord) {
         feedback = createSentenceDoNotAndNext(
           userProgress.getCurrentWord(),
-          currentLanguage.language
+          currentLanguage.language,
+          lazyMode
         );
       } else {
-        feedback = createSentenceDoNot(nativeWord, expectedWord);
+        feedback = createSentenceDoNot(nativeWord, expectedWord, lazyMode);
       }
       audioArray = await createSpeech(feedback, nativeLanguage, currentLanguage);
       return { audio: audioArray, success: false };
@@ -54,10 +56,11 @@ async function createFeedback(
           saidWord,
           expectedWord,
           userProgress.getCurrentWord(),
-          currentLanguage.language
+          currentLanguage.language,
+          lazyMode
         );
       } else {
-        feedback = createSentenceFailAndRetry(saidWord, expectedWord);
+        feedback = createSentenceFailAndRetry(saidWord, expectedWord, lazyMode);
       }
       audioArray = await createSpeech(feedback, nativeLanguage, currentLanguage);
       await crateNewProgress(uid, currentLanguage.id, wordId, 0);
@@ -66,8 +69,8 @@ async function createFeedback(
       //! SUCCESS
     } else {
       await crateNewProgress(uid, currentLanguage.id, wordId, 10);
-      await userProgress.succeeded();
-      const feedback = createSentenceSuccess(userFirstName);
+      await userProgress.succeeded(currentLanguage.id);
+      const feedback = createSentenceSuccess(userFirstName, lazyMode);
       audioArray = await createSpeech(feedback, nativeLanguage, currentLanguage);
       return { audio: audioArray, success: true };
     }

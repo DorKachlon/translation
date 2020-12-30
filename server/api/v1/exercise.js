@@ -19,19 +19,17 @@ router.post("/", async (req, res) => {
     const l1 = userInfo.nativeLanguage;
     const l2 = userInfo.currentLanguage;
     let arrOfAudio = [];
-
     if (req.body.textInput) {
       //! build a dialogs
       arrOfAudio = await createSpeech(req.body.textInput, l1, l2);
       res.json({ audio: arrOfAudio });
     } else {
       //! build an exercise
-      // const nextWord = await nextWordToLearn(userInfo.id, userInfo.currentLanguage.id);
       const nextWord = req.userProgress.getCurrentWord();
-      const feedback = createSentenceExercise(nextWord, l2.language);
+      const feedback = createSentenceExercise(nextWord, l2.language, userInfo.lazyMode);
       arrOfAudio = await createSpeech(feedback, l1, l2);
-      console.log("userProgress", req.userProgress);
-      console.log("user", req.user);
+      // console.log("userProgress", req.userProgress);
+      // console.log("user", req.user);
 
       res.json({ audio: arrOfAudio });
     }

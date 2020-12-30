@@ -12,6 +12,7 @@ export default function Text2speech({
   clientAudio,
   setSaidWord,
   setHistoryConversation,
+  setDisabledButton,
 }) {
   const [counter, setCounter] = useState(null);
   const [serverAudio, setServerAudio] = useState();
@@ -83,6 +84,7 @@ export default function Text2speech({
   useEffect(() => {
     (async () => {
       if (serverAudio) {
+        setDisabledButton(true);
         setCounter(0);
       }
     })();
@@ -99,7 +101,12 @@ export default function Text2speech({
       if (success) {
         getAnExercise();
       } else {
-        startRecording();
+        if (ModeContext.manualMode) {
+          setDisabledButton(false);
+        } else {
+          setDisabledButton(false);
+          startRecording();
+        }
       }
     }
   };

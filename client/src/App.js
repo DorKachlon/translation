@@ -41,7 +41,6 @@ function App() {
           const { data } = await network.get("/api/v1/auth/validate-token");
           setLogged(data.valid);
           const { data: modes } = await network.get("/api/v1/users/modes");
-          console.log("modes", modes);
           setLazyMode(modes.lazyMode);
           setManualMode(modes.manualMode);
           setLoading(false);

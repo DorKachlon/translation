@@ -43,7 +43,6 @@ export default function NavBar() {
   const handleClickMode = () => {
     ModeContext.setManualMode((prev) => !prev);
   };
-  console.log(ModeContext.lazyMode);
   const handleChangeSwitch = async (event) => {
     try {
       switch (event.target.name) {
