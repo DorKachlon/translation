@@ -1,0 +1,8 @@
+.drop-span-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.drop-language {
+  margin-left: 5px;
+}

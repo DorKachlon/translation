@@ -14,11 +14,22 @@ import IconButton from "@material-ui/core/IconButton";
 import Switch from "@material-ui/core/Switch";
 import network from "../../services/network";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
-
+import DropLanguages from "./dropLanguages";
 export default function NavBar() {
-  const [value, setValue] = useState(null);
+  const [value, setValue] = useState(0);
+  const [scrolling, setScrolling] = useState(false);
   const LoggedContext = useContext(Logged);
   const ModeContext = useContext(Mode);
+
+  const changeBackground = () => {
+    if (window.scrollY >= 40) {
+      setScrolling(true);
+    } else {
+      setScrolling(false);
+    }
+  };
+
+  window.addEventListener("scroll", changeBackground);
 
   const location = useLocation();
   useEffect(() => {
@@ -39,9 +50,6 @@ export default function NavBar() {
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
-  };
-  const handleClickMode = () => {
-    ModeContext.setManualMode((prev) => !prev);
   };
   const handleChangeSwitch = async (event) => {
     try {
@@ -65,16 +73,14 @@ export default function NavBar() {
     }
   };
   return (
-    <nav>
+    <nav className={scrolling ? "navbar-scrolling" : ""}>
       {LoggedContext.logged ? (
         <>
           <NavLink to="/" exact>
             <img className="navbar-logo" src={logo} alt="logo" border="0" />
           </NavLink>
           <div className="navbar-controller">
-            {/* <IconButton onClick={handleClickMode}>
-              {ModeContext.manualMode ? <PanToolIcon /> : <BrightnessAutoIcon />}
-            </IconButton> */}
+            <DropLanguages />
             <FormControlLabel
               control={
                 <Switch

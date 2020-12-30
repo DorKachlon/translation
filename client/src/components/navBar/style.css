@@ -10,9 +10,12 @@ nav {
 
 .navbar-logo {
   width: 130px;
-  margin: 8% 15%;
+  margin: 2% 15%;
 }
 .navbar-controller {
   display: flex;
   margin-right: 1%;
+}
+.navbar-scrolling {
+  backdrop-filter: blur(20px);
 }
