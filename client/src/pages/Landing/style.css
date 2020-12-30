@@ -15,10 +15,9 @@
 
 .right-top {
   position: absolute;
-  top: 0;
+  top: 0px;
   right: 0;
-  height: 80vh;
-  min-height: 450px;
+  width: 55vw;
 }
 .girl {
   position: absolute;
@@ -44,4 +43,33 @@
 .landing-title-1 {
   font-weight: 900;
   font-size: clamp(30px, 4vw, 50px);
+  animation: leftToRight 1s 1 0s ease-in-out;
+}
+.landing-title-2 {
+  animation: leftToRight 2s 1 0s ease-in-out;
+}
+.landing-title-3 {
+  animation: leftToRight 3s 1 0s ease-in-out;
+}
+@keyframes leftToRight {
+  0% {
+    transform: translateX(-1000px);
+    opacity: 0;
+  }
+  100% {
+    transform: translateX(0px);
+    opacity: 1;
+  }
+}
+.landing-volume {
+  background-image: url(circle.svg);
+  background-size: cover;
+  position: absolute;
+  right: 25vh;
+  top: 30vh;
+  height: 40vh;
+  width: 40vh;
+  min-height: 300px;
+  min-width: 300px;
+  padding: 4%;
 }
