@@ -7,6 +7,8 @@ module.exports = [
     password: "123456789",
     native_language_id: 1,
     current_language_id: 7,
+    manualMode: false,
+    lazyMode: false,
     created_at: new Date(),
     updated_at: new Date(),
   },

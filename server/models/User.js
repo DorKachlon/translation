@@ -35,6 +35,8 @@ module.exports = (sequelize, DataTypes) => {
       password: { type: DataTypes.STRING, allowNull: false },
       nativeLanguageId: { type: DataTypes.INTEGER, allowNull: false },
       currentLanguageId: { type: DataTypes.INTEGER, allowNull: false },
+      manualMode: { type: DataTypes.BOOLEAN, allowNull: false, defaultValue: false },
+      lazyMode: { type: DataTypes.BOOLEAN, allowNull: false, defaultValue: false },
     },
     {
       sequelize,
