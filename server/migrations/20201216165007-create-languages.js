@@ -22,6 +22,21 @@ module.exports = {
         allowNull: false,
         type: Sequelize.STRING,
       },
+      direction: {
+        allowNull: false,
+        type: Sequelize.ENUM(["rtl", "ltr"]),
+        defaultValue: "ltr",
+      },
+      stt: {
+        allowNull: false,
+        type: Sequelize.ENUM(["azure", "google"]),
+        defaultValue: "google",
+      },
+      tts: {
+        allowNull: false,
+        type: Sequelize.ENUM(["azure", "google"]),
+        defaultValue: "google",
+      },
       created_at: {
         allowNull: false,
         type: Sequelize.DATE,

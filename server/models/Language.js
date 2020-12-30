@@ -28,6 +28,9 @@ module.exports = (sequelize, DataTypes) => {
       code: { type: DataTypes.STRING, allowNull: false, unique: true },
       language: { type: DataTypes.STRING, allowNull: false },
       voice: { type: DataTypes.STRING, allowNull: false },
+      direction: { type: DataTypes.ENUM(["rtl", "ltr"]), allowNull: false, defaultValue: "ltr" },
+      stt: { type: DataTypes.ENUM(["azure", "google"]), allowNull: false, defaultValue: "google" },
+      tts: { type: DataTypes.ENUM(["azure", "google"]), allowNull: false, defaultValue: "google" },
     },
     {
       sequelize,
