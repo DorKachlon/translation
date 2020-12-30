@@ -1,7 +1,6 @@
 import React, { useState, useContext } from "react";
 import { useHistory } from "react-router-dom";
 import network from "../../services/network";
-
 import InputAdornment from "@material-ui/core/InputAdornment";
 import Visibility from "@material-ui/icons/Visibility";
 import VisibilityOff from "@material-ui/icons/VisibilityOff";
@@ -15,6 +14,8 @@ import { MyFormControl, MyButton } from "../../styledComponent";
 import "./style.css";
 import loginValidation from "./schemaValidation";
 import ParticlesLiveBackground from "../../components/particles";
+import PeopleSVG from "./people.svg";
+
 export default function Login() {
   const [showPassword, setShowPassword] = useState(false);
   const [rememberMe, setRememberMe] = useState(false);
@@ -57,7 +58,7 @@ export default function Login() {
   return (
     <div className="login-page">
       <div className="login-background">
-        <div>Log In</div>
+        <div className="login-title">log in</div>
         <form className="login-form" onSubmit={(e) => clickHandler(e)}>
           <MyFormControl>
             <InputBase
@@ -109,6 +110,9 @@ export default function Login() {
         )}
       </div>
       <div className="login-particles">
+        <div className="login-people-container">
+          <img src={PeopleSVG} className="login-people-svg" />
+        </div>
         <ParticlesLiveBackground />
       </div>
     </div>

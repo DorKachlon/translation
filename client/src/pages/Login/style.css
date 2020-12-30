@@ -13,7 +13,12 @@
   justify-content: space-around;
   height: 200px;
 }
-
+.login-title {
+  text-transform: uppercase;
+  font-weight: 1000;
+  font-size: 130%;
+  padding-bottom: 3%;
+}
 .login-background {
   background-image: url(background.svg);
   background-repeat: no-repeat;
@@ -25,6 +30,7 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  animation: transX 0.5s 1 0s ease-in-out;
 }
 .login-error {
   background-color: rgb(244, 67, 54);
@@ -45,4 +51,35 @@
 }
 .login-particles {
   width: 60vw;
+}
+.login-people-container {
+  width: 60vw;
+  position: absolute;
+  bottom: 0px;
+  display: flex;
+  justify-content: center;
+  animation: opacityAnimate 1s 1 0s ease-in-out;
+}
+.login-people-svg {
+  /* position: absolute; */
+  height: 80vh;
+  /* bottom: 0px;
+  padding: 0px auto; */
+}
+
+@keyframes transX {
+  0% {
+    transform: translateX(-40vw);
+  }
+  100% {
+    transform: rotate(xx) translateX(0);
+  }
+}
+@keyframes opacityAnimate {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
 }

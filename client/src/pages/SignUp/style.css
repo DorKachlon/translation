@@ -2,6 +2,7 @@
   height: 100vh;
   width: 100vw;
   background-color: white;
+  display: flex;
 }
 
 .signup-form {
@@ -23,6 +24,7 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  animation: transX 0.5s 1 0s ease-in-out;
 }
 .fname-lname {
   display: flex;
@@ -31,7 +33,12 @@
 .fname-lname :nth-child(1) {
   margin-right: 5px;
 }
-
+.signup-title {
+  text-transform: uppercase;
+  font-weight: 1000;
+  font-size: 130%;
+  padding-bottom: 3%;
+}
 .signup-error {
   background-color: rgb(244, 67, 54);
   width: 70%;
@@ -48,4 +55,20 @@
 }
 .signup-error > span {
   padding-left: 10px;
+}
+@keyframes transX {
+  0% {
+    transform: translateX(-40vw);
+  }
+  100% {
+    transform: rotate(xx) translateX(0);
+  }
+}
+@keyframes opacityAnimate {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
 }
