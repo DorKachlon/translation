@@ -26,7 +26,12 @@ router.post("/", async (req, res) => {
     } else {
       //! build an exercise
       const nextWord = req.userProgress.getCurrentWord();
-      const feedback = createSentenceExercise(nextWord, l2.language, userInfo.lazyMode);
+      const feedback = createSentenceExercise(
+        nextWord,
+        l2.language,
+        userInfo.lazyMode,
+        req.userProgress.getCurrentWordLevel()
+      );
       arrOfAudio = await createSpeech(feedback, l1, l2);
       // console.log("userProgress", req.userProgress);
       // console.log("user", req.user);

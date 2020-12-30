@@ -5,18 +5,38 @@
 */
 
 //! Exercise
-function createSentenceExercise(word, language, lazyMode) {
+// function createSentenceExercise(word, language, lazyMode) {
+//   let sentences;
+//   if (lazyMode) {
+//     sentences = [
+//       `<@${word}> is <!${word}>, say: <!${word}>`,
+//     ];
+//   } else {
+//     sentences = [
+//       `the word <@${word}> is <!${word}>, repeat <!${word}>`,
+//       `<@${word}> in ${language}, is it: <!${word}> can you say: <!${word}?>`,
+//     ];
+//   }
+//   return sentences[Math.floor(Math.random() * sentences.length)];
+// }
+
+function createSentenceExercise(word, language, lazyMode, level) {
   let sentences;
   if (lazyMode) {
-    sentences = [`<@${word}> is <!${word}>, say: <!${word}>`];
+    sentences = [
+      [`<@${word}> is <!${word}>, ok?`],
+      [`<!${word}>, what the meaning?`],
+      [`<@${word}> is <!${word}>, say: <!${word}>`],
+    ];
   } else {
     sentences = [
       `the word <@${word}> is <!${word}>, repeat <!${word}>`,
       `<@${word}> in ${language}, is it: <!${word}> can you say: <!${word}?>`,
     ];
   }
-  return sentences[Math.floor(Math.random() * sentences.length)];
+  return sentences[level][Math.floor(Math.random() * sentences[level].length)];
 }
+
 //! Do not understand
 function createSentenceDoNot(word, expectedWord, lazyMode) {
   let sentences;

@@ -10,6 +10,11 @@ class UserProgress {
   getCurrentWord() {
     return this.currentLearnWords[0].word;
   }
+  getCurrentWordLevel() {
+    const score = this.currentLearnWords[0].score;
+    if (score) return score / 10;
+    return 0;
+  }
   getCurrentWordId() {
     return this.currentLearnWords[0].id;
   }
