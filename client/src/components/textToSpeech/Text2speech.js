@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useContext } from "react";
 import "./style.css";
 import network from "../../services/network";
-import PlayAgainButton from "./PlayAgainButton";
+// import PlayAgainButton from "./PlayAgainButton";
 import useSound from "use-sound";
 import SoundFail from "../../sound-effect/fail.mp3";
 import SoundSuccess from "../../sound-effect/success.mp3";
@@ -27,7 +27,6 @@ export default function Text2speech({
       setServerAudio(data.audio);
     })();
   }, []);
-
   //when we have clientAudio its means that custom recorded his answer
   //and we need to send req to /answer and get feedback
   useEffect(() => {
@@ -129,11 +128,12 @@ export default function Text2speech({
 
   return (
     <>
-      {/* <PlayAgainButton playAudio={playAudio} /> */}
       {serverAudio && !ModeContext.chatMode && (
         <div className="server-text">
           {serverAudio.map((obj, i) => (
-            <span className={getClassName(obj.significance, i)}>{obj.text} </span>
+            <span className={getClassName(obj.significance, i)} key={i}>
+              {obj.text}
+            </span>
           ))}
         </div>
       )}
