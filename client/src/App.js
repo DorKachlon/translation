@@ -40,10 +40,6 @@ function App() {
         if (Cookies.get("accessToken")) {
           const { data } = await network.get("/api/v1/auth/validate-token");
           setLogged(data.valid);
-          const { data: modes } = await network.get("/api/v1/users/modes");
-          setLazyMode(modes.lazyMode);
-          setManualMode(modes.manualMode);
-          setLoading(false);
         } else if (Cookies.get("refreshToken")) {
           await network.post("/api/v1/auth/token", { token: Cookies.get("refreshToken") });
           setLoading(false);
@@ -55,7 +51,20 @@ function App() {
       }
     })();
   }, []);
-
+  useEffect(() => {
+    // auth
+    (async () => {
+      try {
+        if (logged) {
+          const { data: modes } = await network.get("/api/v1/users/modes");
+          setLazyMode(modes.lazyMode);
+          setManualMode(modes.manualMode);
+        }
+      } catch (error) {
+        setLoading(false);
+      }
+    })();
+  }, [logged]);
   return (
     <>
       <ThemeProvider theme={myTheme}>
