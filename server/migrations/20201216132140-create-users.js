@@ -33,12 +33,12 @@ module.exports = {
         allowNull: false,
         type: Sequelize.INTEGER,
       },
-      manualMode: {
+      manual_mode: {
         allowNull: false,
         type: Sequelize.BOOLEAN,
         defaultValue: false,
       },
-      lazyMode: {
+      lazy_mode: {
         allowNull: false,
         type: Sequelize.BOOLEAN,
         defaultValue: false,
