@@ -5,7 +5,7 @@ import PlayAgainButton from "./PlayAgainButton";
 import useSound from "use-sound";
 import SoundFail from "../../sound-effect/fail.mp3";
 import SoundSuccess from "../../sound-effect/success.mp3";
-import { ManualMode } from "../../context/ManualMode";
+import { Mode } from "../../context/Mode";
 
 export default function Text2speech({
   startRecording,
@@ -16,7 +16,7 @@ export default function Text2speech({
   const [counter, setCounter] = useState(null);
   const [serverAudio, setServerAudio] = useState();
   const [success, setSuccess] = useState(false);
-  const ManualModeContext = useContext(ManualMode);
+  const ModeContext = useContext(Mode);
   const [playSoundFail] = useSound(SoundFail);
   const [playSoundSuccess] = useSound(SoundSuccess);
   useEffect(() => {
@@ -123,7 +123,7 @@ export default function Text2speech({
   return (
     <>
       {/* <PlayAgainButton playAudio={playAudio} /> */}
-      {serverAudio && !ManualModeContext.manualMode && (
+      {serverAudio && !ModeContext.chatMode && (
         <div className="server-text">
           {serverAudio.map((obj, i) => (
             <span className={getClassName(obj.significance, i)}>{obj.text} </span>

@@ -20,6 +20,18 @@ router.get("/languages", async (req, res) => {
     res.status(400).json({ message: "Cannot process request" });
   }
 });
+router.get("/modes", async (req, res) => {
+  try {
+    const userInfo = await User.findOne({
+      where: { id: req.user.id },
+      attributes: ["manualMode", "lazyMode"],
+    });
+    res.json(userInfo);
+  } catch (error) {
+    console.error(error);
+    res.status(400).json({ message: "Cannot process request" });
+  }
+});
 //POST REQUEST
 router.post("/", async (req, res) => {});
 

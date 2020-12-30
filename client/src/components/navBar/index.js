@@ -7,15 +7,18 @@ import { NavLink, Link, useLocation } from "react-router-dom";
 import logo from "./logo.png";
 import "./style.css";
 import { Logged } from "../../context/LoggedIn";
-import { ManualMode } from "../../context/ManualMode";
+import { Mode } from "../../context/Mode";
 import PanToolIcon from "@material-ui/icons/PanTool";
 import BrightnessAutoIcon from "@material-ui/icons/BrightnessAuto";
 import IconButton from "@material-ui/core/IconButton";
+import Switch from "@material-ui/core/Switch";
+import network from "../../services/network";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
 
 export default function NavBar() {
   const [value, setValue] = useState(null);
   const LoggedContext = useContext(Logged);
-  const ManualModeContext = useContext(ManualMode);
+  const ModeContext = useContext(Mode);
 
   const location = useLocation();
   useEffect(() => {
@@ -38,7 +41,29 @@ export default function NavBar() {
     setValue(newValue);
   };
   const handleClickMode = () => {
-    ManualModeContext.setManualMode((prev) => !prev);
+    ModeContext.setManualMode((prev) => !prev);
+  };
+  console.log(ModeContext.lazyMode);
+  const handleChangeSwitch = async (event) => {
+    try {
+      switch (event.target.name) {
+        case "lazyMode":
+          ModeContext.setLazyMode(event.target.checked);
+          await network.put("/api/v1/users", { lazyMode: event.target.checked });
+          break;
+        case "manualMode":
+          ModeContext.setManualMode(event.target.checked);
+          await network.put("/api/v1/users", { manualMode: event.target.checked });
+          break;
+        case "chatMode":
+          ModeContext.setChatMode(event.target.checked);
+          break;
+        default:
+          break;
+      }
+    } catch (e) {
+      console.error(e);
+    }
   };
   return (
     <nav>
@@ -48,9 +73,45 @@ export default function NavBar() {
             <img className="navbar-logo" src={logo} alt="logo" border="0" />
           </NavLink>
           <div className="navbar-controller">
-            <IconButton onClick={handleClickMode}>
-              {ManualModeContext.manualMode ? <PanToolIcon /> : <BrightnessAutoIcon />}
-            </IconButton>
+            {/* <IconButton onClick={handleClickMode}>
+              {ModeContext.manualMode ? <PanToolIcon /> : <BrightnessAutoIcon />}
+            </IconButton> */}
+            <FormControlLabel
+              control={
+                <Switch
+                  checked={ModeContext.lazyMode}
+                  onChange={handleChangeSwitch}
+                  color="primary"
+                  name="lazyMode"
+                />
+              }
+              label="Lazy Mode:"
+              labelPlacement="start"
+            />
+            <FormControlLabel
+              control={
+                <Switch
+                  checked={ModeContext.manualMode}
+                  onChange={handleChangeSwitch}
+                  color="primary"
+                  name="manualMode"
+                />
+              }
+              label="Manual Mode:"
+              labelPlacement="start"
+            />
+            <FormControlLabel
+              control={
+                <Switch
+                  checked={ModeContext.chatMode}
+                  onChange={handleChangeSwitch}
+                  color="primary"
+                  name="chatMode"
+                />
+              }
+              label="Chat Mode:"
+              labelPlacement="start"
+            />
             <Tabs
               value={value}
               onChange={handleChange}

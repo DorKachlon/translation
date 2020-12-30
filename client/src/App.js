@@ -7,7 +7,7 @@ import Landing from "./pages/Landing";
 import NotFound from "./pages/404";
 import Dashboard from "./pages/Dashboard";
 import { Logged } from "./context/LoggedIn";
-import { ManualMode } from "./context/ManualMode";
+import { Mode } from "./context/Mode";
 
 import Cookies from "js-cookie";
 import network from "./services/network";
@@ -29,7 +29,9 @@ const myTheme = createMuiTheme({
 
 function App() {
   const [logged, setLogged] = useState(false);
-  const [manualMode, setManualMode] = useState(false);
+  const [manualMode, setManualMode] = useState();
+  const [chatMode, setChatMode] = useState();
+  const [lazyMode, setLazyMode] = useState();
   const [loading, setLoading] = useState(true);
   useEffect(() => {
     // auth
@@ -38,6 +40,10 @@ function App() {
         if (Cookies.get("accessToken")) {
           const { data } = await network.get("/api/v1/auth/validate-token");
           setLogged(data.valid);
+          const { data: modes } = await network.get("/api/v1/users/modes");
+          console.log("modes", modes);
+          setLazyMode(modes.lazyMode);
+          setManualMode(modes.manualMode);
           setLoading(false);
         } else if (Cookies.get("refreshToken")) {
           await network.post("/api/v1/auth/token", { token: Cookies.get("refreshToken") });
@@ -50,11 +56,14 @@ function App() {
       }
     })();
   }, []);
+
   return (
     <>
       <ThemeProvider theme={myTheme}>
         <Logged.Provider value={{ logged, setLogged }}>
-          <ManualMode.Provider value={{ manualMode, setManualMode }}>
+          <Mode.Provider
+            value={{ manualMode, setManualMode, lazyMode, setLazyMode, chatMode, setChatMode }}
+          >
             <Router>
               {!loading ? (
                 <>
@@ -79,7 +88,7 @@ function App() {
                 <Loading />
               )}
             </Router>
-          </ManualMode.Provider>
+          </Mode.Provider>
         </Logged.Provider>
       </ThemeProvider>
     </>

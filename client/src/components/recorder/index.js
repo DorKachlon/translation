@@ -8,14 +8,14 @@ import Text2speech from "../textToSpeech/Text2speech";
 import useRecorder from "../../hook/useRecorder";
 import Chat from "../chat";
 import "./style.css";
-import { ManualMode } from "../../context/ManualMode";
+import { Mode } from "../../context/Mode";
 export default function Recorder() {
   const [saidWord, setSaidWord] = useState("");
   const recorderButtonRef = useRef(null);
   const [playSoundIn] = useSound(SoundIn);
   const [playSoundOut] = useSound(SoundOut);
   const [historyConversation, setHistoryConversation] = useState([]);
-  const ManualModeContext = useContext(ManualMode);
+  const ModeContext = useContext(Mode);
   const { clientAudio, isRecording, startRecording, stopRecording, audioStream } = useRecorder();
   console.log(historyConversation);
 
@@ -41,7 +41,7 @@ export default function Recorder() {
   };
 
   return (
-    <div className={ManualModeContext.manualMode ? "recorder-container row" : "recorder-container"}>
+    <div className={ModeContext.chatMode ? "recorder-container row" : "recorder-container"}>
       <button
         ref={recorderButtonRef}
         className={isRecording ? "recording-button down" : "recording-button"}
@@ -51,7 +51,7 @@ export default function Recorder() {
       >
         <MicIcon style={{ fontSize: "40px", color: "white" }} />
       </button>
-      {saidWord && !ManualModeContext.manualMode && <div>{saidWord}</div>}
+      {saidWord && !ModeContext.chatMode && <div>{saidWord}</div>}
       <Text2speech
         startRecording={startHandler}
         clientAudio={clientAudio}
@@ -68,7 +68,7 @@ export default function Recorder() {
           />
         </>
       )}
-      {ManualModeContext.manualMode && <Chat historyConversation={historyConversation} />}
+      {ModeContext.chatMode && <Chat historyConversation={historyConversation} />}
     </div>
   );
 }
