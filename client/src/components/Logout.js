@@ -3,7 +3,8 @@ import Cookies from "js-cookie";
 import { useHistory } from "react-router-dom";
 import network from "../services/network";
 import { Logged } from "../context/LoggedIn";
-
+import Button from "@material-ui/core/Button";
+import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 export default function Logout() {
   let history = useHistory();
   const LoggedContext = useContext(Logged);
@@ -25,5 +26,9 @@ export default function Logout() {
     }
   };
 
-  return <button onClick={logoutClickHandler}>logout</button>;
+  return (
+    <Button onClick={logoutClickHandler}>
+      <ExitToAppIcon />
+    </Button>
+  );
 }
