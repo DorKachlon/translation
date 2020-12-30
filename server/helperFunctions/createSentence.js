@@ -1,17 +1,23 @@
+/*
+!-translate and make speech in l2 & this word and not instruction
+#-do not translate and make speech in l2 & this word and not instruction
+@-translate and make speech in l1 & this word and not instruction
+*/
+
 //! Exercise
 function createSentenceExercise(word, language) {
   const sentences = [
-    `the word "<${word}>" is "<!${word}>", repeat "<!${word}>"`,
-    `<${word}> in ${language}, is it: <!${word}> can you say: <!${word}?>`,
+    `the word <@${word}> is <!${word}>, repeat <!${word}>`,
+    `<@${word}> in ${language}, is it: <!${word}> can you say: <!${word}?>`,
   ];
   return sentences[Math.floor(Math.random() * sentences.length)];
 }
 //! Do not understand
 function createSentenceDoNot(word, expectedWord) {
   const sentences = [
-    `I don't understand, try again \n<> the word: <${word}> it is: <#${expectedWord}>, try to say: <#${expectedWord}>`,
-    `Oops, I didn't hear you \n<> the word: <${word}> it is: <#${expectedWord}>, try to say: <#${expectedWord}>`,
-    `what did you said? I didn't get it \n<> the word: <${word}> it is: <#${expectedWord}>, try to say: <#${expectedWord}>`,
+    `I don't understand, try again \n<> the word: <@${word}> it is: <#${expectedWord}>, try to say: <#${expectedWord}>`,
+    `Oops, I didn't hear you \n<> the word: <@${word}> it is: <#${expectedWord}>, try to say: <#${expectedWord}>`,
+    `what did you said? I didn't get it \n<> the word: <@${word}> it is: <#${expectedWord}>, try to say: <#${expectedWord}>`,
   ];
   return sentences[Math.floor(Math.random() * sentences.length)];
 }

@@ -6,20 +6,27 @@ const { cleanText } = require("./cleanText");
 const fs = require("fs");
 const hash = require("object-hash");
 
-const createHash = s => s.split('').reduce((a,b)=>{a=((a<<5)-a)+b.charCodeAt(0);return a&a},0);
+const createHash = (s) =>
+  s.split("").reduce((a, b) => {
+    a = (a << 5) - a + b.charCodeAt(0);
+    return a & a;
+  }, 0);
 
 const languageForAzure = ["he-IL"];
 
 //text=`you said : <apple> and you need to said <water>, try again`
 async function createSpeech(text, l1, l2) {
-  const arrTextsAndLanguage = text.split(/[<>]/g).map(partText => {
+  const arrTextsAndLanguage = text.split(/[<>]/g).map((partText) => {
     if (partText[0] === "!") {
-      return {text: partText.slice(1), language: l2};
+      return { text: partText.slice(1), language: l2, significance: "word" };
     }
     if (partText[0] === "#") {
-      return {text: partText.slice(1), language: l2, noTranslate: true};
+      return { text: partText.slice(1), language: l2, noTranslate: true, significance: "word" };
     }
-    return {text: partText, language: l1};
+    if (partText[0] === "@") {
+      return { text: partText.slice(1), language: l1, significance: "word" };
+    }
+    return { text: partText, language: l1, significance: "instruction" };
   });
   try {
     let arrOfAudio = [];
@@ -35,7 +42,7 @@ async function createSpeech(text, l1, l2) {
         arrOfAudio.push({
           text: textAfterTranslation,
           base64: await speechHelper(textAfterTranslation, textAndLanguage.language),
-          itsWord: textAndLanguage.itsWord,
+          significance: textAndLanguage.significance,
         });
       }
     }
@@ -78,9 +85,7 @@ async function speechHelper(text, language) {
       languageId: language.id,
       fileName: hash, // todo: change property to hash
     };
-    fs.writeFile(filename, speech, () =>
-      SpeechCache.create(speechCache)
-    );
+    fs.writeFile(filename, speech, () => SpeechCache.create(speechCache));
 
     return speech;
   } catch (error) {

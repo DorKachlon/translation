@@ -17,16 +17,13 @@ export default function Text2speech({
   const [serverAudio, setServerAudio] = useState();
   const [success, setSuccess] = useState(false);
   const ManualModeContext = useContext(ManualMode);
-
   const [playSoundFail] = useSound(SoundFail);
   const [playSoundSuccess] = useSound(SoundSuccess);
-
   useEffect(() => {
     (async () => {
       const { data } = await network.post("/api/v1/exercise");
       UpdateHistoryConversation(data.audio);
       setServerAudio(data.audio);
-      console.log(data.audio);
     })();
   }, []);
 
@@ -38,7 +35,10 @@ export default function Text2speech({
         const { data } = await network.post("/api/v1/answer", clientAudio);
         setSaidWord(data.response);
         if (data.response !== "") {
-          setHistoryConversation((prev) => [...prev, { status: "answer", text: data.response }]);
+          setHistoryConversation((prev) => [
+            ...prev,
+            { status: "answer", textsAndSignificance: [{ text: data.response }] },
+          ]);
         }
         setSuccess(data.success);
         if (data.success) {
@@ -63,8 +63,11 @@ export default function Text2speech({
   };
 
   const UpdateHistoryConversation = (array) => {
-    const texts = array.map((obj) => obj.text);
-    setHistoryConversation((prev) => [...prev, { status: "exercise", text: texts.join("") }]);
+    const texts = array.map((obj) => ({ text: obj.text, significance: obj.significance }));
+    setHistoryConversation((prev) => [
+      ...prev,
+      { status: "exercise", textsAndSignificance: texts },
+    ]);
   };
 
   useEffect(() => {
@@ -101,8 +104,8 @@ export default function Text2speech({
     }
   };
 
-  const getClassName = (itsWord, index) => {
-    if (itsWord) {
+  const getClassName = (significance, index) => {
+    if (significance === "word") {
       if (index > counter) {
         return "word-bold hidden";
       } else {
@@ -123,7 +126,7 @@ export default function Text2speech({
       {serverAudio && !ManualModeContext.manualMode && (
         <div className="server-text">
           {serverAudio.map((obj, i) => (
-            <span className={getClassName(obj.itsWord, i)}>{obj.text} </span>
+            <span className={getClassName(obj.significance, i)}>{obj.text} </span>
           ))}
         </div>
       )}

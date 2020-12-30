@@ -6,7 +6,9 @@ export default function Chat({ historyConversation }) {
       {historyConversation &&
         historyConversation.map((message) => (
           <div className={message.status === "answer" ? "answer message " : "exercise message "}>
-            {message.text}
+            {message.textsAndSignificance.map((contact) => (
+              <span className={contact.significance === "word" ? "bold" : ""}>{contact.text}</span>
+            ))}
           </div>
         ))}
     </div>

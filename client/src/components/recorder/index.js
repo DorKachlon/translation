@@ -17,6 +17,7 @@ export default function Recorder() {
   const [historyConversation, setHistoryConversation] = useState([]);
   const ManualModeContext = useContext(ManualMode);
   const { clientAudio, isRecording, startRecording, stopRecording, audioStream } = useRecorder();
+  console.log(historyConversation);
 
   const startHandler = () => {
     startRecording();
