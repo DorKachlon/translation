@@ -6,6 +6,7 @@ import useSound from "use-sound";
 import SoundFail from "../../sound-effect/fail.mp3";
 import SoundSuccess from "../../sound-effect/success.mp3";
 import { Mode } from "../../context/Mode";
+import { CurrentLanguage } from "../../context/CurrentLanguage";
 
 export default function Text2speech({
   startRecording,
@@ -18,15 +19,19 @@ export default function Text2speech({
   const [serverAudio, setServerAudio] = useState();
   const [success, setSuccess] = useState(false);
   const ModeContext = useContext(Mode);
+  const CurrentLanguageContext = useContext(CurrentLanguage);
+
   const [playSoundFail] = useSound(SoundFail);
   const [playSoundSuccess] = useSound(SoundSuccess);
+
   useEffect(() => {
     (async () => {
+      setHistoryConversation([]);
       const { data } = await network.post("/api/v1/exercise");
       UpdateHistoryConversation(data.audio);
       setServerAudio(data.audio);
     })();
-  }, []);
+  }, [CurrentLanguageContext.currentLanguage]);
   //when we have clientAudio its means that custom recorded his answer
   //and we need to send req to /answer and get feedback
   useEffect(() => {

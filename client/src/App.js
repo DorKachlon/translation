@@ -8,6 +8,7 @@ import NotFound from "./pages/404";
 import Dashboard from "./pages/Dashboard";
 import { Logged } from "./context/LoggedIn";
 import { Mode } from "./context/Mode";
+import { CurrentLanguage } from "./context/CurrentLanguage";
 
 import Cookies from "js-cookie";
 import network from "./services/network";
@@ -29,10 +30,12 @@ const myTheme = createMuiTheme({
 
 function App() {
   const [logged, setLogged] = useState(false);
-  const [manualMode, setManualMode] = useState();
-  const [chatMode, setChatMode] = useState();
-  const [lazyMode, setLazyMode] = useState();
+  const [manualMode, setManualMode] = useState(false);
+  const [chatMode, setChatMode] = useState(false);
+  const [lazyMode, setLazyMode] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [currentLanguage, setCurrentLanguage] = useState();
+
   useEffect(() => {
     // auth
     (async () => {
@@ -40,6 +43,7 @@ function App() {
         if (Cookies.get("accessToken")) {
           const { data } = await network.get("/api/v1/auth/validate-token");
           setLogged(data.valid);
+          setLoading(false);
         } else if (Cookies.get("refreshToken")) {
           await network.post("/api/v1/auth/token", { token: Cookies.get("refreshToken") });
           setLoading(false);
@@ -52,7 +56,6 @@ function App() {
     })();
   }, []);
   useEffect(() => {
-    // auth
     (async () => {
       try {
         if (logged) {
@@ -65,6 +68,7 @@ function App() {
       }
     })();
   }, [logged]);
+
   return (
     <>
       <ThemeProvider theme={myTheme}>
@@ -72,30 +76,32 @@ function App() {
           <Mode.Provider
             value={{ manualMode, setManualMode, lazyMode, setLazyMode, chatMode, setChatMode }}
           >
-            <Router>
-              {!loading ? (
-                <>
-                  <NavBar />
-                  {logged ? (
-                    <Switch>
-                      <Route exact path="/" component={Home} />
-                      <Route exact path="/setting" component={Setting} />
-                      <Route exact path="/dashboard" component={Dashboard} />
-                      <Route component={NotFound} />
-                    </Switch>
-                  ) : (
-                    <Switch>
-                      <Route exact path="/" component={Landing} />
-                      <Route exact path="/login" component={Login} />
-                      <Route exact path="/sign-up" component={SignUp} />
-                      <Route component={NotFound} />
-                    </Switch>
-                  )}
-                </>
-              ) : (
-                <Loading />
-              )}
-            </Router>
+            <CurrentLanguage.Provider value={{ currentLanguage, setCurrentLanguage }}>
+              <Router>
+                {!loading ? (
+                  <>
+                    <NavBar />
+                    {logged ? (
+                      <Switch>
+                        <Route exact path="/" component={Home} />
+                        <Route exact path="/setting" component={Setting} />
+                        <Route exact path="/dashboard" component={Dashboard} />
+                        <Route component={NotFound} />
+                      </Switch>
+                    ) : (
+                      <Switch>
+                        <Route exact path="/" component={Landing} />
+                        <Route exact path="/login" component={Login} />
+                        <Route exact path="/sign-up" component={SignUp} />
+                        <Route component={NotFound} />
+                      </Switch>
+                    )}
+                  </>
+                ) : (
+                  <Loading />
+                )}
+              </Router>
+            </CurrentLanguage.Provider>
           </Mode.Provider>
         </Logged.Provider>
       </ThemeProvider>
