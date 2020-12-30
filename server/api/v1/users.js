@@ -43,10 +43,8 @@ router.put("/", async (req, res) => {
         id: req.user.id,
       },
     });
-    console.log(req.body);
     const { currentLanguageId } = req.body;
     if (currentLanguageId) {
-      console.log("currentLanguageId", currentLanguageId);
       const currentLearnWords = await findWordsToLearn(req.user.id, currentLanguageId);
       req.userProgress.setCurrentLearnWords(currentLearnWords);
     }
