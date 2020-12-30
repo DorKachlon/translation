@@ -19,6 +19,7 @@ async function findWordsToLearn(userId, languageId) {
   let index = 0;
   while (wordsToLearn.length < 5 && index < words.length) {
     if (words[index].totalScore < scoreToPass || words[index].totalScore === undefined) {
+      words[index].word = words[index].word[0].toUpperCase() + words[index].word.slice(1); //first letter upper case
       wordsToLearn.push(words[index]);
     }
     index++;
