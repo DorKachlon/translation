@@ -26,12 +26,16 @@ export default function Text2speech({
 
   useEffect(() => {
     (async () => {
-      setHistoryConversation([]);
-      const { data } = await network.post("/api/v1/exercise");
-      UpdateHistoryConversation(data.audio);
-      setServerAudio(data.audio);
+      if (CurrentLanguageContext.currentLanguage) {
+        console.log(CurrentLanguageContext.currentLanguage);
+        setHistoryConversation([]);
+        const { data } = await network.post("/api/v1/exercise");
+        UpdateHistoryConversation(data.audio);
+        setServerAudio(data.audio);
+      }
     })();
   }, [CurrentLanguageContext.currentLanguage]);
+
   //when we have clientAudio its means that custom recorded his answer
   //and we need to send req to /answer and get feedback
   useEffect(() => {
