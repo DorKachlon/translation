@@ -72,6 +72,7 @@ export default function NavBar() {
       console.error(e);
     }
   };
+  console.log(ModeContext.manualMode);
   return (
     <nav className={scrolling ? "navbar-scrolling" : ""}>
       {LoggedContext.logged ? (
