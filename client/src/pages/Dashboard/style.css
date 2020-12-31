@@ -6,15 +6,15 @@
   background-color: rgba(255, 255, 255, 0.5);
   border-radius: 3px;
   margin: 10px;
+  text-align: center;
 }
 .dashboard-words {
   display: flex;
   flex-wrap: wrap;
 }
-.dashboard-word-container {
-  background-color: rgba(255, 255, 255, 0.5);
-  border-radius: 3px;
-  width: 23%;
-  margin: 0.8% 1%;
-  text-align: center;
+
+.dashboard-language-title-language {
+  font-weight: bold;
+  font-size: 20px;
+  margin-left: 10px;
 }

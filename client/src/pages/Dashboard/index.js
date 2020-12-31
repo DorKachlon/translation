@@ -2,7 +2,8 @@ import React, { useEffect, useState } from "react";
 import network from "../../services/network";
 import "./style.css";
 import Loading from "../Loading";
-import Gauge from "../../components/gauge";
+import Flag from "react-world-flags";
+import DashboardCard from "../../components/dashboardCard";
 export default function Dashboard() {
   const [loading, setLoading] = useState(true);
   const [wordsByLanguages, setWordsByLanguages] = useState();
@@ -10,6 +11,7 @@ export default function Dashboard() {
   useEffect(() => {
     (async () => {
       const { data } = await network.get("/api/v1/progress");
+      console.log(data);
       setWordsByLanguages(data);
       setLoading(false);
     })();
@@ -22,13 +24,19 @@ export default function Dashboard() {
           <div className="dashboard-page">
             {wordsByLanguages.map((wordsForLangue) => (
               <div className="dashboard-language-container">
-                <div className="dashboard-language-title">{wordsForLangue.language.language}</div>
+                <div className="dashboard-language-title">
+                  <Flag code={wordsForLangue.language.code.split("-")[1]} height="16" width="20" />
+                  <span className="dashboard-language-title-language">
+                    {wordsForLangue.language.language}
+                  </span>
+                </div>
                 <div className="dashboard-words">
                   {wordsForLangue.words.map((wordAndTotalScore) => (
-                    <div className="dashboard-word-container">
-                      <div>{wordAndTotalScore.Word.word}</div>
-                      <Gauge value={wordAndTotalScore.totalScore} />
-                    </div>
+                    <DashboardCard
+                      word={wordAndTotalScore.word}
+                      translateWord={wordAndTotalScore.translateWord}
+                      totalScore={wordAndTotalScore.totalScore}
+                    />
                   ))}
                 </div>
               </div>
