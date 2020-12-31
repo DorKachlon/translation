@@ -19,7 +19,6 @@ export default function DropLanguages() {
         const { data: languages } = await network.get("/api/v1/users/progress/languages");
         setOtherLearningLanguage(languages);
         const { data: userInfo } = await network.get("/api/v1/users/languages");
-        console.log(userInfo);
         CurrentLanguageContext.setCurrentLanguage(userInfo.currentLanguage);
       } catch (e) {
         console.error(e);

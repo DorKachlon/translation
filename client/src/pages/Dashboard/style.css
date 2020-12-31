@@ -6,7 +6,6 @@
   background-color: rgba(255, 255, 255, 0.5);
   border-radius: 3px;
   margin: 10px;
-  text-align: center;
 }
 .dashboard-words {
   display: flex;
@@ -15,6 +14,11 @@
 
 .dashboard-language-title-language {
   font-weight: bold;
-  font-size: 20px;
+  font-size: 30px;
   margin-left: 10px;
+}
+.dashboard-language-title {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }

@@ -11,7 +11,6 @@ export default function Dashboard() {
   useEffect(() => {
     (async () => {
       const { data } = await network.get("/api/v1/progress");
-      console.log(data);
       setWordsByLanguages(data);
       setLoading(false);
     })();
@@ -25,7 +24,7 @@ export default function Dashboard() {
             {wordsByLanguages.map((wordsForLangue) => (
               <div className="dashboard-language-container">
                 <div className="dashboard-language-title">
-                  <Flag code={wordsForLangue.language.code.split("-")[1]} height="16" width="20" />
+                  <Flag code={wordsForLangue.language.code.split("-")[1]} height="26" width="30" />
                   <span className="dashboard-language-title-language">
                     {wordsForLangue.language.language}
                   </span>
