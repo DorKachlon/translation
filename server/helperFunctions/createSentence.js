@@ -40,17 +40,14 @@ function createSentenceExercise(word, language, lazyMode, level) {
 //! Do not understand
 function createSentenceDoNot(word, expectedWord, lazyMode) {
   let sentences;
+  const instruction = `<#"${expectedWord}"> means <@"${word}".> Repeat: <#${expectedWord}>`;
   if (lazyMode) {
-    sentences = [
-      `I don't understand, try again \n<> the word: <@${word}> it is: <#${expectedWord}>, try to say: <#${expectedWord}>`,
-      `Oops, I didn't hear you \n<> the word: <@${word}> it is: <#${expectedWord}>, try to say: <#${expectedWord}>`,
-      `what did you said? I didn't get it \n<> the word: <@${word}> it is: <#${expectedWord}>, try to say: <#${expectedWord}>`,
-    ];
+    sentences = [`Sorry?` + instruction, `Come again?` + instruction, `Huh?` + instruction];
   } else {
     sentences = [
-      `I don't understand, try again \n<> the word: <@${word}> it is: <#${expectedWord}>, try to say: <#${expectedWord}>`,
-      `Oops, I didn't hear you \n<> the word: <@${word}> it is: <#${expectedWord}>, try to say: <#${expectedWord}>`,
-      `what did you said? I didn't get it \n<> the word: <@${word}> it is: <#${expectedWord}>, try to say: <#${expectedWord}>`,
+      `I can't understand, try again.\n<>` + instruction,
+      `Oops, I couldn't hear you.\n<>` + instruction,
+      `Sorry, I didn't get it.\n<>` + instruction,
     ];
   }
   return sentences[Math.floor(Math.random() * sentences.length)];
@@ -59,15 +56,15 @@ function createSentenceDoNotAndNext(word, language, lazyMode) {
   let sentences;
   if (lazyMode) {
     sentences = [
-      `I don't understand, let's try different word \n<> `,
-      `Oops, I didn't hear you, let's move on \n<> `,
-      `I didn't get it, We will return to this word later \n<> `,
+      `Let's try a different word\n<>`,
+      `Let's skip this one\n<>`,
+      `We'll come back to this one later\n<>`,
     ];
   } else {
     sentences = [
-      `I don't understand, let's try different word \n<> `,
-      `Oops, I didn't hear you, let's move on \n<> `,
-      `I didn't get it, We will return to this word later \n<> `,
+      `I can't understand, let's try a different word\n<>`,
+      `Oops, I couldn't hear you, let's skip this one\n<>`,
+      `I can't get it, We will come back to this one later\n<>`,
     ];
   }
   return (
@@ -79,9 +76,9 @@ function createSentenceDoNotAndNext(word, language, lazyMode) {
 function createSentenceFailAndRetry(saidWord, expectedWord, lazyMode) {
   let sentences;
   if (lazyMode) {
-    sentences = [`you said: <#${saidWord}>, say: <#${expectedWord}>`];
+    sentences = [`<#"${expectedWord}">, not <#"${saidWord}">`];
   } else {
-    sentences = [`you said: <#${saidWord}>, and you need to say: <#${expectedWord}>, try again`];
+    sentences = [`I heard <#"${saidWord}">, but expected: <#"${expectedWord}".> Try again`];
   }
   return sentences[Math.floor(Math.random() * sentences.length)];
 }
@@ -90,11 +87,11 @@ function createSentenceFailAndSkip(saidWord, expectedWord, word, language, lazyM
   let sentences;
   if (lazyMode) {
     sentences = [
-      `you said: <#${saidWord}>, and you need to say: <#${expectedWord}>, We will return to this word later \n<> `,
+      `<#"${expectedWord}">, not <#"${saidWord}">, We will return to this word later<> `,
     ];
   } else {
     sentences = [
-      `you said: <#${saidWord}>, and you need to say: <#${expectedWord}>, We will return to this word later \n<> `,
+      `I heard "<#${saidWord}>", but expected: "<#${expectedWord}>", We will return to this word later<> `,
     ];
   }
   return (
@@ -110,8 +107,8 @@ function createSentenceSuccess(userFirstName, lazyMode) {
   } else {
     sentences = [
       " Good job! let's move on!",
-      ` ${userFirstName} you are amazing! let's go`,
-      ` Wow ${userFirstName} you so good!`,
+      ` ${userFirstName}, You are amazing! let's continue`,
+      ` Wow ${userFirstName}, That's great!`,
     ];
   }
   return sentences[Math.floor(Math.random() * sentences.length)];

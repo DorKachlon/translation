@@ -15,6 +15,8 @@ import PersonIcon from "@material-ui/icons/Person";
 import { MyFormControl, MyButton } from "../../styledComponent";
 import "./style.css";
 import registerValidation from "./schemaValidation";
+import ParticlesLiveBackground from "../../components/particles";
+import PeopleSVG from "./people.svg";
 
 export default function SignUp() {
   const [showPassword, setShowPassword] = useState(false);
@@ -66,7 +68,7 @@ export default function SignUp() {
   return (
     <div className="signup-page">
       <div className="signup-background">
-        <div>Sign Up</div>
+        <div className="signup-title">create account</div>
         <form className="signup-form" onSubmit={(e) => clickHandler(e)}>
           <div className="fname-lname">
             <MyFormControl>
@@ -170,6 +172,12 @@ export default function SignUp() {
             <span>{error}</span>
           </div>
         )}
+      </div>
+      <div className="login-particles">
+        <div className="login-people-container">
+          <img src={PeopleSVG} className="login-people-svg" />
+        </div>
+        <ParticlesLiveBackground />
       </div>
     </div>
   );

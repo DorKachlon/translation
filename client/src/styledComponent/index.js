@@ -24,11 +24,49 @@ export const MyTab1 = styled(Tab)`
   border: 2px solid var(--orange-color) !important;
   opacity: 1 !important;
   border-radius: 50px !important;
-  margin: 15px !important;
+  margin: 5px 15px !important;
+  &:hover {
+    animation: yourAnimation 0.5s 1 0s ease-in-out;
+  }
+
+  @keyframes yourAnimation {
+    0% {
+    }
+    17% {
+      transform: rotate(5deg);
+    }
+    49% {
+      transform: rotate(-5deg);
+    }
+    78% {
+      transform: rotate(5deg);
+    }
+    100% {
+    }
+  }
 `;
 export const MyTab2 = styled(Tab)`
   background-color: var(--orange-color) !important;
   opacity: 1 !important;
   border-radius: 50px !important;
-  margin: 15px !important;
+  margin: 5px 15px !important;
+  &:hover {
+    animation: yourAnimation 0.5s 1 0s ease-in-out;
+  }
+
+  @keyframes yourAnimation {
+    0% {
+    }
+    17% {
+      transform: rotate(5deg);
+    }
+    49% {
+      transform: rotate(-5deg);
+    }
+    78% {
+      transform: rotate(5deg);
+    }
+    100% {
+    }
+  }
 `;

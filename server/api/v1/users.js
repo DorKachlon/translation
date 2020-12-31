@@ -1,4 +1,4 @@
-const { User, Language } = require("../../models");
+const { User, Language, Progress } = require("../../models");
 const { Router } = require("express");
 const router = Router();
 const { findWordsToLearn } = require("../../helperFunctions/findWordsToLearn");
@@ -20,6 +20,23 @@ router.get("/languages", async (req, res) => {
     res.status(400).json({ message: "Cannot process request" });
   }
 });
+
+router.get("/progress/languages", async (req, res) => {
+  try {
+    const languages = await Progress.findAll({
+      where: { userId: 1 },
+      attributes: ["userId"],
+      group: "language_id",
+      include: [{ model: Language, as: "language" }],
+    });
+    const float = languages.map((language) => language.language);
+    res.json(float);
+  } catch (error) {
+    console.error(error);
+    res.status(400).json({ message: "Cannot process request" });
+  }
+});
+
 router.get("/modes", async (req, res) => {
   try {
     const userInfo = await User.findOne({

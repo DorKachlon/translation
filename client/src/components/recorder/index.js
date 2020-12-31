@@ -41,17 +41,19 @@ export default function Recorder() {
 
   return (
     <div className={ModeContext.chatMode ? "recorder-container row" : "recorder-container"}>
-      <button
-        disabled={disabledButton}
-        ref={recorderButtonRef}
-        className={isRecording ? "recording-button down" : "recording-button"}
-        // onMouseDown={startRecording}
-        // onMouseUp={StopRecording}
-        onClick={isRecording ? stopHandler : startHandler}
-        style={disabledButton ? { backgroundColor: "rgba(144,101,46,0.4)" } : {}}
-      >
-        <MicIcon style={{ fontSize: "40px", color: "white" }} />
-      </button>
+      <div className="recording-button-container">
+        <button
+          disabled={disabledButton}
+          ref={recorderButtonRef}
+          className={isRecording ? "recording-button down" : "recording-button"}
+          // onMouseDown={startRecording}
+          // onMouseUp={StopRecording}
+          onClick={isRecording ? stopHandler : startHandler}
+          style={disabledButton ? { backgroundColor: "rgba(144,101,46,0.4)" } : {}}
+        >
+          <MicIcon style={{ fontSize: "40px", color: "white" }} />
+        </button>
+      </div>
       {saidWord && !ModeContext.chatMode && <div>{saidWord}</div>}
       <Text2speech
         startRecording={startHandler}
