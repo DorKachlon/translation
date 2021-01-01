@@ -8,7 +8,7 @@ import NotFound from "./pages/404";
 import Dashboard from "./pages/Dashboard";
 import { Logged } from "./context/LoggedIn";
 import { Mode } from "./context/Mode";
-import { CurrentLanguage } from "./context/CurrentLanguage";
+import { UserLanguages } from "./context/UserLanguages";
 
 import Cookies from "js-cookie";
 import network from "./services/network";
@@ -30,10 +30,11 @@ const myTheme = createMuiTheme({
 
 function App() {
   const [logged, setLogged] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [manualMode, setManualMode] = useState(false);
   const [chatMode, setChatMode] = useState(false);
   const [lazyMode, setLazyMode] = useState(false);
-  const [loading, setLoading] = useState(true);
+  const [nativeLanguage, setNativeLanguage] = useState();
   const [currentLanguage, setCurrentLanguage] = useState();
 
   useEffect(() => {
@@ -43,26 +44,28 @@ function App() {
         if (Cookies.get("accessToken")) {
           const { data } = await network.get("/api/v1/auth/validate-token");
           setLogged(data.valid);
-          setLoading(false);
-        } else if (Cookies.get("refreshToken")) {
+        }
+        if (Cookies.get("refreshToken")) {
           await network.post("/api/v1/auth/token", { token: Cookies.get("refreshToken") });
-          setLoading(false);
-        } else {
-          setLoading(false);
         }
       } catch (error) {
-        setLoading(false);
+        console.error(error);
       }
     })();
   }, []);
+
   useEffect(() => {
     (async () => {
       try {
         if (logged) {
-          const { data: modes } = await network.get("/api/v1/users/modes");
-          setLazyMode(modes.lazyMode);
-          setManualMode(modes.manualMode);
+          const { data: userInfo } = await network.get("/api/v1/users");
+          setNativeLanguage(userInfo.nativeLanguage);
+          setCurrentLanguage(userInfo.currentLanguage);
+          setLazyMode(userInfo.lazyMode);
+          setChatMode(userInfo.chatMode);
+          setManualMode(userInfo.manualMode);
         }
+        setLoading(false);
       } catch (error) {
         setLoading(false);
       }
@@ -76,7 +79,9 @@ function App() {
           <Mode.Provider
             value={{ manualMode, setManualMode, lazyMode, setLazyMode, chatMode, setChatMode }}
           >
-            <CurrentLanguage.Provider value={{ currentLanguage, setCurrentLanguage }}>
+            <UserLanguages.Provider
+              value={{ currentLanguage, setCurrentLanguage, nativeLanguage, setNativeLanguage }}
+            >
               <Router>
                 {!loading ? (
                   <>
@@ -101,7 +106,7 @@ function App() {
                   <Loading />
                 )}
               </Router>
-            </CurrentLanguage.Provider>
+            </UserLanguages.Provider>
           </Mode.Provider>
         </Logged.Provider>
       </ThemeProvider>
