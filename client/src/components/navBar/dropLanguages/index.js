@@ -4,27 +4,42 @@ import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
 import network from "../../../services/network";
 import Flag from "react-world-flags";
-import { CurrentLanguage } from "../../../context/CurrentLanguage";
+import { UserLanguages } from "../../../context/UserLanguages";
+import AddCircleOutlineRoundedIcon from "@material-ui/icons/AddCircleOutlineRounded";
+import { Link } from "react-router-dom";
+
 import "./style.css";
+
 export default function DropLanguages() {
   const [anchorEl, setAnchorEl] = React.useState(null);
-  const [languagesArr, setLanguagesArr] = useState([]);
-  // const [CurrentLanguageContext.currentLanguage, CurrentLanguageContext.setCurrentLanguage] = useState();
+  const [allLearningLanguage, setAllLearningLanguage] = useState();
   const [otherLearningLanguage, setOtherLearningLanguage] = useState();
-  const CurrentLanguageContext = useContext(CurrentLanguage);
-
+  const UserLanguagesContext = useContext(UserLanguages);
   useEffect(() => {
     (async () => {
       try {
-        const { data: languages } = await network.get("/api/v1/users/progress/languages");
-        setOtherLearningLanguage(languages);
-        const { data: userInfo } = await network.get("/api/v1/users/languages");
-        CurrentLanguageContext.setCurrentLanguage(userInfo.currentLanguage);
+        const { data: languages } = await network.get("/api/v1/users/learning-languages");
+        setAllLearningLanguage(languages);
       } catch (e) {
         console.error(e);
       }
     })();
   }, []);
+
+  useEffect(() => {
+    (async () => {
+      if (allLearningLanguage && UserLanguagesContext.currentLanguage) {
+        console.log(allLearningLanguage);
+        const languages = allLearningLanguage.filter(
+          (language) => language.id !== UserLanguagesContext.currentLanguage.id
+        );
+        if (languages.length !== 0) {
+          setOtherLearningLanguage(languages);
+        }
+      }
+    })();
+  }, [allLearningLanguage, UserLanguagesContext.currentLanguage]);
+
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
@@ -36,28 +51,26 @@ export default function DropLanguages() {
     try {
       setAnchorEl(null);
       await network.put("/api/v1/users", { currentLanguageId: language.id });
-      CurrentLanguageContext.setCurrentLanguage(language);
+      UserLanguagesContext.setCurrentLanguage(language);
     } catch (e) {
       console.error(e);
     }
   };
   const open = Boolean(anchorEl);
-  const id = open ? "simple-popover" : undefined;
+  //   const id = open ? "simple-popover" : undefined;
 
   return (
     <>
-      {CurrentLanguageContext.currentLanguage && CurrentLanguageContext.currentLanguage.code && (
+      {UserLanguagesContext.currentLanguage && UserLanguagesContext.currentLanguage.code && (
         <>
           <Button aria-controls="simple-menu" aria-haspopup="true" onClick={handleClick}>
             <span className="drop-span-container">
               <Flag
-                code={CurrentLanguageContext.currentLanguage.code.split("-")[1]}
+                code={UserLanguagesContext.currentLanguage.code.split("-")[1]}
                 height="16"
                 width="20"
               />
-              <span className="drop-language">
-                {CurrentLanguageContext.currentLanguage.language}
-              </span>
+              <span className="drop-language">{UserLanguagesContext.currentLanguage.language}</span>
             </span>
           </Button>
           <Menu
@@ -71,17 +84,20 @@ export default function DropLanguages() {
             transformOrigin={{ vertical: "top", horizontal: "center" }}
           >
             {otherLearningLanguage &&
-              otherLearningLanguage.map(
-                (language, i) =>
-                  language.id !== CurrentLanguageContext.currentLanguage.id && (
-                    <MenuItem onClick={() => handleChoose(language)} id={language.id} key={i}>
-                      <span className="drop-span-container">
-                        <Flag code={language.code.split("-")[1]} height="16" width="20" />
-                        <span className="drop-language">{language.language}</span>
-                      </span>
-                    </MenuItem>
-                  )
-              )}
+              otherLearningLanguage.map((language, i) => (
+                <MenuItem onClick={() => handleChoose(language)} id={language.id} key={i}>
+                  <span className="drop-span-container">
+                    <Flag code={language.code.split("-")[1]} height="16" width="20" />
+                    <span className="drop-language">{language.language}</span>
+                  </span>
+                </MenuItem>
+              ))}
+            <MenuItem component={Link} to="/languages" onClick={handleClose}>
+              <span className="drop-span-container">
+                <AddCircleOutlineRoundedIcon />
+                <span className="drop-language">Add a new language</span>
+              </span>
+            </MenuItem>
           </Menu>
         </>
       )}
