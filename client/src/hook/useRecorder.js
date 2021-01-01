@@ -59,22 +59,22 @@ export default function useRecorder() {
   };
 
   const stopRecording = () => {
-    record.stop();
-    // playSoundOut();
-    record.exportWAV((blob) => {
-      const reader = new FileReader();
-      reader.readAsDataURL(blob);
-      let base64data;
-      reader.onloadend = function () {
-        base64data = reader.result;
-      };
-      setAudioBlob(base64data);
-    });
-    audioStream.getAudioTracks()[0].stop();
-
-    record.exportWAV(handleTranscriptExport);
-    record.exportWAV(handleAudioExport);
-    setIsRecording(false);
+    if (record) {
+      record.stop();
+      record.exportWAV((blob) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(blob);
+        let base64data;
+        reader.onloadend = function () {
+          base64data = reader.result;
+        };
+        setAudioBlob(base64data);
+      });
+      audioStream.getAudioTracks()[0].stop();
+      record.exportWAV(handleTranscriptExport);
+      record.exportWAV(handleAudioExport);
+      setIsRecording(false);
+    }
   };
 
   return {
