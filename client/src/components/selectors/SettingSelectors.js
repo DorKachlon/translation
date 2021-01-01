@@ -37,16 +37,6 @@ export default function SettingSelectors({ setLoading }) {
               defaultV={nativeLanguage}
             />
           </div>
-          <div className="setting-selectors-container">
-            <div className="setting-selectors-title">Language To Learn:</div>
-            <Selector
-              mode="learning"
-              label="Choose language to learn"
-              languagesArr={nativeLanguage ? filterArray(languagesArr, nativeLanguage) : []}
-              setYourChoice={setLearningLanguage}
-              defaultV={learningLanguage}
-            />
-          </div>
         </>
       )}
     </>
