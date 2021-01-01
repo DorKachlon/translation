@@ -1,11 +1,11 @@
-const { Language } = require("../../models");
-const { Router } = require("express");
+const {Language} = require("../../models");
+const {Router} = require("express");
 const router = Router();
 
 //GET REQUEST
 router.get("/", async (req, res) => {
-  const allAlbums = await Language.findAll();
-  res.json(allAlbums);
+    const allLanguages = await Language.findAll();
+    res.json(allLanguages);
 });
 
 //POST REQUEST

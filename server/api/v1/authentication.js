@@ -1,6 +1,6 @@
 const { Router } = require("express");
 const router = Router();
-const { User, RefreshToken } = require("../../models");
+const { User, RefreshToken, UserLanguages } = require("../../models");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 const {
@@ -9,9 +9,8 @@ const {
   tokenValidation,
 } = require("../../helperFunctions/validation");
 const verifyToken = require("../../middleware/verifyToken");
-// const { sendMail } = require("../sendMail");
-require("dotenv").config();
 const { createNewProgress, removeProgress } = require("../../middleware/progress");
+require("dotenv").config();
 
 // ! REGISTER
 router.post("/register", async (req, res) => {
@@ -42,6 +41,11 @@ router.post("/register", async (req, res) => {
     };
 
     const savedUser = await User.create(newUser);
+    const newLanguage = {
+      userId: savedUser.id,
+      languageId: savedUser.currentLanguageId,
+    };
+    await UserLanguages.create(newLanguage);
     res.send({ success: true });
   } catch (error) {
     console.error(error.message);
@@ -205,4 +209,5 @@ async function userIsExist(email) {
     console.error(error.message);
   }
 }
+
 module.exports = router;
