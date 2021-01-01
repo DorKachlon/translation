@@ -1,3 +1,5 @@
+@import url("https://fonts.googleapis.com/css2?family=Balsamiq+Sans&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Sniglet&display=swap");
 :root {
   --orange-color: #ff9424;
   --orange-color-lite: #ffa230;
@@ -20,6 +22,8 @@ code {
 * {
   box-sizing: border-box;
   outline: none !important;
+  /* font-family: "Balsamiq Sans", cursive !important; */
+  font-family: "Sniglet", cursive !important;
 }
 input:-webkit-autofill,
 input:-webkit-autofill:hover,
