@@ -65,6 +65,7 @@ export default function Login() {
               type="email"
               name="email"
               placeholder="Email"
+              autoComplete="email"
               value={email}
               required
               onChange={(e) => setEmail(e.currentTarget.value)}
@@ -81,6 +82,7 @@ export default function Login() {
               placeholder="Password"
               value={password}
               required
+              autoComplete="current-password"
               type={showPassword ? "text" : "password"}
               onChange={(e) => setPassword(e.currentTarget.value)}
               endAdornment={
@@ -111,7 +113,7 @@ export default function Login() {
       </div>
       <div className="login-particles">
         <div className="login-people-container">
-          <img src={PeopleSVG} className="login-people-svg" />
+          <img src={PeopleSVG} className="login-people-svg" alt="" />
         </div>
         <ParticlesLiveBackground />
       </div>

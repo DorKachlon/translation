@@ -108,6 +108,7 @@ export default function SignUp() {
             <InputBase
               type="email"
               name="email"
+              autoComplete="email"
               placeholder="Email"
               value={email}
               required
@@ -124,6 +125,7 @@ export default function SignUp() {
               type="password"
               name="password"
               placeholder="Password"
+              autoComplete="new-password"
               value={password}
               required
               onChange={(e) => setPassword(e.currentTarget.value)}
@@ -138,6 +140,7 @@ export default function SignUp() {
             <InputBase
               name="password"
               placeholder="Confirm Password"
+              autoComplete="new-password"
               value={confirmPassword}
               required
               type={showPassword ? "text" : "password"}
@@ -175,7 +178,7 @@ export default function SignUp() {
       </div>
       <div className="login-particles">
         <div className="login-people-container">
-          <img src={PeopleSVG} className="login-people-svg" />
+          <img src={PeopleSVG} className="login-people-svg" alt="" />
         </div>
         <ParticlesLiveBackground />
       </div>
