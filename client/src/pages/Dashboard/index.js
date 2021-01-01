@@ -21,8 +21,8 @@ export default function Dashboard() {
       {!loading ? (
         wordsByLanguages && (
           <div className="dashboard-page">
-            {wordsByLanguages.map((wordsForLangue) => (
-              <div className="dashboard-language-container">
+            {wordsByLanguages.map((wordsForLangue, i) => (
+              <div className="dashboard-language-container" key={i}>
                 <div className="dashboard-language-title">
                   <Flag code={wordsForLangue.language.code.split("-")[1]} height="26" width="30" />
                   <span className="dashboard-language-title-language">
@@ -30,8 +30,9 @@ export default function Dashboard() {
                   </span>
                 </div>
                 <div className="dashboard-words">
-                  {wordsForLangue.words.map((wordAndTotalScore) => (
+                  {wordsForLangue.words.map((wordAndTotalScore, i) => (
                     <DashboardCard
+                      key={i}
                       word={wordAndTotalScore.word}
                       translateWord={wordAndTotalScore.translateWord}
                       totalScore={wordAndTotalScore.totalScore}
