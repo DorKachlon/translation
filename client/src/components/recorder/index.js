@@ -21,6 +21,11 @@ export default function Recorder() {
   const startHandler = () => {
     startRecording();
   };
+  useEffect(() => {
+    return () => {
+      stopRecording();
+    };
+  }, []);
 
   useEffect(() => {
     if (isRecording) {

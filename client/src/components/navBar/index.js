@@ -8,9 +8,6 @@ import logo from "./logo.png";
 import "./style.css";
 import { Logged } from "../../context/LoggedIn";
 import { Mode } from "../../context/Mode";
-import PanToolIcon from "@material-ui/icons/PanTool";
-import BrightnessAutoIcon from "@material-ui/icons/BrightnessAuto";
-import IconButton from "@material-ui/core/IconButton";
 import Switch from "@material-ui/core/Switch";
 import network from "../../services/network";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
@@ -64,6 +61,7 @@ export default function NavBar() {
           break;
         case "chatMode":
           ModeContext.setChatMode(event.target.checked);
+          await network.put("/api/v1/users", { chatMode: event.target.checked });
           break;
         default:
           break;
