@@ -36,6 +36,7 @@ export default function Dashboard() {
                       word={wordAndTotalScore.word}
                       translateWord={wordAndTotalScore.translateWord}
                       totalScore={wordAndTotalScore.totalScore}
+                      language={wordsForLangue.language}
                     />
                   ))}
                 </div>

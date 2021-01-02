@@ -1,7 +1,7 @@
 const { Router } = require("express");
 const { translate } = require("../../helperFunctions/translation");
 const router = Router();
-const { Progress, Word, Language } = require("../../models");
+const { Progress, Word, Language, User } = require("../../models");
 const sequelize = require("sequelize");
 router.get("/", async (req, res) => {
   const languagesInProgress = await Progress.findAll({
@@ -9,6 +9,13 @@ router.get("/", async (req, res) => {
     group: "language_id",
     attributes: ["languageId"],
     include: [{ model: Language, as: "language" }],
+  });
+  const userInfo = await User.findOne({
+    where: { id: req.user.id },
+    include: [
+      { model: Language, as: "nativeLanguage" },
+      // { model: Language, as: "currentLanguage" },
+    ],
   });
   const wordsForUserByLanguages = await Promise.all(
     languagesInProgress.map(async (language) => {
@@ -22,9 +29,10 @@ router.get("/", async (req, res) => {
         progressByUser.map(async (wordAndScore) => {
           // console.log(wordAndScore.Word.word, language.id);
           const translateWord = await translate(wordAndScore.Word.word, language.language);
+          const word = await translate(wordAndScore.Word.word, userInfo.nativeLanguage);
           return {
             totalScore: wordAndScore.dataValues.totalScore,
-            word: wordAndScore.Word.word,
+            word,
             translateWord,
           };
         })

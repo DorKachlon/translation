@@ -18,5 +18,6 @@ router.use("/languages", require("./languages"));
 router.use("/users", verifyToken, progressMiddleware, require("./users"));
 router.use("/auth", require("./authentication"));
 router.use("/progress", verifyToken, require("./progress"));
+router.use("/create-speech", verifyToken, require("./createSpeech"));
 
 module.exports = router;
