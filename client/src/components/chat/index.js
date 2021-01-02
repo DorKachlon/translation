@@ -1,6 +1,8 @@
-import React from "react";
+import React, { useContext } from "react";
 import "./style.css";
+import { UserLanguages } from "../../context/UserLanguages";
 export default function Chat({ historyConversation }) {
+  const UserLanguagesContext = useContext(UserLanguages);
   return (
     <div className="chat">
       {historyConversation &&
@@ -8,6 +10,7 @@ export default function Chat({ historyConversation }) {
           <div
             className={message.status === "answer" ? "answer message " : "exercise message "}
             key={i}
+            style={{ direction: UserLanguagesContext.nativeLanguage.direction }}
           >
             {message.textsAndSignificance.map((contact, i) => (
               <span className={contact.significance === "word" ? "bold" : ""} key={i}>

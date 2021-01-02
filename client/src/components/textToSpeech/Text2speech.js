@@ -138,7 +138,10 @@ export default function Text2speech({
   return (
     <>
       {serverAudio && !ModeContext.chatMode && (
-        <div className="server-text">
+        <div
+          className="server-text"
+          style={{ direction: UserLanguagesContext.nativeLanguage.direction }}
+        >
           {serverAudio.map((obj, i) => (
             <span className={getClassName(obj.significance, i)} key={i}>
               {obj.text}
