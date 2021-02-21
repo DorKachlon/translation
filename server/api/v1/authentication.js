@@ -127,7 +127,7 @@ router.post("/logout", async (req, res) => {
     if (error) {
       return res.status(400).send(error.details[0].message);
     }
-
+    //TODO to remove this \/ section to function without await
     //for remove Progress I need to know the id user
     const refreshTokenInfo = await RefreshToken.findOne({
       where: {
@@ -141,6 +141,7 @@ router.post("/logout", async (req, res) => {
       },
     });
     removeProgress(userInfo);
+    //TODO to remove this /\ section to function without await
 
     const result = await RefreshToken.destroy({
       where: {

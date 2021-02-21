@@ -29,6 +29,7 @@ export default function NavBar() {
   window.addEventListener("scroll", changeBackground);
 
   const location = useLocation();
+  
   useEffect(() => {
     switch (location.pathname) {
       case "/dashboard":
